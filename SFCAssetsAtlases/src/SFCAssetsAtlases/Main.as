@@ -2,6 +2,7 @@ package SFCAssetsAtlases
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.display.Bitmap;
 	
 	/**
 	 * ...
@@ -9,6 +10,11 @@ package SFCAssetsAtlases
 	 */
 	public class Main extends Sprite 
 	{
+		[Embed(source = '../../assets/menu_animation.png')]
+		public var MenuAtlas:Class;
+		[Embed(source = '../../assets/menu_animation.xml', mimeType='application/octet-stream')]
+		public var MenuAtlasXML:Class;
+		
 		
 		public function Main() 
 		{

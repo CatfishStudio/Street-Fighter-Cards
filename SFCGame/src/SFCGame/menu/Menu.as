@@ -12,6 +12,7 @@ package SFCGame.menu
 	import SFCGame.data.Constants;
 	import SFCGame.data.Assets;
 	import SFCGame.data.Atlas;
+	import SFCGame.animation.BigRyuAnimation;
 	
 	/**
 	 * ...
@@ -21,7 +22,8 @@ package SFCGame.menu
 	{
 		private var backgroundBitmap:Bitmap;
 		private var logoBitmap:Bitmap;
-				
+		private var bigRyu:BigRyuAnimation;
+		
 		public function Menu() 
 		{
 			super();
@@ -35,10 +37,11 @@ package SFCGame.menu
 			name = Constants.MENU;
 			
 			//Atlas.loadAtlasBitmapData(Assets.assetsAtlasesContent.MenuAtlas, Assets.assetsAtlasesContent.MenuAtlasXML, Atlas.TYPE_TEXTURES);
-			//Atlas.loadAtlasBitmapData(Assets.assetsAtlasesContent.ButtonsAtlas, Assets.assetsAtlasesContent.ButtonsAtlasXML, Atlas.TYPE_ANIMATION);
+			Atlas.loadAtlasBitmapData(Assets.assetsAtlasesContent.MenuAtlas, Assets.assetsAtlasesContent.MenuAtlasXML, Atlas.TYPE_ANIMATION);
 			
 			createBackground();
 			createLogo();
+			createAnimation();
 		}
 		
 		private function onRemoveFromStage(e:Event):void 
@@ -72,6 +75,11 @@ package SFCGame.menu
 			addChild(logoBitmap);
 		}
 		
+		private function createAnimation():void
+		{
+			bigRyu = new BigRyuAnimation();
+			addChild(bigRyu);
+		}
 		
 		
 	}
