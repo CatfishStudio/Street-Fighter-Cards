@@ -21,7 +21,6 @@ package SFCGame.menu
 	{
 		private var backgroundBitmap:Bitmap;
 		private var logoBitmap:Bitmap;
-		private var borderBitmap:Bitmap;
 				
 		public function Menu() 
 		{
@@ -40,7 +39,6 @@ package SFCGame.menu
 			
 			createBackground();
 			createLogo();
-			createBorder();
 		}
 		
 		private function onRemoveFromStage(e:Event):void 
@@ -69,18 +67,12 @@ package SFCGame.menu
 		private function createLogo():void
 		{
 			logoBitmap = new Bitmap((Assets.assetsTexturesContent.logoBitmap as Bitmap).bitmapData);
-			logoBitmap.x = 0;
+			logoBitmap.x = 150;
 			logoBitmap.y = 0;
 			addChild(logoBitmap);
 		}
 		
-		private function createBorder():void
-		{
-			borderBitmap = new Bitmap((Assets.assetsTexturesContent.menuBorderBitmap as Bitmap).bitmapData);
-			borderBitmap.x = 0;
-			borderBitmap.y = 0;
-			addChild(borderBitmap);
-		}
+		
 		
 	}
 

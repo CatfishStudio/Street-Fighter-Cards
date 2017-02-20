@@ -14,17 +14,17 @@ package SFCAssetsTextures
 		public var MenuBackgroundImage:Class;
 		public var menuBackgroundBitmap:Bitmap = new MenuBackgroundImage();
 		
-		[Embed(source = '../../assets/menu_border.png')]
-		public var MenuBorderImage:Class;
-		public var menuBorderBitmap:Bitmap = new MenuBorderImage();
-		
 		[Embed(source = '../../assets/logo.png')]
 		public var LogoImage:Class;
 		public var logoBitmap:Bitmap = new LogoImage();
 		
-		[Embed(source = '../../assets/buttons.png')]
-		public var ButtonsImage:Class;
-		public var buttonsBitmap:Bitmap = new ButtonsImage();
+		[Embed(source = '../../assets/button_up.png')]
+		public var ButtonUpImage:Class;
+		public var buttonUpBitmap:Bitmap = new ButtonUpImage();
+		
+		[Embed(source = '../../assets/button_down.png')]
+		public var ButtonDownImage:Class;
+		public var buttonDownBitmap:Bitmap = new ButtonDownImage();
 		
 		public function Main() 
 		{
