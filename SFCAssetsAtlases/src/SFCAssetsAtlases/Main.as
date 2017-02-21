@@ -10,10 +10,15 @@ package SFCAssetsAtlases
 	 */
 	public class Main extends Sprite 
 	{
-		[Embed(source = '../../assets/menu_animation.png')]
-		public var MenuAtlas:Class;
-		[Embed(source = '../../assets/menu_animation.xml', mimeType='application/octet-stream')]
-		public var MenuAtlasXML:Class;
+		[Embed(source = '../../assets/big_ryu.png')]
+		public var BigRyuAtlas:Class;
+		[Embed(source = '../../assets/big_ryu.xml', mimeType='application/octet-stream')]
+		public var BigRyuAtlasXML:Class;
+		
+		[Embed(source = '../../assets/big_ken.png')]
+		public var BigKenAtlas:Class;
+		[Embed(source = '../../assets/big_ken.xml', mimeType='application/octet-stream')]
+		public var BigKenAtlasXML:Class;
 		
 		
 		public function Main() 

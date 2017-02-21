@@ -39,7 +39,7 @@ package SFCGame.data
 			var bitmap:Bitmap;			
 			imageBD = _bitmap.bitmapData;
 			canvasBD.copyPixels(imageBD, rect, pt);
-			//bitmap = new Bitmap(canvasBD);			
+			//bitmap = new Bitmap(canvasBD);
 			return canvasBD;
 		}
 

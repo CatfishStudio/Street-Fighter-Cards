@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="big_ken.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="ken1.png"	x="688"	y="0"	width="343"	height="658" frameX="-76" frameY="-27" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken2.png"	x="1032"	y="1267"	width="343"	height="635" frameX="-76" frameY="-50" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken3.png"	x="1032"	y="636"	width="343"	height="630" frameX="-76" frameY="-55" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken4.png"	x="1032"	y="0"	width="343"	height="635" frameX="-76" frameY="-50" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken5.png"	x="688"	y="1318"	width="343"	height="649" frameX="-76" frameY="-36" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken6.png"	x="688"	y="659"	width="343"	height="658" frameX="-76" frameY="-27" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken7.png"	x="1376"	y="0"	width="343"	height="663" frameX="-76" frameY="-23" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken8.png"	x="344"	y="1348"	width="343"	height="668" frameX="-76" frameY="-18" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken9.png"	x="344"	y="676"	width="343"	height="671" frameX="-76" frameY="-15" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken10.png"	x="344"	y="0"	width="343"	height="675" frameX="-76" frameY="-11" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken11.png"	x="0"	y="1332"	width="343"	height="672" frameX="-76" frameY="-14" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken12.png"	x="0"	y="663"	width="343"	height="668" frameX="-76" frameY="-18" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ken13.png"	x="0"	y="0"	width="343"	height="662" frameX="-76" frameY="-24" frameWidth="500" frameHeight="700"/>
+</TextureAtlas>

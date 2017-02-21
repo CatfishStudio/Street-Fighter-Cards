@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="big_ryu.png">
+	<!--
+	Created with ShoeBox
+	http://renderhjs.net/shoebox/
+	-->
+	<SubTexture name="ryu1.png"	x="688"	y="0"	width="343"	height="665" frameX="-99" frameY="-16" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu2.png"	x="1032"	y="1278"	width="343"	height="641" frameX="-99" frameY="-40" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu3.png"	x="1032"	y="641"	width="343"	height="636" frameX="-99" frameY="-45" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu4.png"	x="1032"	y="0"	width="343"	height="640" frameX="-99" frameY="-41" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu5.png"	x="688"	y="1330"	width="343"	height="654" frameX="-99" frameY="-27" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu6.png"	x="688"	y="666"	width="343"	height="663" frameX="-99" frameY="-18" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu7.png"	x="0"	y="1346"	width="343"	height="669" frameX="-99" frameY="-13" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu8.png"	x="344"	y="1362"	width="343"	height="674" frameX="-99" frameY="-8" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu9.png"	x="344"	y="683"	width="343"	height="678" frameX="-99" frameY="-4" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu10.png"	x="344"	y="0"	width="343"	height="682" frameX="-99" frameY="-0" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu11.png"	x="1376"	y="0"	width="342"	height="680" frameX="-100" frameY="-2" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu12.png"	x="0"	y="670"	width="343"	height="675" frameX="-99" frameY="-7" frameWidth="500" frameHeight="700"/>
+	<SubTexture name="ryu13.png"	x="0"	y="0"	width="343"	height="669" frameX="-99" frameY="-13" frameWidth="500" frameHeight="700"/>
+</TextureAtlas>

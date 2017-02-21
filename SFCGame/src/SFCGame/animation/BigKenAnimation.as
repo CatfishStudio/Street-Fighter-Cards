@@ -10,13 +10,13 @@ package SFCGame.animation
 	 * ...
 	 * @author Catfish Studio
 	 */
-	public class BigRyuAnimation extends MovieClip 
+	public class BigKenAnimation extends MovieClip 
 	{
 		private var frameBitmap:Bitmap;
 		private var count:int = 0;
 		private var atlas:AtlasAnimation;
 		
-		public function BigRyuAnimation(atlasAnimation:AtlasAnimation) 
+		public function BigKenAnimation(atlasAnimation:AtlasAnimation) 
 		{
 			super();
 			atlas = atlasAnimation;
@@ -59,7 +59,6 @@ package SFCGame.animation
 			frameBitmap.x = atlas.atlasAnimationsBitmap[count].x;
 			frameBitmap.y = atlas.atlasAnimationsBitmap[count].y;
 		}
-		
 	}
 
 }

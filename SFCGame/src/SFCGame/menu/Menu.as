@@ -12,7 +12,9 @@ package SFCGame.menu
 	import SFCGame.data.Constants;
 	import SFCGame.data.Assets;
 	import SFCGame.data.Atlas;
+	import SFCGame.data.AtlasAnimation;
 	import SFCGame.animation.BigRyuAnimation;
+	import SFCGame.animation.BigKenAnimation;
 	
 	/**
 	 * ...
@@ -22,7 +24,10 @@ package SFCGame.menu
 	{
 		private var backgroundBitmap:Bitmap;
 		private var logoBitmap:Bitmap;
+		private var bigRyuAtlas:AtlasAnimation;
 		private var bigRyu:BigRyuAnimation;
+		private var bigKenAtlas:AtlasAnimation;
+		private var bigKen:BigKenAnimation;
 		
 		public function Menu() 
 		{
@@ -36,9 +41,6 @@ package SFCGame.menu
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			name = Constants.MENU;
 			
-			//Atlas.loadAtlasBitmapData(Assets.assetsAtlasesContent.MenuAtlas, Assets.assetsAtlasesContent.MenuAtlasXML, Atlas.TYPE_TEXTURES);
-			Atlas.loadAtlasBitmapData(Assets.assetsAtlasesContent.MenuAtlas, Assets.assetsAtlasesContent.MenuAtlasXML, Atlas.TYPE_ANIMATION);
-			
 			createBackground();
 			createLogo();
 			createAnimation();
@@ -49,14 +51,29 @@ package SFCGame.menu
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
 			Mouse.cursor = MouseCursor.AUTO;
 			
-			Atlas.clearAtlases(Atlas.TYPE_TEXTURES);
-			Atlas.clearAtlases(Atlas.TYPE_ANIMATION);
+			if (backgroundBitmap != null){
+				removeChild(backgroundBitmap);
+				backgroundBitmap = null;
+			}
+			if (logoBitmap != null){
+				removeChild(logoBitmap);
+				logoBitmap = null;
+			}
+			if (bigRyu != null){
+				removeChild(bigRyu);
+				bigRyu = null;
+				bigRyuAtlas.clearAtlas();
+			}
+			if (bigKen != null){
+				removeChild(bigKen);
+				bigKen = null;
+				bigKenAtlas.clearAtlas();
+			}
 			
 			while (this.numChildren > 0)
 			{
 				this.removeChildren(0);
-			}
-			
+			}			
 		}
 		
 		private function createBackground():void
@@ -77,10 +94,22 @@ package SFCGame.menu
 		
 		private function createAnimation():void
 		{
-			bigRyu = new BigRyuAnimation();
+			bigKenAtlas = new AtlasAnimation(Assets.assetsAtlasesContent.BigKenAtlas, Assets.assetsAtlasesContent.BigKenAtlasXML);
+			bigKen = new BigKenAnimation(bigKenAtlas);
+			bigKen.scaleX = 0.4;
+			bigKen.scaleY = 0.4;
+			bigKen.x = 35;
+			bigKen.y = 250;
+			addChild(bigKen);
+			
+			bigRyuAtlas = new AtlasAnimation(Assets.assetsAtlasesContent.BigRyuAtlas, Assets.assetsAtlasesContent.BigRyuAtlasXML);
+			bigRyu = new BigRyuAnimation(bigRyuAtlas);
+			bigRyu.scaleX = 0.4;
+			bigRyu.scaleY = 0.4;
+			bigRyu.x = 550;
+			bigRyu.y = 250;
 			addChild(bigRyu);
 		}
-		
 		
 	}
 
