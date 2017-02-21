@@ -42,7 +42,7 @@ package SFCGame.menu
 			name = Constants.MENU;
 			
 			createBackground();
-			createLogo();
+			//createLogo();
 			createAnimation();
 		}
 		
@@ -84,6 +84,7 @@ package SFCGame.menu
 			addChild(backgroundBitmap);
 		}
 		
+		/*
 		private function createLogo():void
 		{
 			logoBitmap = new Bitmap((Assets.assetsTexturesContent.logoBitmap as Bitmap).bitmapData);
@@ -91,6 +92,7 @@ package SFCGame.menu
 			logoBitmap.y = 0;
 			addChild(logoBitmap);
 		}
+		*/
 		
 		private function createAnimation():void
 		{
