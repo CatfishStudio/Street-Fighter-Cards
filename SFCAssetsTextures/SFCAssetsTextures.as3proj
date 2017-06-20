@@ -8,7 +8,7 @@
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
-    <movie version="21" />
+    <movie version="11" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
@@ -75,6 +75,15 @@
     <asset path="assets\menu_border.png" />
     <asset path="assets\button_down.png" />
     <asset path="assets\button_up.png" />
+    <asset path="assets\background_fighters.png" />
+    <asset path="assets\background_menu.png" />
+    <asset path="assets\border.png" />
+    <asset path="assets\button_arrow_left.png" />
+    <asset path="assets\button_arrow_right.png" />
+    <asset path="assets\button_style_1_down.png" />
+    <asset path="assets\button_style_1_up.png" />
+    <asset path="assets\button_style_2_down.png" />
+    <asset path="assets\button_style_2_up.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

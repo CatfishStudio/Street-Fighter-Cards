@@ -8,7 +8,7 @@
     <movie fps="30" />
     <movie width="800" />
     <movie height="600" />
-    <movie version="21" />
+    <movie version="11" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />
@@ -72,6 +72,7 @@
     <asset path="assets\menu_animation.png" />
     <asset path="assets\big_ryu.png" />
     <asset path="assets\big_ken.png" />
+    <asset path="assets\fighters.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>

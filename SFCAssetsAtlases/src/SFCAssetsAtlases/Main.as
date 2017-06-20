@@ -20,6 +20,10 @@ package SFCAssetsAtlases
 		[Embed(source = '../../assets/big_ken.xml', mimeType='application/octet-stream')]
 		public var BigKenAtlasXML:Class;
 		
+		[Embed(source = '../../assets/fighters.png')]
+		public var FightersAtlas:Class;
+		[Embed(source = '../../assets/fighters.xml', mimeType='application/octet-stream')]
+		public var FightersAtlasXML:Class;
 		
 		public function Main() 
 		{

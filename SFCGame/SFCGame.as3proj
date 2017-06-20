@@ -5,10 +5,10 @@
     <movie outputType="Application" />
     <movie input="" />
     <movie path="bin\SFCGame.swf" />
-    <movie fps="30" />
-    <movie width="800" />
-    <movie height="600" />
-    <movie version="21" />
+    <movie fps="60" />
+    <movie width="950" />
+    <movie height="730" />
+    <movie version="11" />
     <movie minorVersion="0" />
     <movie platform="Flash Player" />
     <movie background="#FFFFFF" />

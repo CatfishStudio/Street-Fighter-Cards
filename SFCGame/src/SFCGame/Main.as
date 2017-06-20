@@ -217,7 +217,7 @@ package SFCGame
 			
 			var params: BannersPanelVO = new BannersPanelVO(); // создание класса параметров баннера
 			// изменение стандартных параметров:
-			params.demo = '1'; // 1 - показывает тестовые баннеры
+			params.demo = '1'; // 1 - показывает тестовые баннеры; 0 - показывать настоящий баннер
 			
 			// вертикальный (AD_TYPE_VERTICAL) или горизонтальный (AD_TYPE_HORIZONTAL) блок баннеров
 			params.ad_type = BannersPanelVO.AD_TYPE_VERTICAL; 
