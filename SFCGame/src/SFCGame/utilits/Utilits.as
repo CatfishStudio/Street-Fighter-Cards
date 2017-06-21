@@ -16,7 +16,8 @@ package SFCGame.utilits
 		
 		public static function consoleLog(message:*):void
 		{
-			var url:String = "http://localhost/game/swh/console.php?console=" + String(message);
+			//var url:String = "http://localhost/game/swh/console.php?console=" + String(message);
+			var url:String = "http://localhost:8080/console.html?console=" + String(message);
 			navigateToURL(new URLRequest(url));
 		}
 		

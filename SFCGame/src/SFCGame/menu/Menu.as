@@ -15,6 +15,7 @@ package SFCGame.menu
 	import SFCGame.data.AtlasAnimation;
 	import SFCGame.animation.BigRyuAnimation;
 	import SFCGame.animation.BigKenAnimation;
+	import SFCGame.buttons.ButtonOrange;
 	
 	/**
 	 * ...
@@ -23,7 +24,12 @@ package SFCGame.menu
 	public class Menu extends Sprite 
 	{
 		private var backgroundBitmap:Bitmap;
-		private var logoBitmap:Bitmap;
+		
+		private var continueButton:ButtonOrange;
+		private var newGameButton:ButtonOrange;
+		private var settingsButton:ButtonOrange;
+		private var invateButton:ButtonOrange;
+		
 		private var bigRyuAtlas:AtlasAnimation;
 		private var bigRyu:BigRyuAnimation;
 		private var bigKenAtlas:AtlasAnimation;
@@ -42,7 +48,7 @@ package SFCGame.menu
 			name = Constants.MENU;
 			
 			createBackground();
-			//createLogo();
+			createButtons();
 			createAnimation();
 		}
 		
@@ -55,9 +61,9 @@ package SFCGame.menu
 				removeChild(backgroundBitmap);
 				backgroundBitmap = null;
 			}
-			if (logoBitmap != null){
-				removeChild(logoBitmap);
-				logoBitmap = null;
+			if (newGameButton != null){
+				removeChild(newGameButton);
+				newGameButton = null;
 			}
 			if (bigRyu != null){
 				removeChild(bigRyu);
@@ -84,15 +90,12 @@ package SFCGame.menu
 			addChild(backgroundBitmap);
 		}
 		
-		/*
-		private function createLogo():void
+		private function createButtons():void
 		{
-			logoBitmap = new Bitmap((Assets.assetsTexturesContent.logoBitmap as Bitmap).bitmapData);
-			logoBitmap.x = 150;
-			logoBitmap.y = 0;
-			addChild(logoBitmap);
+			newGameButton = new ButtonOrange(300, 300, "НАЧАТЬ ИГРУ", 16,  Constants.MENU_BUTTON_NEW_GAME);
+			addChild(newGameButton);
+			
 		}
-		*/
 		
 		private function createAnimation():void
 		{
