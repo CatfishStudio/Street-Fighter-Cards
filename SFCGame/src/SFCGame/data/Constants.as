@@ -15,6 +15,11 @@ package SFCGame.data
 		public static const MENU_BUTTON_SETTINGS:String = "menu_button_settings";
 		public static const MENU_BUTTON_INVITE:String = "menu_button_invite";
 		
+		public static const FIGHTERS:String = "fighters";
+		public static const FIGHTERS_BUTTON_ARROW_LEFT:String = "fighters_button arrow_left";
+		public static const FIGHTERS_BUTTON_ARROW_RIGHT:String = "fighters_button arrow_right";
+		public static const FIGHTERS_BUTTON_SETTINGS:String = "menu_button_settings";
+		public static const FIGHTERS_BUTTON_START:String = "menu_button_start";
 	}
 
 }

@@ -1,11 +1,13 @@
 package SFCGame 
 {
+	import SFCGame.fighters.Fighters;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
 	import SFCGame.vkAPI.VKAPI;
 	import SFCGame.data.Data;
 	import SFCGame.data.Constants;
+	import SFCGame.data.Utilits;
 	import SFCGame.events.NavigationEvent;
 	
 	import SFCGame.menu.Menu;
@@ -18,6 +20,7 @@ package SFCGame
 		private var gameMask:Sprite;
 		
 		private var menu:Menu;
+		private var fighters:Fighters;
 		
 		public function Game() 
 		{
@@ -65,14 +68,46 @@ package SFCGame
 		}
 		/* -------------------------------- */
 		
+		/* FIGHERS ------------------------ */
+		private function createFighters():void
+		{
+			if(fighters == null){
+				fighters = new Fighters();
+				addChild(fighters);
+			}
+		}
+		
+		private function removeFighters():void
+		{
+			if(fighters != null){
+				removeChild(fighters);
+				fighters = null;
+			}
+		}
+		/* -------------------------------- */
+		
 		/* Событие: управление окнами игры ===================================================== */
 		private function onChangeScreen(e:NavigationEvent):void 
 		{
 			switch(e.param.id)
 			{
-				case Constants.MENU_BUTTON_CONTINUE: 
+				case Constants.MENU_BUTTON_CONTINUE:
+					Utilits.consoleLog("Button_Continue_Game");
 					break;
-				   
+				
+				case Constants.MENU_BUTTON_NEW_GAME: 
+					removeMenu();
+					createFighters();
+					break;
+				
+				case Constants.MENU_BUTTON_SETTINGS: 
+					Utilits.consoleLog("Button_Settings");
+					break;
+				
+				case Constants.MENU_BUTTON_INVITE: 
+					Utilits.consoleLog("Button_Ivent");
+					break;
+					
 				default:
 					break;
 			}

@@ -48,8 +48,8 @@ package SFCGame.buttons
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			colorBack = 0x000000;
-			colorFront = 0xFFFFFF;
+			colorBack = 0xFFFFFF;
+			colorFront = 0x775118;
 			
 			
 			frameBitmap = new Bitmap((Assets.assetsTexturesContent.buttonStyle1UpBitmap as Bitmap).bitmapData);
@@ -57,9 +57,9 @@ package SFCGame.buttons
 			frameBitmap.y = 0;
 			addChild(frameBitmap);
 			
-			labelBack = new LabelCenter(5, 15, 170, 20, "arial", textSize, colorBack, text, false);
+			labelBack = new LabelCenter(0, 13, 185, 10, "arial", textSize, colorBack, text, false);
 			addChild(labelBack);
-			labelFront = new LabelCenter(6, 17, 170, 20, "arial", textSize, colorFront, text, false);
+			labelFront = new LabelCenter(1, 14, 185, 10, "arial", textSize, colorFront, text, false);
 			addChild(labelFront);
 		}
 		
@@ -91,12 +91,20 @@ package SFCGame.buttons
 		{
 			Mouse.cursor = MouseCursor.AUTO;
 			frameBitmap.bitmapData = (Assets.assetsTexturesContent.buttonStyle1UpBitmap as Bitmap).bitmapData;
+			colorBack = 0xFFFFFF;
+			colorFront = 0x775118;
+			labelBack.textColor = colorBack;
+			labelFront.textColor = colorFront;
 		}
 		
 		private function onMouseOverButton(e:MouseEvent):void 
 		{
 			Mouse.cursor = MouseCursor.BUTTON;
 			frameBitmap.bitmapData = (Assets.assetsTexturesContent.buttonStyle1DownBitmap as Bitmap).bitmapData;
+			colorBack = 0xFFFFFF;
+			colorFront = 0xDB6E00;
+			labelBack.textColor = colorBack;
+			labelFront.textColor = colorFront;
 		}
 		
 		private function onMouseClickButton(e:MouseEvent):void 

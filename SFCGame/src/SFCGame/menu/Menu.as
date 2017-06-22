@@ -94,7 +94,10 @@ package SFCGame.menu
 		{
 			newGameButton = new ButtonOrange(300, 300, "НАЧАТЬ ИГРУ", 16,  Constants.MENU_BUTTON_NEW_GAME);
 			addChild(newGameButton);
-			
+			newGameButton = new ButtonOrange(300, 370, "НАСТРОЙКИ", 16,  Constants.MENU_BUTTON_SETTINGS);
+			addChild(newGameButton);
+			newGameButton = new ButtonOrange(300, 440, "ПРИГЛАСИТЬ", 16,  Constants.MENU_BUTTON_INVITE);
+			addChild(newGameButton);
 		}
 		
 		private function createAnimation():void
