@@ -49,7 +49,7 @@ package SFCGame.buttons
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			colorBack = 0xFFFFFF;
-			colorFront = 0x775118;
+			colorFront = 0x9B372C;
 			
 			
 			frameBitmap = new Bitmap((Assets.assetsTexturesContent.buttonStyle1UpBitmap as Bitmap).bitmapData);
@@ -71,8 +71,10 @@ package SFCGame.buttons
 			removeEventListener(MouseEvent.MOUSE_OVER, onMouseOverButton);
 			removeEventListener(MouseEvent.CLICK, onMouseClickButton);
 			
-			removeChild(frameBitmap);
-			frameBitmap = null;
+			if(frameBitmap != null){
+				removeChild(frameBitmap);
+				frameBitmap = null;
+			}
 			
 			text = null;
 			
@@ -92,7 +94,7 @@ package SFCGame.buttons
 			Mouse.cursor = MouseCursor.AUTO;
 			frameBitmap.bitmapData = (Assets.assetsTexturesContent.buttonStyle1UpBitmap as Bitmap).bitmapData;
 			colorBack = 0xFFFFFF;
-			colorFront = 0x775118;
+			colorFront = 0x9B372C;
 			labelBack.textColor = colorBack;
 			labelFront.textColor = colorFront;
 		}

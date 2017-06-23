@@ -107,7 +107,7 @@ package SFCGame.menu
 			bigKen.scaleX = 0.4;
 			bigKen.scaleY = 0.4;
 			bigKen.x = 35;
-			bigKen.y = 250;
+			bigKen.y = 230;
 			addChild(bigKen);
 			
 			bigRyuAtlas = new AtlasAnimation(Assets.assetsAtlasesContent.BigRyuAtlas, Assets.assetsAtlasesContent.BigRyuAtlasXML);
@@ -115,7 +115,7 @@ package SFCGame.menu
 			bigRyu.scaleX = 0.4;
 			bigRyu.scaleY = 0.4;
 			bigRyu.x = 550;
-			bigRyu.y = 250;
+			bigRyu.y = 230;
 			addChild(bigRyu);
 		}
 		
