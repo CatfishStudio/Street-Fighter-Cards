@@ -5,6 +5,11 @@ package SFCGame.fighters
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import com.gskinner.motion.GTween;
+	import com.gskinner.motion.GTweener;
+	import com.gskinner.motion.GTweenTimeline;
+	import com.gskinner.motion.easing.Sine;
+	
 	import SFCGame.utilits.Utilits;
 	import SFCGame.data.Data;
 	import SFCGame.data.Constants;
@@ -24,7 +29,10 @@ package SFCGame.fighters
 		private var backgroundBitmap:Bitmap;
 		private var borderBitmap:Bitmap;
 		
+		private var cardsMove:Boolean;
 		private var panelCards:Sprite;
+		private var panelCardsTween:GTween;
+		
 		private var arrowLeftButton:ButtonArrow;
 		private var arrowRightButton:ButtonArrow;
 		
@@ -39,6 +47,8 @@ package SFCGame.fighters
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			name = Constants.FIGHTERS;
+			cardsMove = false;
+			
 			createBackground();
 			createArrowButtons();
 			createPanel();
@@ -56,6 +66,12 @@ package SFCGame.fighters
 				}
 				removeChild(panelCards);
 				panelCards = null;
+			}
+			
+			if(panelCardsTween != null) {
+				panelCardsTween.onComplete = null;
+				panelCardsTween.end();
+				panelCardsTween = null;
 			}
 			
 			if (arrowLeftButton != null){
@@ -109,12 +125,34 @@ package SFCGame.fighters
 		
 		private function onArrowLeft(e:MouseEvent):void 
 		{
-			panelCards.x += 250;
+			if (!cardsMove && Data.personaID > 0){
+				Data.personaID--;
+				runTween(250);
+			}
 		}
 		
 		private function onArrowRight(e:MouseEvent):void 
 		{
-			panelCards.x -= 250;
+			if (!cardsMove && Data.personaID < 19){
+				Data.personaID++;
+				runTween(-250);
+			}
+		}
+		
+		private function runTween(posX:int):void
+		{
+			cardsMove = true;
+			panelCardsTween = new GTween(panelCards);
+			panelCardsTween.setValue("x", panelCards.x + posX);
+			panelCardsTween.setValue("y", panelCards.y);
+			panelCardsTween.ease = Sine.easeInOut;
+			panelCardsTween.timeScale = 1.0;
+			panelCardsTween.onComplete = onTweenComplete;
+		}
+		
+		private function onTweenComplete(tween:GTween):void		
+		{
+			cardsMove = false;
 		}
 		
 		private function createPanel():void
