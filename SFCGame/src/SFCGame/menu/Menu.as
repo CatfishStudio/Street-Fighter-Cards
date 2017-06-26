@@ -61,9 +61,21 @@ package SFCGame.menu
 				removeChild(backgroundBitmap);
 				backgroundBitmap = null;
 			}
+			if (continueButton != null){
+				removeChild(continueButton);
+				continueButton = null;
+			}
 			if (newGameButton != null){
 				removeChild(newGameButton);
 				newGameButton = null;
+			}
+			if (settingsButton != null){
+				removeChild(settingsButton);
+				settingsButton = null;
+			}
+			if (invateButton != null){
+				removeChild(invateButton);
+				invateButton = null;
 			}
 			if (bigRyu != null){
 				removeChild(bigRyu);

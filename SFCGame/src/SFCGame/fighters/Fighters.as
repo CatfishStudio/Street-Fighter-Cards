@@ -15,7 +15,7 @@ package SFCGame.fighters
 	import SFCGame.data.Constants;
 	import SFCGame.data.Assets;
 	import SFCGame.data.AtlasAnimation;
-	import SFCGame.buttons.ButtonOrange;
+	import SFCGame.buttons.ButtonComics;
 	import SFCGame.buttons.ButtonArrow;
 	
 	/**
@@ -36,6 +36,10 @@ package SFCGame.fighters
 		private var arrowLeftButton:ButtonArrow;
 		private var arrowRightButton:ButtonArrow;
 		
+		private var backBatton:ButtonComics;
+		private var settingsButton:ButtonComics;
+		private var selectButton:ButtonComics;
+		
 		public function Fighters() 
 		{
 			super();
@@ -50,6 +54,7 @@ package SFCGame.fighters
 			cardsMove = false;
 			
 			createBackground();
+			createButtons();
 			createArrowButtons();
 			createPanel();
 			createBorder();
@@ -67,11 +72,23 @@ package SFCGame.fighters
 				removeChild(panelCards);
 				panelCards = null;
 			}
-			
 			if(panelCardsTween != null) {
 				panelCardsTween.onComplete = null;
 				panelCardsTween.end();
 				panelCardsTween = null;
+			}
+			
+			if (backBatton != null){
+				removeChild(backBatton);
+				backBatton = null;
+			}
+			if (settingsButton != null){
+				removeChild(settingsButton);
+				settingsButton = null;
+			}
+			if (selectButton != null){
+				removeChild(selectButton);
+				selectButton = null;
 			}
 			
 			if (arrowLeftButton != null){
@@ -79,7 +96,6 @@ package SFCGame.fighters
 				removeChild(arrowLeftButton);
 				arrowLeftButton = null;
 			}
-			
 			if (arrowRightButton != null){
 				arrowRightButton.removeEventListener(MouseEvent.CLICK, onArrowRight);
 				removeChild(arrowRightButton);
@@ -110,6 +126,18 @@ package SFCGame.fighters
 			backgroundBitmap.x = 0;
 			backgroundBitmap.y = 0;
 			addChild(backgroundBitmap);
+		}
+		
+		private function createButtons():void
+		{
+			backBatton = new ButtonComics(10, 10, "НАЗАД", 16,  Constants.FIGHTERS_BUTTON_BACK);
+			addChild(backBatton);
+			
+			settingsButton = new ButtonComics(300, 530, "НАСТРОЙКИ", 16,  Constants.FIGHTERS_BUTTON_SETTINGS);
+			addChild(settingsButton);
+			
+			selectButton = new ButtonComics(600, 530, "ВЫБРАТЬ", 16,  Constants.FIGHTERS_BUTTON_SELECT);
+			addChild(selectButton);
 		}
 		
 		private function createArrowButtons():void
@@ -146,7 +174,7 @@ package SFCGame.fighters
 			panelCardsTween.setValue("x", panelCards.x + posX);
 			panelCardsTween.setValue("y", panelCards.y);
 			panelCardsTween.ease = Sine.easeInOut;
-			panelCardsTween.timeScale = 1.0;
+			panelCardsTween.timeScale = 5.0;
 			panelCardsTween.onComplete = onTweenComplete;
 		}
 		
