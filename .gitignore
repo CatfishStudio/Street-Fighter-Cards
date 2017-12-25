@@ -5,3 +5,9 @@ SFCAssetsSounds/bin/SFCAssetsSounds.swf
 SFCAssetsTextures/bin/SFCAssetsTextures.swf
 SFCAssetsData/bin/SFCAssetsData.swf
 SFCServer/server/node_modules
+SFCServer/build/SFCPreloader.swf
+SFCServer/build/SFCGame.swf
+SFCServer/build/SFCAssetsTextures.swf
+SFCServer/build/SFCAssetsSounds.swf
+SFCServer/build/SFCAssetsData.swf
+SFCServer/build/SFCAssetsAtlases.swf

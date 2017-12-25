@@ -50,6 +50,10 @@ package SFCAssetsTextures
 		public var ButtonArrowRightImage:Class;
 		public var buttonArrowRightBitmap:Bitmap = new ButtonArrowRightImage();
 		
+		[Embed(source = '../../assets/tutorial.png')]
+		public var TutorialImage:Class;
+		public var tutorialBitmap:Bitmap = new TutorialImage();
+		
 		public function Main() 
 		{
 			if (stage) init();

@@ -84,6 +84,7 @@
     <asset path="assets\button_style_1_up.png" />
     <asset path="assets\button_style_2_down.png" />
     <asset path="assets\button_style_2_up.png" />
+    <asset path="assets\tutorial.png" />
   </library>
   <!-- Class files to compile (other referenced classes will automatically be included) -->
   <compileTargets>
