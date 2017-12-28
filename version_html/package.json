@@ -1,39 +1,25 @@
 {
-  "name": "my-game",
-  "title": "My Game",
-  "author": "NoName",
+  "name": "mkcards",
+  "title": "MKCards",
+  "author": "CatfishStudio",
   "version": "1.0.0",
-  "description": "This is the game",
+  "description": "This is the game MKCards",
   "contributors": [
     {
-      "name": "",
+      "name": "Evgeniy Somov",
       "email": ""
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://"
+    "url": "https://github.com/CatfishStudio/mkcards"
   },
   "private": true,
   "devDependencies": {
-    "grunt": "0.4.x",
-    "grunt-contrib-clean": "0.6.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-connect": "0.10.0",
-    "grunt-contrib-copy": "0.7.0",
-    "grunt-contrib-uglify": "0.7.0",
-    "grunt-contrib-watch": "0.6.x",
-    "grunt-html-build": "^0.5.3",
-    "grunt-ts": "^6.0.0-beta.3",
-    "grunt-tslint": "^3.0.3",
-    "phaser": "^2.6.2",
-    "tslint": "^3.6.0",
-    "typescript": "2.0.x"
+    "phaser": "^2.6.1",
+    "typescript": "^2.0.x"
   },
   "engines": {
     "node": "5.x.x"
-  },
-  "scripts": {
-    "dev": "concurrently \"tsc -w\" \"live-server --host=localhost --watch=build\\States\\Gameplay.js --open=build\""
   }
 }

@@ -1,10 +1,4 @@
-version_html/*.iml
-version_html/.idea
-version_html/.vscode
-version_html/_build
-version_html/build
 version_html/node_modules
-version_html/.tscache
 version_flash/SFCAssetsAtlases/bin/SFCAssetsAtlases.swf
 version_flash/SFCGame/bin/SFCGame.swf
 version_flash/SFCPreloader/bin/SFCPreloader.swf

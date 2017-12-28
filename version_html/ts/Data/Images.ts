@@ -1,7 +1,9 @@
 class Images {
-    public static ImagePhaser: string = 'phaser';
+    public static PreloaderImage: string = 'preloader.png';
+
+    public static MenuImage: string = 'menu.png';
     
-    public static preloadList: string[] = [
-    	Images.ImagePhaser
-    ];
+    public static preloadList:Array<string> = [
+        Images.MenuImage,
+    ]; 
 }

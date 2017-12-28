@@ -1,7 +1,7 @@
-class Atlases {
-    //public static AtlasName: string = 'atlas_name';
+class Atlases { 
+    /*public static Video1: string = 'video1';*/
     
-    public static preloadList: string[] = [
-        //Atlases.AtlasName
+    public static preloadList:Array<string> = [
+        /*Atlases.Video1,*/
     ];
 }

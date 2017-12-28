@@ -1,29 +1,7 @@
 {
-  "compilerOptions": {
-    "module": "amd",
-    "target": "es5",
-    "noImplicitAny": true,
-    "sourceMap": false,
-    "allowJs": false,
-    "outDir": "build/",
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": false
-  },
-  "files": [
-    "node_modules/phaser/typescript/pixi.d.ts",
-    "node_modules/phaser/typescript/phaser.d.ts",
-    
-    "ts/Data/Atlases.ts",
-    "ts/Data/Constants.ts",
-    "ts/Data/Images.ts",
-    "ts/Data/Sounds.ts",
-    
-    "ts/States/Boot.ts",
-    "ts/States/Gameplay.ts",
-    "ts/States/Preload.ts",
-    "ts/States/Start.ts",
-    
-
-    "ts/app.ts"
-  ]
+       "compilerOptions": {
+               "target": "ES5",
+               "module": "commonjs",
+               "sourceMap": false
+       }
 }
