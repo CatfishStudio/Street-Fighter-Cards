@@ -83,19 +83,6 @@ var Sheet = (function () {
 }());
 var Fabrique;
 (function (Fabrique) {
-    var State = (function (_super) {
-        __extends(State, _super);
-        function State() {
-            _super.apply(this, arguments);
-            this.name = State.Name;
-        }
-        State.Name = 'default';
-        return State;
-    }(Phaser.State));
-    Fabrique.State = State;
-})(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
     var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
@@ -274,58 +261,6 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.Settings = Settings;
 })(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
-    var Title = (function (_super) {
-        __extends(Title, _super);
-        function Title(game, x, y, text) {
-            _super.call(this, game, x, y, Images.Title);
-            this.posX = 0;
-            this.posY = 0;
-            this.text = text;
-            this.posX = ((Constants.GAME_WIDTH / 2) - (this.width / 2));
-            this.posY = Constants.GAME_HEIGHT / 10;
-            if (x >= 0)
-                this.x = this.posX;
-            if (y >= 0)
-                this.y = this.posY;
-            this.updateTransform();
-            this.init();
-        }
-        Title.prototype.init = function () {
-            var size = 12 * this.text.length;
-            var posX = (this.width / 2) - (size / 2);
-            var titleText = this.game.add.text(posX, 20, this.text, { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
-            this.addChild(titleText);
-        };
-        Title.prototype.show = function () {
-            var tween = this.game.add.tween(this);
-            tween.to({ x: this.posX, y: this.posY }, 500, 'Linear');
-            tween.start();
-        };
-        return Title;
-    }(Phaser.Sprite));
-    Fabrique.Title = Title;
-})(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
-    var FighterCard = (function (_super) {
-        __extends(FighterCard, _super);
-        function FighterCard(game, x, y, data) {
-            _super.call(this, game, x, y, Atlases.FightersCards, data.frame);
-            this.dataFighter = data;
-            this.init();
-        }
-        FighterCard.prototype.init = function () {
-            this.damageText = this.game.add.text(5, 240, "5%", { font: "18px Arial", fill: "#FFFFFF", align: "left" });
-            this.addChild(this.damageText);
-            this.defenseText = this.game.add.text(5, 45, "10%", { font: "18px Arial", fill: "#FFFFFF", align: "left" });
-            this.addChild(this.defenseText);
-        };
-        return FighterCard;
-    }(Phaser.Sprite));
-    Fabrique.FighterCard = FighterCard;
-})(Fabrique || (Fabrique = {}));
 var MortalKombatCards;
 (function (MortalKombatCards) {
     var Boot = (function (_super) {
@@ -368,7 +303,7 @@ var MortalKombatCards;
         };
         Boot.Name = 'booter';
         return Boot;
-    }(Fabrique.State));
+    }(Phaser.State));
     MortalKombatCards.Boot = Boot;
 })(MortalKombatCards || (MortalKombatCards = {}));
 var MortalKombatCards;
@@ -436,7 +371,7 @@ var MortalKombatCards;
     }(Phaser.State));
     MortalKombatCards.Menu = Menu;
 })(MortalKombatCards || (MortalKombatCards = {}));
-/// <reference path="..\node_modules\phaser\typescript\phaser.d.ts" />
+/// <reference path="..\node_modules\phaser-ce\typescript\phaser.d.ts" />
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
 /// <reference path="Data\Images.ts" />
@@ -451,152 +386,4 @@ var MortalKombatCards;
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
-/// <reference path="States\Store.ts" />
 /// <reference path="app.ts" /> 
-var Fabrique;
-(function (Fabrique) {
-    var InfoBox = (function (_super) {
-        __extends(InfoBox, _super);
-        function InfoBox(game, parent, data) {
-            _super.call(this, game, parent);
-            this.dataFighter = data;
-            this.init();
-        }
-        InfoBox.prototype.init = function () {
-            var startX = (Constants.GAME_WIDTH / 2) - 225;
-            var startY = (Constants.GAME_HEIGHT / 2) + 100;
-            /* bacground and border */
-            var graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphics.beginFill(0x000000, 0.8);
-            graphics.lineStyle(1, 0x000000, 1);
-            graphics.drawRect(startX, startY, 450, 60);
-            graphics.endFill();
-            graphics.lineStyle(1, 0x777777, 1);
-            graphics.moveTo(startX - 2, startY - 2);
-            graphics.lineTo(startX - 2 + 150, startY - 2);
-            graphics.moveTo(startX - 2, startY - 2);
-            graphics.lineTo(startX - 2, startY + 25 - 2);
-            graphics.moveTo(startX + 2, startY + 2);
-            graphics.lineTo(startX + 150 + 2, startY + 2);
-            graphics.moveTo(startX + 2, startY + 2);
-            graphics.lineTo(startX + 2, startY + 25 + 2);
-            graphics.moveTo(startX + 450 - 2, startY + 60 - 2);
-            graphics.lineTo(startX + 300 - 2, startY + 60 - 2);
-            graphics.moveTo(startX + 450 - 2, startY + 60 - 2);
-            graphics.lineTo(startX + 450 - 2, startY + 35 - 2);
-            graphics.moveTo(startX + 450 + 2, startY + 60 + 2);
-            graphics.lineTo(startX + 300 + 2, startY + 60 + 2);
-            graphics.moveTo(startX + 450 + 2, startY + 60 + 2);
-            graphics.lineTo(startX + 450 + 2, startY + 35 + 2);
-            graphics.endFill();
-            graphics.inputEnabled = true;
-            this.addChild(graphics);
-        };
-        return InfoBox;
-    }(Phaser.Group));
-    Fabrique.InfoBox = InfoBox;
-})(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
-    var Slides = (function (_super) {
-        __extends(Slides, _super);
-        function Slides(game, parent) {
-            _super.call(this, game, parent);
-            this.fighterIndex = 0;
-            this.fighters = [];
-            this.data = [
-                [0, 'Cyrex', 'cyrex.png'],
-                [1, 'Scorpion', 'scorpion.png'],
-                [2, 'Sub-Zero', 'sub-zero.png']
-            ];
-            this.visible = false;
-            this.canClick = false;
-            this.init();
-        }
-        Slides.prototype.init = function () {
-            this.fighterIndex = 1;
-            for (var i = 0; i < this.data.length; i++) {
-                var fighter = {};
-                fighter.id = this.data[i][0];
-                fighter.name = this.data[i][1];
-                fighter.frame = this.data[i][2];
-                this.fighters.push(fighter);
-            }
-            this.createSlides();
-            this.createInfoBox();
-        };
-        Slides.prototype.createSlides = function () {
-            this.slideGroup = new Phaser.Group(this.game, this);
-            var posX = 25;
-            var posY = 150;
-            for (var i = 0; i < this.fighters.length; i++) {
-                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, this.fighters[i]);
-                this.slideGroup.addChild(fCard);
-            }
-            this.buttonLeft = new Phaser.Button(this.game, 240, 250, Images.ButtonLeft, this.onButtonClick, this);
-            this.buttonLeft.name = 'button_left';
-            this.addChild(this.buttonLeft);
-            this.buttonRight = new Phaser.Button(this.game, 540, 250, Images.ButtonRight, this.onButtonClick, this);
-            this.buttonRight.name = 'button_right';
-            this.addChild(this.buttonRight);
-        };
-        Slides.prototype.createInfoBox = function () {
-            this.infoBox = new Fabrique.InfoBox(this.game, this, this.fighters[this.fighterIndex]);
-        };
-        Slides.prototype.show = function () {
-            this.alpha = 0;
-            this.visible = true;
-            this.canClick = true;
-            var tween = this.game.add.tween(this);
-            tween.to({ alpha: 1 }, 500, 'Linear');
-            tween.start();
-        };
-        Slides.prototype.onButtonClick = function (event) {
-            switch (event.name) {
-                case 'button_left':
-                    {
-                        if (this.canClick) {
-                            this.canClick = false;
-                            this.fighterIndex--;
-                            var tween = this.game.add.tween(this.slideGroup);
-                            tween.to({ x: this.slideGroup.x + 300 }, 500, 'Linear');
-                            tween.onComplete.add(this.onTweenComplete, this);
-                            tween.start();
-                        }
-                        break;
-                    }
-                case 'button_right':
-                    {
-                        if (this.canClick) {
-                            this.canClick = false;
-                            this.fighterIndex++;
-                            var tween = this.game.add.tween(this.slideGroup);
-                            tween.to({ x: this.slideGroup.x - 300 }, 500, 'Linear');
-                            tween.onComplete.add(this.onTweenComplete, this);
-                            tween.start();
-                        }
-                        break;
-                    }
-                default:
-                    break;
-            }
-        };
-        Slides.prototype.onTweenComplete = function (event) {
-            if (this.fighterIndex === 0) {
-                this.buttonLeft.visible = false;
-                this.buttonRight.visible = true;
-            }
-            else if (this.fighterIndex === this.fighters.length - 1) {
-                this.buttonLeft.visible = true;
-                this.buttonRight.visible = false;
-            }
-            else {
-                this.buttonLeft.visible = true;
-                this.buttonRight.visible = true;
-            }
-            this.canClick = true;
-        };
-        return Slides;
-    }(Phaser.Group));
-    Fabrique.Slides = Slides;
-})(Fabrique || (Fabrique = {}));
