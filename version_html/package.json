@@ -1,22 +1,22 @@
 {
-  "name": "mkcards",
-  "title": "MKCards",
+  "name": "sfcards",
+  "title": "SFCards",
   "author": "CatfishStudio",
   "version": "1.0.0",
-  "description": "This is the game MKCards",
+  "description": "This is the game Street Fighter Cards",
   "contributors": [
     {
       "name": "Evgeniy Somov",
-      "email": ""
+      "email": "somov@i.ua"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/CatfishStudio/mkcards"
+    "url": "https://github.com/CatfishStudio/Street-Fighter-Cards"
   },
   "private": true,
   "devDependencies": {
-    "phaser": "^2.6.1",
+	"phaser-ce": "^2.9.4",
     "typescript": "^2.0.x"
   },
   "engines": {

@@ -10,7 +10,8 @@ module MortalKombatCards{
                                 renderer: Phaser.AUTO,          //We prefer WebGL over canvas rendering, but we fall back to canvas because we like to support IE
                                 parent: 'content',              //The div in the html we want to put the game in, this helps with styling
                                 transparent: true,              //The game should be transparent
-                                antialias: true                 //ofcourse this is true
+                                antialias: true,                //ofcourse this is true
+                                forceSetTimeOut: false
                         });
                         
                         this.state.add(Boot.Name, Boot, false);

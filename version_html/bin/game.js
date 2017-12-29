@@ -15,7 +15,8 @@ var MortalKombatCards;
                 renderer: Phaser.AUTO,
                 parent: 'content',
                 transparent: true,
-                antialias: true //ofcourse this is true
+                antialias: true,
+                forceSetTimeOut: false
             });
             this.state.add(MortalKombatCards.Boot.Name, MortalKombatCards.Boot, false);
             this.state.add(MortalKombatCards.Preloader.Name, MortalKombatCards.Preloader, false);
