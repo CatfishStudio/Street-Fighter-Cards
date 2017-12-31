@@ -1,19 +1,14 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var MortalKombatCards;
 (function (MortalKombatCards) {
-    var Game = /** @class */ (function (_super) {
+    var Game = (function (_super) {
         __extends(Game, _super);
         function Game() {
-            var _this = _super.call(this, {
+            _super.call(this, {
                 enableDebug: false,
                 width: Constants.GAME_WIDTH,
                 height: Constants.GAME_HEIGHT,
@@ -22,11 +17,10 @@ var MortalKombatCards;
                 transparent: true,
                 antialias: true,
                 forceSetTimeOut: false
-            }) || this;
-            _this.state.add(MortalKombatCards.Boot.Name, MortalKombatCards.Boot, false);
-            _this.state.add(MortalKombatCards.Preloader.Name, MortalKombatCards.Preloader, false);
-            _this.state.add(MortalKombatCards.Menu.Name, MortalKombatCards.Menu, false);
-            return _this;
+            });
+            this.state.add(MortalKombatCards.Boot.Name, MortalKombatCards.Boot, false);
+            this.state.add(MortalKombatCards.Preloader.Name, MortalKombatCards.Preloader, false);
+            this.state.add(MortalKombatCards.Menu.Name, MortalKombatCards.Menu, false);
         }
         Game.getInstance = function () {
             if (MortalKombatCards.Game.instance === null) {
@@ -42,14 +36,14 @@ var MortalKombatCards;
     }(Phaser.Game));
     MortalKombatCards.Game = Game;
 })(MortalKombatCards || (MortalKombatCards = {}));
-var Constants = /** @class */ (function () {
+var Constants = (function () {
     function Constants() {
     }
     Constants.GAME_WIDTH = 800;
     Constants.GAME_HEIGHT = 600;
     return Constants;
 }());
-var Config = /** @class */ (function () {
+var Config = (function () {
     function Config() {
     }
     Config.settintSound = true;
@@ -57,7 +51,7 @@ var Config = /** @class */ (function () {
     Config.settintTutorial = true;
     return Config;
 }());
-var Images = /** @class */ (function () {
+var Images = (function () {
     function Images() {
     }
     Images.PreloaderImage = 'preloader.png';
@@ -67,35 +61,30 @@ var Images = /** @class */ (function () {
     ];
     return Images;
 }());
-var Atlases = /** @class */ (function () {
+var Atlases = (function () {
     function Atlases() {
     }
     /*public static Video1: string = 'video1';*/
     Atlases.preloadList = [];
     return Atlases;
 }());
-var Sheet = /** @class */ (function () {
+var Sheet = (function () {
     function Sheet() {
     }
-    /*public static ButtonStartNewGame: string = 'button_start_new_game_sheet.png';*/
-    Sheet.ButtonSettings = 'button_settings_sheet.png';
-    Sheet.ButtonInvite = 'button_invite_sheet.png';
-    Sheet.ButtonClose = 'button_close_sheet.png';
-    Sheet.ButtonSelectFighter = 'button_select_fighter_sheet.png';
-    Sheet.ButtonBackMenuMini = 'button_back_menu_mini_sheet.png';
-    Sheet.ButtonHelpMini = 'button_help_mini_sheet.png';
-    Sheet.preloadList = [];
+    Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
+    Sheet.preloadList = [
+        Sheet.ButtonStyle1,
+    ];
     return Sheet;
 }());
 var Fabrique;
 (function (Fabrique) {
-    var Tutorial = /** @class */ (function (_super) {
+    var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
-            var _this = _super.call(this, game, 0, 0, Atlases.VideoHelp, 0) || this;
-            _this.text = text;
-            _this.init();
-            return _this;
+            _super.call(this, game, 0, 0, Atlases.VideoHelp, 0);
+            this.text = text;
+            this.init();
         }
         Tutorial.prototype.init = function () {
             var graphics = this.game.add.graphics(0, 0);
@@ -131,12 +120,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Settings = /** @class */ (function (_super) {
+    var Settings = (function (_super) {
         __extends(Settings, _super);
         function Settings(game, parent) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.init();
-            return _this;
+            _super.call(this, game, parent);
+            this.init();
         }
         Settings.prototype.init = function () {
             this.event = new Phaser.Signal();
@@ -271,12 +259,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var MortalKombatCards;
 (function (MortalKombatCards) {
-    var Boot = /** @class */ (function (_super) {
+    var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
-            var _this = _super.call(this) || this;
-            _this.name = Boot.Name;
-            return _this;
+            _super.call(this);
+            this.name = Boot.Name;
         }
         /*
         * Загружаем ассеты необходимые для прелоадера
@@ -302,7 +289,7 @@ var MortalKombatCards;
                         _this.game.load.atlas(assetName, 'assets/atlas/' + assetName + '.png', 'assets/atlas/' + assetName + '.json');
                     });
                     Sheet.preloadList.forEach(function (assetName) {
-                        _this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 255, 50);
+                        _this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 186, 46);
                     });
                 }
             });
@@ -317,13 +304,12 @@ var MortalKombatCards;
 })(MortalKombatCards || (MortalKombatCards = {}));
 var MortalKombatCards;
 (function (MortalKombatCards) {
-    var Preloader = /** @class */ (function (_super) {
+    var Preloader = (function (_super) {
         __extends(Preloader, _super);
         function Preloader() {
-            var _this = _super.call(this) || this;
-            _this.name = Preloader.Name;
-            _this.loadPercent = 0;
-            return _this;
+            _super.call(this);
+            this.name = Preloader.Name;
+            this.loadPercent = 0;
         }
         Preloader.prototype.init = function (config) {
             this.config = config;
@@ -360,22 +346,58 @@ var MortalKombatCards;
 })(MortalKombatCards || (MortalKombatCards = {}));
 var MortalKombatCards;
 (function (MortalKombatCards) {
-    var Menu = /** @class */ (function (_super) {
+    var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
-            var _this = _super.call(this) || this;
-            _this.name = Menu.Name;
-            return _this;
+            _super.call(this);
+            this.name = Menu.Name;
         }
         Menu.prototype.create = function () {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage);
             this.groupMenu.addChild(this.menuSprite);
-            //this.createButtons();
+            this.createButtons();
         };
         Menu.prototype.shutdown = function () {
             this.groupMenu.removeAll();
             this.game.stage.removeChildren();
+        };
+        Menu.prototype.createButtons = function () {
+            this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
+            this.groupButtons.x = 300;
+            this.groupButtons.y = 300;
+            var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
+            buttonStart.name = 'start';
+            this.groupButtons.addChild(buttonStart);
+        };
+        Menu.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case 'start':
+                    {
+                        //this.game.state.start(Store.Name, true, false);
+                        break;
+                    }
+                case 'continue':
+                    {
+                        break;
+                    }
+                case 'settings':
+                    {
+                        //this.settingsCreate();
+                        break;
+                    }
+                case 'setting_close':
+                    {
+                        //this.settingsClose();
+                        break;
+                    }
+                case 'invite':
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
         };
         Menu.Name = "menu";
         return Menu;
