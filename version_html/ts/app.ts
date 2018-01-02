@@ -1,4 +1,4 @@
-module MortalKombatCards{
+module StreetFighterCards{
         export class Game extends Phaser.Game {
                 private static instance: Game = null;
                 
@@ -20,7 +20,7 @@ module MortalKombatCards{
                 }
                 
                 public static getInstance(): Game {
-                        if(MortalKombatCards.Game.instance === null) {
+                        if(StreetFighterCards.Game.instance === null) {
                                 Game.instance = new Game();
                         }
                         return Game.instance;

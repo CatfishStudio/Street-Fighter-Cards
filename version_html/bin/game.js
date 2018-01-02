@@ -1,14 +1,19 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var MortalKombatCards;
-(function (MortalKombatCards) {
-    var Game = (function (_super) {
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var StreetFighterCards;
+(function (StreetFighterCards) {
+    var Game = /** @class */ (function (_super) {
         __extends(Game, _super);
         function Game() {
-            _super.call(this, {
+            var _this = _super.call(this, {
                 enableDebug: false,
                 width: Constants.GAME_WIDTH,
                 height: Constants.GAME_HEIGHT,
@@ -17,33 +22,34 @@ var MortalKombatCards;
                 transparent: true,
                 antialias: true,
                 forceSetTimeOut: false
-            });
-            this.state.add(MortalKombatCards.Boot.Name, MortalKombatCards.Boot, false);
-            this.state.add(MortalKombatCards.Preloader.Name, MortalKombatCards.Preloader, false);
-            this.state.add(MortalKombatCards.Menu.Name, MortalKombatCards.Menu, false);
+            }) || this;
+            _this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
+            _this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
+            _this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
+            return _this;
         }
         Game.getInstance = function () {
-            if (MortalKombatCards.Game.instance === null) {
+            if (StreetFighterCards.Game.instance === null) {
                 Game.instance = new Game();
             }
             return Game.instance;
         };
         Game.prototype.start = function () {
-            this.state.start(MortalKombatCards.Boot.Name);
+            this.state.start(StreetFighterCards.Boot.Name);
         };
         Game.instance = null;
         return Game;
     }(Phaser.Game));
-    MortalKombatCards.Game = Game;
-})(MortalKombatCards || (MortalKombatCards = {}));
-var Constants = (function () {
+    StreetFighterCards.Game = Game;
+})(StreetFighterCards || (StreetFighterCards = {}));
+var Constants = /** @class */ (function () {
     function Constants() {
     }
     Constants.GAME_WIDTH = 800;
     Constants.GAME_HEIGHT = 600;
     return Constants;
 }());
-var Config = (function () {
+var Config = /** @class */ (function () {
     function Config() {
     }
     Config.settintSound = true;
@@ -51,7 +57,7 @@ var Config = (function () {
     Config.settintTutorial = true;
     return Config;
 }());
-var Images = (function () {
+var Images = /** @class */ (function () {
     function Images() {
     }
     Images.PreloaderImage = 'preloader.png';
@@ -61,14 +67,14 @@ var Images = (function () {
     ];
     return Images;
 }());
-var Atlases = (function () {
+var Atlases = /** @class */ (function () {
     function Atlases() {
     }
     /*public static Video1: string = 'video1';*/
     Atlases.preloadList = [];
     return Atlases;
 }());
-var Sheet = (function () {
+var Sheet = /** @class */ (function () {
     function Sheet() {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
@@ -79,12 +85,13 @@ var Sheet = (function () {
 }());
 var Fabrique;
 (function (Fabrique) {
-    var Tutorial = (function (_super) {
+    var Tutorial = /** @class */ (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
-            _super.call(this, game, 0, 0, Atlases.VideoHelp, 0);
-            this.text = text;
-            this.init();
+            var _this = _super.call(this, game, 0, 0, Atlases.VideoHelp, 0) || this;
+            _this.text = text;
+            _this.init();
+            return _this;
         }
         Tutorial.prototype.init = function () {
             var graphics = this.game.add.graphics(0, 0);
@@ -120,11 +127,12 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Settings = (function (_super) {
+    var Settings = /** @class */ (function (_super) {
         __extends(Settings, _super);
         function Settings(game, parent) {
-            _super.call(this, game, parent);
-            this.init();
+            var _this = _super.call(this, game, parent) || this;
+            _this.init();
+            return _this;
         }
         Settings.prototype.init = function () {
             this.event = new Phaser.Signal();
@@ -257,13 +265,14 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.Settings = Settings;
 })(Fabrique || (Fabrique = {}));
-var MortalKombatCards;
-(function (MortalKombatCards) {
-    var Boot = (function (_super) {
+var StreetFighterCards;
+(function (StreetFighterCards) {
+    var Boot = /** @class */ (function (_super) {
         __extends(Boot, _super);
         function Boot() {
-            _super.call(this);
-            this.name = Boot.Name;
+            var _this = _super.call(this) || this;
+            _this.name = Boot.Name;
+            return _this;
         }
         /*
         * Загружаем ассеты необходимые для прелоадера
@@ -279,8 +288,8 @@ var MortalKombatCards;
         };
         Boot.prototype.create = function () {
             var _this = this;
-            this.game.state.start(MortalKombatCards.Preloader.Name, true, false, {
-                nextStage: MortalKombatCards.Menu.Name,
+            this.game.state.start(StreetFighterCards.Preloader.Name, true, false, {
+                nextStage: StreetFighterCards.Menu.Name,
                 preloadHandler: function () {
                     Images.preloadList.forEach(function (assetName) {
                         _this.game.load.image(assetName, 'assets/images/' + assetName);
@@ -300,16 +309,17 @@ var MortalKombatCards;
         Boot.Name = 'booter';
         return Boot;
     }(Phaser.State));
-    MortalKombatCards.Boot = Boot;
-})(MortalKombatCards || (MortalKombatCards = {}));
-var MortalKombatCards;
-(function (MortalKombatCards) {
-    var Preloader = (function (_super) {
+    StreetFighterCards.Boot = Boot;
+})(StreetFighterCards || (StreetFighterCards = {}));
+var StreetFighterCards;
+(function (StreetFighterCards) {
+    var Preloader = /** @class */ (function (_super) {
         __extends(Preloader, _super);
         function Preloader() {
-            _super.call(this);
-            this.name = Preloader.Name;
-            this.loadPercent = 0;
+            var _this = _super.call(this) || this;
+            _this.name = Preloader.Name;
+            _this.loadPercent = 0;
+            return _this;
         }
         Preloader.prototype.init = function (config) {
             this.config = config;
@@ -342,15 +352,16 @@ var MortalKombatCards;
         Preloader.Name = "preloader";
         return Preloader;
     }(Phaser.State));
-    MortalKombatCards.Preloader = Preloader;
-})(MortalKombatCards || (MortalKombatCards = {}));
-var MortalKombatCards;
-(function (MortalKombatCards) {
-    var Menu = (function (_super) {
+    StreetFighterCards.Preloader = Preloader;
+})(StreetFighterCards || (StreetFighterCards = {}));
+var StreetFighterCards;
+(function (StreetFighterCards) {
+    var Menu = /** @class */ (function (_super) {
         __extends(Menu, _super);
         function Menu() {
-            _super.call(this);
-            this.name = Menu.Name;
+            var _this = _super.call(this) || this;
+            _this.name = Menu.Name;
+            return _this;
         }
         Menu.prototype.create = function () {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
@@ -402,8 +413,8 @@ var MortalKombatCards;
         Menu.Name = "menu";
         return Menu;
     }(Phaser.State));
-    MortalKombatCards.Menu = Menu;
-})(MortalKombatCards || (MortalKombatCards = {}));
+    StreetFighterCards.Menu = Menu;
+})(StreetFighterCards || (StreetFighterCards = {}));
 /// <reference path="..\node_modules\phaser-ce\typescript\phaser.d.ts" />
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
@@ -411,11 +422,8 @@ var MortalKombatCards;
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
 /// <reference path="Data\Game.ts" />
-/// <reference path="Fabrique\State.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
-/// <reference path="Fabrique\Objects\Title.ts" />
-/// <reference path="Fabrique\Objects\FighterCard.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />

@@ -1,4 +1,4 @@
-module MortalKombatCards {
+module StreetFighterCards {
     export class Boot extends Phaser.State {
         public static Name: string = 'booter';
         public name: string = Boot.Name;

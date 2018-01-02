@@ -1,4 +1,4 @@
-module MortalKombatCards {
+module StreetFighterCards {
     export interface IPreloaderConfig {
         nextStage: string;
         preloadHandler: () => void;

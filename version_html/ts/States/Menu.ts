@@ -1,4 +1,4 @@
-module MortalKombatCards {
+module StreetFighterCards {
 
     import Tutorial = Fabrique.Tutorial;
     import Settings = Fabrique.Settings;
