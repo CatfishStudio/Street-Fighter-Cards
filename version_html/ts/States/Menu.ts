@@ -2,6 +2,7 @@ module StreetFighterCards {
 
     import Tutorial = Fabrique.Tutorial;
     import Settings = Fabrique.Settings;
+    import ButtonOrange = Fabrique.ButtonOrange;
 
     export class Menu extends Phaser.State{
         public static Name: string = "menu";
@@ -24,7 +25,10 @@ module StreetFighterCards {
         }
 
         public shutdown(){
+            this.groupMenu.removeChildren();
             this.groupMenu.removeAll();
+            this.groupButtons.removeChildren();
+            this.groupButtons.removeAll();
             this.game.stage.removeChildren();
         }
 
@@ -34,10 +38,8 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            let buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
-            buttonStart.name = 'start';
-            this.groupButtons.addChild(buttonStart);
-
+            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 0, 0);
+            buttonStart.event.add(this.onButtonClick.bind(this));
         }
 
         private onButtonClick(event) {
@@ -45,6 +47,7 @@ module StreetFighterCards {
                 case 'start':
                     {
                         //this.game.state.start(Store.Name, true, false);
+                        console.log("START");
                         break;
                     }
                 case 'continue':

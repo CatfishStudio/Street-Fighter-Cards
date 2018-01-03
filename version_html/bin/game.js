@@ -1,19 +1,14 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Game = /** @class */ (function (_super) {
+    var Game = (function (_super) {
         __extends(Game, _super);
         function Game() {
-            var _this = _super.call(this, {
+            _super.call(this, {
                 enableDebug: false,
                 width: Constants.GAME_WIDTH,
                 height: Constants.GAME_HEIGHT,
@@ -22,11 +17,10 @@ var StreetFighterCards;
                 transparent: true,
                 antialias: true,
                 forceSetTimeOut: false
-            }) || this;
-            _this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
-            _this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
-            _this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
-            return _this;
+            });
+            this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
+            this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
+            this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
         }
         Game.getInstance = function () {
             if (StreetFighterCards.Game.instance === null) {
@@ -42,14 +36,14 @@ var StreetFighterCards;
     }(Phaser.Game));
     StreetFighterCards.Game = Game;
 })(StreetFighterCards || (StreetFighterCards = {}));
-var Constants = /** @class */ (function () {
+var Constants = (function () {
     function Constants() {
     }
     Constants.GAME_WIDTH = 800;
     Constants.GAME_HEIGHT = 600;
     return Constants;
 }());
-var Config = /** @class */ (function () {
+var Config = (function () {
     function Config() {
     }
     Config.settintSound = true;
@@ -57,7 +51,7 @@ var Config = /** @class */ (function () {
     Config.settintTutorial = true;
     return Config;
 }());
-var Images = /** @class */ (function () {
+var Images = (function () {
     function Images() {
     }
     Images.PreloaderImage = 'preloader.png';
@@ -67,14 +61,14 @@ var Images = /** @class */ (function () {
     ];
     return Images;
 }());
-var Atlases = /** @class */ (function () {
+var Atlases = (function () {
     function Atlases() {
     }
     /*public static Video1: string = 'video1';*/
     Atlases.preloadList = [];
     return Atlases;
 }());
-var Sheet = /** @class */ (function () {
+var Sheet = (function () {
     function Sheet() {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
@@ -85,13 +79,12 @@ var Sheet = /** @class */ (function () {
 }());
 var Fabrique;
 (function (Fabrique) {
-    var Tutorial = /** @class */ (function (_super) {
+    var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
-            var _this = _super.call(this, game, 0, 0, Atlases.VideoHelp, 0) || this;
-            _this.text = text;
-            _this.init();
-            return _this;
+            _super.call(this, game, 0, 0, Atlases.VideoHelp, 0);
+            this.text = text;
+            this.init();
         }
         Tutorial.prototype.init = function () {
             var graphics = this.game.add.graphics(0, 0);
@@ -127,12 +120,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Settings = /** @class */ (function (_super) {
+    var Settings = (function (_super) {
         __extends(Settings, _super);
         function Settings(game, parent) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.init();
-            return _this;
+            _super.call(this, game, parent);
+            this.init();
         }
         Settings.prototype.init = function () {
             this.event = new Phaser.Signal();
@@ -265,14 +257,36 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.Settings = Settings;
 })(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var ButtonOrange = (function (_super) {
+        __extends(ButtonOrange, _super);
+        function ButtonOrange(game, parent, name, x, y) {
+            _super.call(this, game, parent);
+            this.init(name, x, y);
+        }
+        ButtonOrange.prototype.init = function (name, x, y) {
+            this.event = new Phaser.Signal();
+            var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
+            buttonStart.name = 'start';
+            this.addChild(buttonStart);
+            var text = new Phaser.Text(this.game, 10, 10, "НАЧАТЬ ИГРУ", { font: "24px Georgia", fill: "#000000" });
+            this.addChild(text);
+        };
+        ButtonOrange.prototype.onButtonClick = function (event) {
+            this.event.dispatch(event);
+        };
+        return ButtonOrange;
+    }(Phaser.Group));
+    Fabrique.ButtonOrange = ButtonOrange;
+})(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Boot = /** @class */ (function (_super) {
+    var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
-            var _this = _super.call(this) || this;
-            _this.name = Boot.Name;
-            return _this;
+            _super.call(this);
+            this.name = Boot.Name;
         }
         /*
         * Загружаем ассеты необходимые для прелоадера
@@ -313,13 +327,12 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Preloader = /** @class */ (function (_super) {
+    var Preloader = (function (_super) {
         __extends(Preloader, _super);
         function Preloader() {
-            var _this = _super.call(this) || this;
-            _this.name = Preloader.Name;
-            _this.loadPercent = 0;
-            return _this;
+            _super.call(this);
+            this.name = Preloader.Name;
+            this.loadPercent = 0;
         }
         Preloader.prototype.init = function (config) {
             this.config = config;
@@ -356,12 +369,12 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Menu = /** @class */ (function (_super) {
+    var ButtonOrange = Fabrique.ButtonOrange;
+    var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
-            var _this = _super.call(this) || this;
-            _this.name = Menu.Name;
-            return _this;
+            _super.call(this);
+            this.name = Menu.Name;
         }
         Menu.prototype.create = function () {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
@@ -370,22 +383,25 @@ var StreetFighterCards;
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
+            this.groupMenu.removeChildren();
             this.groupMenu.removeAll();
+            this.groupButtons.removeChildren();
+            this.groupButtons.removeAll();
             this.game.stage.removeChildren();
         };
         Menu.prototype.createButtons = function () {
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
-            buttonStart.name = 'start';
-            this.groupButtons.addChild(buttonStart);
+            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 0, 0);
+            buttonStart.event.add(this.onButtonClick.bind(this));
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case 'start':
                     {
                         //this.game.state.start(Store.Name, true, false);
+                        console.log("START");
                         break;
                     }
                 case 'continue':
@@ -424,6 +440,7 @@ var StreetFighterCards;
 /// <reference path="Data\Game.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
+/// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
