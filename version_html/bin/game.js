@@ -261,17 +261,21 @@ var Fabrique;
 (function (Fabrique) {
     var ButtonOrange = (function (_super) {
         __extends(ButtonOrange, _super);
-        function ButtonOrange(game, parent, name, x, y) {
+        function ButtonOrange(game, parent, text, name, x, y) {
             _super.call(this, game, parent);
-            this.init(name, x, y);
+            this.init(text, name, x, y);
         }
-        ButtonOrange.prototype.init = function (name, x, y) {
+        ButtonOrange.prototype.init = function (text, name, x, y) {
+            this.x = x;
+            this.y = y;
             this.event = new Phaser.Signal();
             var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
-            buttonStart.name = 'start';
+            buttonStart.name = name;
             this.addChild(buttonStart);
-            var text = new Phaser.Text(this.game, 10, 10, "НАЧАТЬ ИГРУ", { font: "24px Georgia", fill: "#000000" });
-            this.addChild(text);
+            var textBack = new Phaser.Text(this.game, 19, 14, text, { font: "16px Arial Black", fill: "#FFFFFF" });
+            this.addChild(textBack);
+            var textFront = new Phaser.Text(this.game, 20, 15, text, { font: "16px Arial Black", fill: "#9B372C" });
+            this.addChild(textFront);
         };
         ButtonOrange.prototype.onButtonClick = function (event) {
             this.event.dispatch(event);
@@ -393,8 +397,12 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 0, 0);
+            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'НАЧАТЬ ИГРУ', 'start', 0, 0);
             buttonStart.event.add(this.onButtonClick.bind(this));
+            var buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'НАСТРОЙКИ', 'settings', 0, 50);
+            buttonSettings.event.add(this.onButtonClick.bind(this));
+            var buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'ПРИГЛАСИТЬ', 'invate', 0, 100);
+            buttonSettings.event.add(this.onButtonClick.bind(this));
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {

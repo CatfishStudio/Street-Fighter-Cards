@@ -38,8 +38,14 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 0, 0);
+            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'НАЧАТЬ ИГРУ', 'start', 0, 0);
             buttonStart.event.add(this.onButtonClick.bind(this));
+
+            let buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'НАСТРОЙКИ', 'settings', 0, 50);
+            buttonSettings.event.add(this.onButtonClick.bind(this));
+
+            let buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'ПРИГЛАСИТЬ', 'invate', 0, 100);
+            buttonSettings.event.add(this.onButtonClick.bind(this));
         }
 
         private onButtonClick(event) {
