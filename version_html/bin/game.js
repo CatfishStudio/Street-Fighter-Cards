@@ -64,8 +64,10 @@ var Images = (function () {
 var Atlases = (function () {
     function Atlases() {
     }
-    /*public static Video1: string = 'video1';*/
-    Atlases.preloadList = [];
+    Atlases.BigKen = 'BigKen';
+    Atlases.preloadList = [
+        Atlases.BigKen,
+    ];
     return Atlases;
 }());
 var Sheet = (function () {
@@ -284,6 +286,25 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.ButtonOrange = ButtonOrange;
 })(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var AnimationBigKen = (function (_super) {
+        __extends(AnimationBigKen, _super);
+        function AnimationBigKen(game) {
+            _super.call(this, game, 0, 0, Atlases.BigKen, 0);
+            this.init();
+        }
+        AnimationBigKen.prototype.init = function () {
+            var anim = this.animations.add(Atlases.BigKen);
+            anim.onComplete.add(this.onCompleteVideo, this);
+            anim.play(10, true, false);
+        };
+        AnimationBigKen.prototype.onCompleteVideo = function () {
+        };
+        return AnimationBigKen;
+    }(Phaser.Sprite));
+    Fabrique.AnimationBigKen = AnimationBigKen;
+})(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var Boot = (function (_super) {
@@ -374,6 +395,7 @@ var StreetFighterCards;
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var ButtonOrange = Fabrique.ButtonOrange;
+    var AnimationBigKen = Fabrique.AnimationBigKen;
     var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
@@ -384,6 +406,8 @@ var StreetFighterCards;
             this.groupMenu = new Phaser.Group(this.game, this.stage);
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage);
             this.groupMenu.addChild(this.menuSprite);
+            this.bigKen = new AnimationBigKen(this.game);
+            this.groupMenu.addChild(this.bigKen);
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
@@ -449,6 +473,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
+/// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />

@@ -3,6 +3,7 @@ module StreetFighterCards {
     import Tutorial = Fabrique.Tutorial;
     import Settings = Fabrique.Settings;
     import ButtonOrange = Fabrique.ButtonOrange;
+    import AnimationBigKen = Fabrique.AnimationBigKen;
 
     export class Menu extends Phaser.State{
         public static Name: string = "menu";
@@ -11,6 +12,8 @@ module StreetFighterCards {
         private groupMenu: Phaser.Group;
         private groupButtons: Phaser.Group;
         
+        private bigKen:AnimationBigKen;
+
         constructor() {
             super();
         }
@@ -20,7 +23,10 @@ module StreetFighterCards {
             
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage)
             this.groupMenu.addChild(this.menuSprite);
-            
+
+            this.bigKen = new AnimationBigKen(this.game);
+            this.groupMenu.addChild(this.bigKen);
+
             this.createButtons();
         }
 
