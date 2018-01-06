@@ -2,12 +2,12 @@ module Fabrique {
     export class ButtonOrange extends Phaser.Group {
         public event: Phaser.Signal;
         
-        constructor(game:Phaser.Game, parent:Phaser.Group, text:string, name:string, x:number, y:number){
+        constructor(game:Phaser.Game, parent:Phaser.Group, name:string, text:string, textX:number, x:number, y:number){
             super(game, parent);
-            this.init(text, name, x, y);
+            this.init(name, text, textX, x, y);
         }
 
-        private init(text:string, name:string, x:number, y:number):void{
+        private init(name:string, text:string, textX:number, x:number, y:number):void{
             this.x = x;
             this.y = y;
 
@@ -17,10 +17,10 @@ module Fabrique {
             buttonStart.name = name;
             this.addChild(buttonStart);
 
-            let textBack = new Phaser.Text(this.game, 19, 14, text, {font: "16px Arial Black", fill: "#FFFFFF"});
+            let textBack = new Phaser.Text(this.game, textX - 1, 14, text, {font: "16px Arial Black", fill: "#FFFFFF"});
             this.addChild(textBack);
 
-            let textFront = new Phaser.Text(this.game, 20, 15, text, {font: "16px Arial Black", fill: "#9B372C"});
+            let textFront = new Phaser.Text(this.game, textX, 15, text, {font: "16px Arial Black", fill: "#9B372C"});
             this.addChild(textFront);
         }
 

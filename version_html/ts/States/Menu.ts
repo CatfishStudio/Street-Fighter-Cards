@@ -4,6 +4,7 @@ module StreetFighterCards {
     import Settings = Fabrique.Settings;
     import ButtonOrange = Fabrique.ButtonOrange;
     import AnimationBigKen = Fabrique.AnimationBigKen;
+    import AnimationBigRyu = Fabrique.AnimationBigRyu;
 
     export class Menu extends Phaser.State{
         public static Name: string = "menu";
@@ -12,8 +13,6 @@ module StreetFighterCards {
         private groupMenu: Phaser.Group;
         private groupButtons: Phaser.Group;
         
-        private bigKen:AnimationBigKen;
-
         constructor() {
             super();
         }
@@ -24,11 +23,17 @@ module StreetFighterCards {
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage)
             this.groupMenu.addChild(this.menuSprite);
 
-            this.bigKen = new AnimationBigKen(this.game);
-            this.bigKen.scale.setTo(0.4, 0.4);
-            this.bigKen.x = 35;
-            this.bigKen.y = 225;
-            this.groupMenu.addChild(this.bigKen);
+            let bigKen:AnimationBigKen = new AnimationBigKen(this.game);
+            bigKen.scale.setTo(0.4, 0.4);
+            bigKen.x = 35;
+            bigKen.y = 225;
+            this.groupMenu.addChild(bigKen);
+
+            let bigRyu:AnimationBigRyu = new AnimationBigRyu(this.game);
+            bigRyu.scale.setTo(0.4, 0.4);
+            bigRyu.x = 555;
+            bigRyu.y = 225;
+            this.groupMenu.addChild(bigRyu);
 
             this.createButtons();
         }
@@ -47,13 +52,13 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'НАЧАТЬ ИГРУ', 'start', 0, 0);
+            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
             buttonStart.event.add(this.onButtonClick.bind(this));
 
-            let buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'НАСТРОЙКИ', 'settings', 0, 50);
+            let buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35,  0, 50);
             buttonSettings.event.add(this.onButtonClick.bind(this));
 
-            let buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'ПРИГЛАСИТЬ', 'invate', 0, 100);
+            let buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30,  0, 100);
             buttonSettings.event.add(this.onButtonClick.bind(this));
         }
 

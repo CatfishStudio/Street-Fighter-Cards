@@ -65,8 +65,10 @@ var Atlases = (function () {
     function Atlases() {
     }
     Atlases.BigKen = 'BigKen';
+    Atlases.BigRyu = 'BigRyu';
     Atlases.preloadList = [
         Atlases.BigKen,
+        Atlases.BigRyu,
     ];
     return Atlases;
 }());
@@ -263,20 +265,20 @@ var Fabrique;
 (function (Fabrique) {
     var ButtonOrange = (function (_super) {
         __extends(ButtonOrange, _super);
-        function ButtonOrange(game, parent, text, name, x, y) {
+        function ButtonOrange(game, parent, name, text, textX, x, y) {
             _super.call(this, game, parent);
-            this.init(text, name, x, y);
+            this.init(name, text, textX, x, y);
         }
-        ButtonOrange.prototype.init = function (text, name, x, y) {
+        ButtonOrange.prototype.init = function (name, text, textX, x, y) {
             this.x = x;
             this.y = y;
             this.event = new Phaser.Signal();
             var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
             buttonStart.name = name;
             this.addChild(buttonStart);
-            var textBack = new Phaser.Text(this.game, 19, 14, text, { font: "16px Arial Black", fill: "#FFFFFF" });
+            var textBack = new Phaser.Text(this.game, textX - 1, 14, text, { font: "16px Arial Black", fill: "#FFFFFF" });
             this.addChild(textBack);
-            var textFront = new Phaser.Text(this.game, 20, 15, text, { font: "16px Arial Black", fill: "#9B372C" });
+            var textFront = new Phaser.Text(this.game, textX, 15, text, { font: "16px Arial Black", fill: "#9B372C" });
             this.addChild(textFront);
         };
         ButtonOrange.prototype.onButtonClick = function (event) {
@@ -304,6 +306,25 @@ var Fabrique;
         return AnimationBigKen;
     }(Phaser.Sprite));
     Fabrique.AnimationBigKen = AnimationBigKen;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var AnimationBigRyu = (function (_super) {
+        __extends(AnimationBigRyu, _super);
+        function AnimationBigRyu(game) {
+            _super.call(this, game, 0, 0, Atlases.BigRyu, 0);
+            this.init();
+        }
+        AnimationBigRyu.prototype.init = function () {
+            var anim = this.animations.add(Atlases.BigRyu);
+            anim.onComplete.add(this.onCompleteVideo, this);
+            anim.play(10, true, false);
+        };
+        AnimationBigRyu.prototype.onCompleteVideo = function () {
+        };
+        return AnimationBigRyu;
+    }(Phaser.Sprite));
+    Fabrique.AnimationBigRyu = AnimationBigRyu;
 })(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
@@ -396,6 +417,7 @@ var StreetFighterCards;
 (function (StreetFighterCards) {
     var ButtonOrange = Fabrique.ButtonOrange;
     var AnimationBigKen = Fabrique.AnimationBigKen;
+    var AnimationBigRyu = Fabrique.AnimationBigRyu;
     var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
@@ -406,11 +428,16 @@ var StreetFighterCards;
             this.groupMenu = new Phaser.Group(this.game, this.stage);
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage);
             this.groupMenu.addChild(this.menuSprite);
-            this.bigKen = new AnimationBigKen(this.game);
-            this.bigKen.scale.setTo(0.4, 0.4);
-            this.bigKen.x = 35;
-            this.bigKen.y = 225;
-            this.groupMenu.addChild(this.bigKen);
+            var bigKen = new AnimationBigKen(this.game);
+            bigKen.scale.setTo(0.4, 0.4);
+            bigKen.x = 35;
+            bigKen.y = 225;
+            this.groupMenu.addChild(bigKen);
+            var bigRyu = new AnimationBigRyu(this.game);
+            bigRyu.scale.setTo(0.4, 0.4);
+            bigRyu.x = 555;
+            bigRyu.y = 225;
+            this.groupMenu.addChild(bigRyu);
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
@@ -424,11 +451,11 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'НАЧАТЬ ИГРУ', 'start', 0, 0);
+            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
             buttonStart.event.add(this.onButtonClick.bind(this));
-            var buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'НАСТРОЙКИ', 'settings', 0, 50);
+            var buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35, 0, 50);
             buttonSettings.event.add(this.onButtonClick.bind(this));
-            var buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'ПРИГЛАСИТЬ', 'invate', 0, 100);
+            var buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30, 0, 100);
             buttonSettings.event.add(this.onButtonClick.bind(this));
         };
         Menu.prototype.onButtonClick = function (event) {
@@ -477,6 +504,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
+/// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
