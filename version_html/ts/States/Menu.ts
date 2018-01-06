@@ -25,6 +25,9 @@ module StreetFighterCards {
             this.groupMenu.addChild(this.menuSprite);
 
             this.bigKen = new AnimationBigKen(this.game);
+            this.bigKen.scale.setTo(0.4, 0.4);
+            this.bigKen.x = 35;
+            this.bigKen.y = 225;
             this.groupMenu.addChild(this.bigKen);
 
             this.createButtons();
