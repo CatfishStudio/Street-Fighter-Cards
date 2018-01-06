@@ -34,9 +34,13 @@ module StreetFighterCards {
                         this.game.load.atlas(assetName, 'assets/atlas/' + assetName + '.png','assets/atlas/' + assetName + '.json');
                     });
                     
+                    /*
                     Sheet.preloadList.forEach((assetName: string) => {
                         this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 186, 46);
                     });
+                    */
+                    this.game.load.spritesheet(Sheet.preloadList[0], 'assets/images/' + Sheet.preloadList[0], 186, 46);
+                    this.game.load.spritesheet(Sheet.preloadList[1], 'assets/images/' + Sheet.preloadList[1], 187, 56);
                 }
             });
         }

@@ -7,8 +7,10 @@ module StreetFighterCards {
     import AnimationBigRyu = Fabrique.AnimationBigRyu;
 
     export class Menu extends Phaser.State{
+
         public static Name: string = "menu";
         public name: string = Menu.Name;
+
         private menuSprite:Phaser.Sprite;
         private groupMenu: Phaser.Group;
         private groupButtons: Phaser.Group;
@@ -68,6 +70,7 @@ module StreetFighterCards {
                     {
                         //this.game.state.start(Store.Name, true, false);
                         console.log("START");
+                        this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }
                 case 'continue':

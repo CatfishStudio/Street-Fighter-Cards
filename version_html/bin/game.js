@@ -21,6 +21,7 @@ var StreetFighterCards;
             this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
             this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
             this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
+            this.state.add(StreetFighterCards.ChoiceFighter.Name, StreetFighterCards.ChoiceFighter, false);
         }
         Game.getInstance = function () {
             if (StreetFighterCards.Game.instance === null) {
@@ -56,8 +57,12 @@ var Images = (function () {
     }
     Images.PreloaderImage = 'preloader.png';
     Images.MenuImage = 'menu.png';
+    Images.BorderImage = 'border.png';
+    Images.ChoiceImage = 'choice.png';
     Images.preloadList = [
         Images.MenuImage,
+        Images.BorderImage,
+        Images.ChoiceImage,
     ];
     return Images;
 }());
@@ -76,8 +81,10 @@ var Sheet = (function () {
     function Sheet() {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
+    Sheet.ButtonStyle2 = 'button_style_2_sheet.png';
     Sheet.preloadList = [
         Sheet.ButtonStyle1,
+        Sheet.ButtonStyle2,
     ];
     return Sheet;
 }());
@@ -357,9 +364,13 @@ var StreetFighterCards;
                     Atlases.preloadList.forEach(function (assetName) {
                         _this.game.load.atlas(assetName, 'assets/atlas/' + assetName + '.png', 'assets/atlas/' + assetName + '.json');
                     });
-                    Sheet.preloadList.forEach(function (assetName) {
-                        _this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 186, 46);
+                    /*
+                    Sheet.preloadList.forEach((assetName: string) => {
+                        this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 186, 46);
                     });
+                    */
+                    _this.game.load.spritesheet(Sheet.preloadList[0], 'assets/images/' + Sheet.preloadList[0], 186, 46);
+                    _this.game.load.spritesheet(Sheet.preloadList[1], 'assets/images/' + Sheet.preloadList[1], 187, 56);
                 }
             });
         };
@@ -464,6 +475,7 @@ var StreetFighterCards;
                     {
                         //this.game.state.start(Store.Name, true, false);
                         console.log("START");
+                        this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }
                 case 'continue':
@@ -493,6 +505,29 @@ var StreetFighterCards;
     }(Phaser.State));
     StreetFighterCards.Menu = Menu;
 })(StreetFighterCards || (StreetFighterCards = {}));
+var StreetFighterCards;
+(function (StreetFighterCards) {
+    var ChoiceFighter = (function (_super) {
+        __extends(ChoiceFighter, _super);
+        function ChoiceFighter() {
+            _super.call(this);
+            this.name = StreetFighterCards.Menu.Name;
+        }
+        ChoiceFighter.prototype.create = function () {
+            this.groupWindow = new Phaser.Group(this.game, this.stage);
+            this.backgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.ChoiceImage);
+            this.groupWindow.addChild(this.backgroundSprite);
+        };
+        ChoiceFighter.prototype.shutdown = function () {
+            this.groupWindow.removeChildren();
+            this.groupWindow.removeAll();
+            this.game.stage.removeChildren();
+        };
+        ChoiceFighter.Name = "choce_fighter";
+        return ChoiceFighter;
+    }(Phaser.State));
+    StreetFighterCards.ChoiceFighter = ChoiceFighter;
+})(StreetFighterCards || (StreetFighterCards = {}));
 /// <reference path="..\node_modules\phaser-ce\typescript\phaser.d.ts" />
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
@@ -508,4 +543,5 @@ var StreetFighterCards;
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
+/// <reference path="States\ChoiceFighter.ts" />
 /// <reference path="app.ts" /> 
