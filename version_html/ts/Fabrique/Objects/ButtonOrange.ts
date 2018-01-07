@@ -13,9 +13,9 @@ module Fabrique {
 
             this.event = new Phaser.Signal();
 
-            let buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
-            buttonStart.name = name;
-            this.addChild(buttonStart);
+            let button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
+            button.name = name;
+            this.addChild(button);
 
             let textBack = new Phaser.Text(this.game, textX - 1, 14, text, {font: "16px Arial Black", fill: "#FFFFFF"});
             this.addChild(textBack);

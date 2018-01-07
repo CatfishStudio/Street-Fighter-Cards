@@ -280,9 +280,9 @@ var Fabrique;
             this.x = x;
             this.y = y;
             this.event = new Phaser.Signal();
-            var buttonStart = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
-            buttonStart.name = name;
-            this.addChild(buttonStart);
+            var button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
+            button.name = name;
+            this.addChild(button);
             var textBack = new Phaser.Text(this.game, textX - 1, 14, text, { font: "16px Arial Black", fill: "#FFFFFF" });
             this.addChild(textBack);
             var textFront = new Phaser.Text(this.game, textX, 15, text, { font: "16px Arial Black", fill: "#9B372C" });
@@ -294,6 +294,39 @@ var Fabrique;
         return ButtonOrange;
     }(Phaser.Group));
     Fabrique.ButtonOrange = ButtonOrange;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var ButtonComix = (function (_super) {
+        __extends(ButtonComix, _super);
+        function ButtonComix(game, parent, name, text, textX, x, y) {
+            _super.call(this, game, parent);
+            this.init(name, text, textX, x, y);
+        }
+        ButtonComix.prototype.init = function (name, text, textX, x, y) {
+            this.x = x;
+            this.y = y;
+            this.event = new Phaser.Signal();
+            var button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle2, this.onButtonClick, this, 1, 2);
+            button.name = name;
+            button.events.onInputOut.add(this.onButtonInputOut, this);
+            button.events.onInputOver.add(this.onButtonInputOver, this);
+            this.addChild(button);
+            this.textButton = new Phaser.Text(this.game, textX, 20, text, { font: "16px Arial Black", fill: "#666666" });
+            this.addChild(this.textButton);
+        };
+        ButtonComix.prototype.onButtonClick = function (event) {
+            this.event.dispatch(event);
+        };
+        ButtonComix.prototype.onButtonInputOut = function (event) {
+            this.textButton.fill = "#666666";
+        };
+        ButtonComix.prototype.onButtonInputOver = function (event) {
+            this.textButton.fill = "#9E32EC";
+        };
+        return ButtonComix;
+    }(Phaser.Group));
+    Fabrique.ButtonComix = ButtonComix;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
@@ -507,6 +540,7 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
+    var ButtonComix = Fabrique.ButtonComix;
     var ChoiceFighter = (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
@@ -517,11 +551,15 @@ var StreetFighterCards;
             this.groupWindow = new Phaser.Group(this.game, this.stage);
             this.backgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.ChoiceImage);
             this.groupWindow.addChild(this.backgroundSprite);
+            this.createButtons();
         };
         ChoiceFighter.prototype.shutdown = function () {
             this.groupWindow.removeChildren();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
+        };
+        ChoiceFighter.prototype.createButtons = function () {
+            var buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
         };
         ChoiceFighter.Name = "choce_fighter";
         return ChoiceFighter;
@@ -538,6 +576,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
+/// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="States\Boot.ts" />
