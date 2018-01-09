@@ -485,9 +485,10 @@ var StreetFighterCards;
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
-            this.groupMenu.removeChildren();
+            this.buttonStart.removeAll();
+            this.buttonSettings.removeAll();
+            this.buttonInvate.removeAll();
             this.groupMenu.removeAll();
-            this.groupButtons.removeChildren();
             this.groupButtons.removeAll();
             this.game.stage.removeChildren();
         };
@@ -495,19 +496,17 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            var buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
-            buttonStart.event.add(this.onButtonClick.bind(this));
-            var buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35, 0, 50);
-            buttonSettings.event.add(this.onButtonClick.bind(this));
-            var buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30, 0, 100);
-            buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
+            this.buttonStart.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35, 0, 50);
+            this.buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30, 0, 100);
+            this.buttonSettings.event.add(this.onButtonClick.bind(this));
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case 'start':
                     {
-                        //this.game.state.start(Store.Name, true, false);
-                        console.log("START");
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }
@@ -554,12 +553,24 @@ var StreetFighterCards;
             this.createButtons();
         };
         ChoiceFighter.prototype.shutdown = function () {
-            this.groupWindow.removeChildren();
+            this.buttonBack.removeAll();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         };
         ChoiceFighter.prototype.createButtons = function () {
-            var buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
+            this.buttonBack.event.add(this.onButtonClick, this);
+        };
+        ChoiceFighter.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case 'back':
+                    {
+                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        break;
+                    }
+                default:
+                    break;
+            }
         };
         ChoiceFighter.Name = "choce_fighter";
         return ChoiceFighter;

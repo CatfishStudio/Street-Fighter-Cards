@@ -9,6 +9,8 @@ module StreetFighterCards {
         private groupWindow: Phaser.Group;
         private backgroundSprite:Phaser.Sprite;
 
+        private buttonBack: ButtonComix;
+
         constructor() {
             super();
         }
@@ -23,14 +25,30 @@ module StreetFighterCards {
         }
 
         public shutdown(){
-            this.groupWindow.removeChildren();
+            this.buttonBack.removeAll();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         }
 
         private createButtons(){
-            let buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
+            this.buttonBack.event.add(this.onButtonClick, this);
 
         }
+
+        private onButtonClick(event) {
+            switch (event.name) {
+                case 'back':
+                    {
+                        this.game.state.start(Menu.Name, true, false);
+                        break;
+                    }
+                            
+                default:
+                    break;
+            }
+        }
+
+
     }
 }

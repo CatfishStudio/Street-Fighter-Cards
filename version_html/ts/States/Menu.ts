@@ -15,6 +15,10 @@ module StreetFighterCards {
         private groupMenu: Phaser.Group;
         private groupButtons: Phaser.Group;
         
+        private buttonStart:ButtonOrange;
+        private buttonSettings:ButtonOrange;
+        private buttonInvate:ButtonOrange;
+
         constructor() {
             super();
         }
@@ -41,9 +45,10 @@ module StreetFighterCards {
         }
 
         public shutdown(){
-            this.groupMenu.removeChildren();
+            this.buttonStart.removeAll();
+            this.buttonSettings.removeAll();
+            this.buttonInvate.removeAll();
             this.groupMenu.removeAll();
-            this.groupButtons.removeChildren();
             this.groupButtons.removeAll();
             this.game.stage.removeChildren();
         }
@@ -54,22 +59,20 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            let buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
-            buttonStart.event.add(this.onButtonClick.bind(this));
+            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
+            this.buttonStart.event.add(this.onButtonClick.bind(this));
 
-            let buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35,  0, 50);
-            buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35,  0, 50);
+            this.buttonSettings.event.add(this.onButtonClick.bind(this));
 
-            let buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30,  0, 100);
-            buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30,  0, 100);
+            this.buttonSettings.event.add(this.onButtonClick.bind(this));
         }
 
         private onButtonClick(event) {
             switch (event.name) {
                 case 'start':
                     {
-                        //this.game.state.start(Store.Name, true, false);
-                        console.log("START");
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }
