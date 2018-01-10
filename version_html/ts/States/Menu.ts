@@ -59,19 +59,19 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
+            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 30, 0, 0);
             this.buttonStart.event.add(this.onButtonClick.bind(this));
 
-            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35,  0, 50);
+            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35,  0, 50);
             this.buttonSettings.event.add(this.onButtonClick.bind(this));
 
-            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30,  0, 100);
+            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 30,  0, 100);
             this.buttonSettings.event.add(this.onButtonClick.bind(this));
         }
 
         private onButtonClick(event) {
             switch (event.name) {
-                case 'start':
+                case Constants.BUTTON_PLAY:
                     {
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
@@ -81,7 +81,7 @@ module StreetFighterCards {
                         
                         break;
                     }
-                case 'settings':
+                case Constants.BUTTON_SETTINGS:
                     {
                         //this.settingsCreate();
                         break;
@@ -91,7 +91,7 @@ module StreetFighterCards {
                         //this.settingsClose();
                         break;
                     }
-                case 'invite':
+                case Constants.BUTTON_INVATE:
                     {
                         
                         break;

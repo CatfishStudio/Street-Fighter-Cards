@@ -42,6 +42,11 @@ var Constants = (function () {
     }
     Constants.GAME_WIDTH = 800;
     Constants.GAME_HEIGHT = 600;
+    Constants.BUTTON_PLAY = 'button_play';
+    Constants.BUTTON_SETTINGS = 'button_settings';
+    Constants.BUTTON_INVATE = 'button_invate';
+    Constants.BUTTON_BACK = 'button_back';
+    Constants.BUTTON_SELECT = 'button_select';
     return Constants;
 }());
 var Config = (function () {
@@ -496,16 +501,16 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, 'start', 'НАЧАТЬ ИГРУ', 30, 0, 0);
+            this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 30, 0, 0);
             this.buttonStart.event.add(this.onButtonClick.bind(this));
-            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, 'settings', 'НАСТРОЙКИ', 35, 0, 50);
+            this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35, 0, 50);
             this.buttonSettings.event.add(this.onButtonClick.bind(this));
-            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, 'invate', 'ПРИГЛАСИТЬ', 30, 0, 100);
+            this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 30, 0, 100);
             this.buttonSettings.event.add(this.onButtonClick.bind(this));
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
-                case 'start':
+                case Constants.BUTTON_PLAY:
                     {
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
@@ -514,7 +519,7 @@ var StreetFighterCards;
                     {
                         break;
                     }
-                case 'settings':
+                case Constants.BUTTON_SETTINGS:
                     {
                         //this.settingsCreate();
                         break;
@@ -524,7 +529,7 @@ var StreetFighterCards;
                         //this.settingsClose();
                         break;
                     }
-                case 'invite':
+                case Constants.BUTTON_INVATE:
                     {
                         break;
                     }
@@ -548,22 +553,36 @@ var StreetFighterCards;
         }
         ChoiceFighter.prototype.create = function () {
             this.groupWindow = new Phaser.Group(this.game, this.stage);
-            this.backgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.ChoiceImage);
-            this.groupWindow.addChild(this.backgroundSprite);
+            this.createBackground();
             this.createButtons();
+            this.createBorder();
         };
         ChoiceFighter.prototype.shutdown = function () {
             this.buttonBack.removeAll();
+            this.buttonSelect.removeAll();
+            this.buttonSettings.removeAll();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         };
+        ChoiceFighter.prototype.createBackground = function () {
+            var backgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.ChoiceImage);
+            this.groupWindow.addChild(backgroundSprite);
+        };
         ChoiceFighter.prototype.createButtons = function () {
-            this.buttonBack = new ButtonComix(this.game, this.groupWindow, 'back', 'НАЗАД', 55, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_BACK, 'НАЗАД', 55, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
+            this.buttonSettings = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35, 300, 530);
+            this.buttonSettings.event.add(this.onButtonClick, this);
+            this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 50, 600, 530);
+            this.buttonSelect.event.add(this.onButtonClick, this);
+        };
+        ChoiceFighter.prototype.createBorder = function () {
+            var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
+            this.groupWindow.addChild(borderSprite);
         };
         ChoiceFighter.prototype.onButtonClick = function (event) {
             switch (event.name) {
-                case 'back':
+                case Constants.BUTTON_BACK:
                     {
                         this.game.state.start(StreetFighterCards.Menu.Name, true, false);
                         break;
