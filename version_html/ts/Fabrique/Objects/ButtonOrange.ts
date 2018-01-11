@@ -7,6 +7,10 @@ module Fabrique {
             this.init(name, text, textX, x, y);
         }
 
+        public shutdown():void {
+            this.removeAll();
+        }
+
         private init(name:string, text:string, textX:number, x:number, y:number):void{
             this.x = x;
             this.y = y;

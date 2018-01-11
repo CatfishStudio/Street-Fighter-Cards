@@ -47,6 +47,8 @@ var Constants = (function () {
     Constants.BUTTON_INVATE = 'button_invate';
     Constants.BUTTON_BACK = 'button_back';
     Constants.BUTTON_SELECT = 'button_select';
+    Constants.BUTTON_ARROW_LEFT = 'button_arrow_left';
+    Constants.BUTTON_ARROW_RIGHT = 'button_arrow_right';
     return Constants;
 }());
 var Config = (function () {
@@ -64,10 +66,14 @@ var Images = (function () {
     Images.MenuImage = 'menu.png';
     Images.BorderImage = 'border.png';
     Images.ChoiceImage = 'choice.png';
+    Images.ArrowLeft = 'arrow_left.png';
+    Images.ArrowRight = 'arrow_right.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
         Images.ChoiceImage,
+        Images.ArrowLeft,
+        Images.ArrowRight,
     ];
     return Images;
 }());
@@ -76,9 +82,11 @@ var Atlases = (function () {
     }
     Atlases.BigKen = 'BigKen';
     Atlases.BigRyu = 'BigRyu';
+    Atlases.BigCards = 'BigCards';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
+        Atlases.BigCards,
     ];
     return Atlases;
 }());
@@ -281,6 +289,9 @@ var Fabrique;
             _super.call(this, game, parent);
             this.init(name, text, textX, x, y);
         }
+        ButtonOrange.prototype.shutdown = function () {
+            this.removeAll();
+        };
         ButtonOrange.prototype.init = function (name, text, textX, x, y) {
             this.x = x;
             this.y = y;
@@ -308,6 +319,9 @@ var Fabrique;
             _super.call(this, game, parent);
             this.init(name, text, textX, x, y);
         }
+        ButtonComix.prototype.shutdown = function () {
+            this.removeAll();
+        };
         ButtonComix.prototype.init = function (name, text, textX, x, y) {
             this.x = x;
             this.y = y;
@@ -370,6 +384,137 @@ var Fabrique;
         return AnimationBigRyu;
     }(Phaser.Sprite));
     Fabrique.AnimationBigRyu = AnimationBigRyu;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var FighterCard = (function (_super) {
+        __extends(FighterCard, _super);
+        function FighterCard(game, x, y, data) {
+            _super.call(this, game, x, y, Atlases.BigCards, data.frame);
+            this.dataFighter = data;
+            this.init();
+        }
+        FighterCard.prototype.init = function () {
+            this.damageText = this.game.add.text(5, 240, "5%", { font: "18px Arial", fill: "#FFFFFF", align: "left" });
+            this.addChild(this.damageText);
+            this.defenseText = this.game.add.text(5, 45, "10%", { font: "18px Arial", fill: "#FFFFFF", align: "left" });
+            this.addChild(this.defenseText);
+        };
+        return FighterCard;
+    }(Phaser.Sprite));
+    Fabrique.FighterCard = FighterCard;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var Slides = (function (_super) {
+        __extends(Slides, _super);
+        function Slides(game, parent) {
+            _super.call(this, game, parent);
+            this.fighterIndex = 0;
+            this.fighters = [];
+            this.data = [
+                [0, 'Akuma', 'akuma_card.png'],
+                [1, 'Alex', 'alex_card.png'],
+                [2, 'Chun Li', 'chun_li_card.png'],
+                [3, 'Dudley', 'dudley_card.png'],
+                [4, 'Elena', 'elena_card.png'],
+                [5, 'Gill', 'gill_card.png'],
+                [6, 'Hugo', 'hugo_card.png'],
+                [7, 'Ibuki', 'ibuki_card.png'],
+                [8, 'Ken', 'ken_card.png'],
+                [9, 'Makoto', 'makoto_card.png'],
+                [10, 'Necro', 'necro_card.png'],
+                [11, 'Oro', 'oro_card.png'],
+                [12, 'Q', 'q_card.png'],
+                [13, 'Remy', 'remy_card.png'],
+                [14, 'Ryu', 'ryu_card.png'],
+                [15, 'Sean', 'sean_card.png'],
+                [16, 'Twelve', 'twelve_card.png'],
+                [17, 'Urien', 'urien_card.png'],
+                [18, 'Yang', 'yang_card.png'],
+                [19, 'Yun', 'yun_card.png']
+            ];
+            this.init();
+            this.createSlides();
+        }
+        Slides.prototype.shutdown = function () {
+            this.slideGroup.removeAll();
+            this.removeAll();
+        };
+        Slides.prototype.init = function () {
+            this.fighterIndex = 1;
+            for (var i = 0; i < this.data.length; i++) {
+                var fighter = {};
+                fighter.id = this.data[i][0];
+                fighter.name = this.data[i][1];
+                fighter.frame = this.data[i][2];
+                this.fighters.push(fighter);
+            }
+            this.canClick = true;
+        };
+        Slides.prototype.createSlides = function () {
+            this.slideGroup = new Phaser.Group(this.game, this);
+            var posX = 5;
+            var posY = 90;
+            for (var i = 0; i < this.fighters.length; i++) {
+                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, this.fighters[i]);
+                this.slideGroup.addChild(fCard);
+            }
+            this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
+            this.buttonLeft.name = Constants.BUTTON_ARROW_LEFT;
+            this.addChild(this.buttonLeft);
+            this.buttonRight = new Phaser.Button(this.game, 505, 190, Images.ArrowRight, this.onButtonClick, this);
+            this.buttonRight.name = Constants.BUTTON_ARROW_RIGHT;
+            this.addChild(this.buttonRight);
+        };
+        Slides.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case Constants.BUTTON_ARROW_LEFT:
+                    {
+                        if (this.canClick) {
+                            this.canClick = false;
+                            this.fighterIndex--;
+                            var tween = this.game.add.tween(this.slideGroup);
+                            tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
+                            tween.onComplete.add(this.onTweenComplete, this);
+                            tween.start();
+                        }
+                        break;
+                    }
+                case Constants.BUTTON_ARROW_RIGHT:
+                    {
+                        if (this.canClick) {
+                            this.canClick = false;
+                            this.fighterIndex++;
+                            var tween = this.game.add.tween(this.slideGroup);
+                            tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
+                            tween.onComplete.add(this.onTweenComplete, this);
+                            tween.start();
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+        };
+        Slides.prototype.onTweenComplete = function (event) {
+            if (this.fighterIndex === 0) {
+                this.buttonLeft.visible = false;
+                this.buttonRight.visible = true;
+            }
+            else if (this.fighterIndex === this.fighters.length - 1) {
+                this.buttonLeft.visible = true;
+                this.buttonRight.visible = false;
+            }
+            else {
+                this.buttonLeft.visible = true;
+                this.buttonRight.visible = true;
+            }
+            this.canClick = true;
+        };
+        return Slides;
+    }(Phaser.Group));
+    Fabrique.Slides = Slides;
 })(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
@@ -490,9 +635,9 @@ var StreetFighterCards;
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
-            this.buttonStart.removeAll();
-            this.buttonSettings.removeAll();
-            this.buttonInvate.removeAll();
+            this.buttonStart.shutdown();
+            this.buttonSettings.shutdown();
+            this.buttonInvate.shutdown();
             this.groupMenu.removeAll();
             this.groupButtons.removeAll();
             this.game.stage.removeChildren();
@@ -545,6 +690,7 @@ var StreetFighterCards;
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var ButtonComix = Fabrique.ButtonComix;
+    var Slides = Fabrique.Slides;
     var ChoiceFighter = (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
@@ -555,12 +701,14 @@ var StreetFighterCards;
             this.groupWindow = new Phaser.Group(this.game, this.stage);
             this.createBackground();
             this.createButtons();
+            this.createSlides();
             this.createBorder();
         };
         ChoiceFighter.prototype.shutdown = function () {
-            this.buttonBack.removeAll();
-            this.buttonSelect.removeAll();
-            this.buttonSettings.removeAll();
+            this.slides.shutdown();
+            this.buttonBack.shutdown();
+            this.buttonSelect.shutdown();
+            this.buttonSettings.shutdown();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         };
@@ -575,6 +723,9 @@ var StreetFighterCards;
             this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 50, 600, 530);
             this.buttonSelect.event.add(this.onButtonClick, this);
+        };
+        ChoiceFighter.prototype.createSlides = function () {
+            this.slides = new Slides(this.game, this.groupWindow);
         };
         ChoiceFighter.prototype.createBorder = function () {
             var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
@@ -609,6 +760,8 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
+/// <reference path="Fabrique\Objects\FighterBigCard.ts" />
+/// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />

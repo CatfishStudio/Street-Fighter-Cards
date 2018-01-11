@@ -1,5 +1,6 @@
 module StreetFighterCards {
     import ButtonComix = Fabrique.ButtonComix;
+    import Slides = Fabrique.Slides;
 
     export class ChoiceFighter extends Phaser.State{
 
@@ -12,6 +13,8 @@ module StreetFighterCards {
         private buttonSettings: ButtonComix;
         private buttonSelect: ButtonComix;
 
+        private slides:Slides;
+
         constructor() {
             super();
         }
@@ -21,23 +24,25 @@ module StreetFighterCards {
             
             this.createBackground();
             this.createButtons();
+            this.createSlides();
             this.createBorder();
         }
 
         public shutdown(){
-            this.buttonBack.removeAll();
-            this.buttonSelect.removeAll();
-            this.buttonSettings.removeAll();
+            this.slides.shutdown();
+            this.buttonBack.shutdown();
+            this.buttonSelect.shutdown();
+            this.buttonSettings.shutdown();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         }
 
-        private createBackground(){
+        private createBackground():void {
             let backgroundSprite:Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.ChoiceImage);
             this.groupWindow.addChild(backgroundSprite);
         }
 
-        private createButtons(){
+        private createButtons():void {
             this.buttonBack = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_BACK, 'НАЗАД', 55, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
 
@@ -48,7 +53,11 @@ module StreetFighterCards {
             this.buttonSelect.event.add(this.onButtonClick, this);
         }
 
-        private createBorder(){
+        private createSlides():void {
+            this.slides = new Slides(this.game, this.groupWindow);
+        }
+
+        private createBorder():void {
             let borderSprite:Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.groupWindow.addChild(borderSprite);
         }

@@ -7,4 +7,6 @@ class Constants {
     public static BUTTON_INVATE         = 'button_invate';
     public static BUTTON_BACK           = 'button_back';
     public static BUTTON_SELECT         = 'button_select';
+    public static BUTTON_ARROW_LEFT     = 'button_arrow_left';
+    public static BUTTON_ARROW_RIGHT    = 'button_arrow_right';
 }

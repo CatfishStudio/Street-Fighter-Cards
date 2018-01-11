@@ -8,7 +8,11 @@ module Fabrique {
             this.init(name, text, textX, x, y);
         }
 
-        private init(name:string, text:string, textX:number, x:number, y:number):void{
+        public shutdown():void {
+            this.removeAll();
+        }
+
+        private init(name:string, text:string, textX:number, x:number, y:number):void {
             this.x = x;
             this.y = y;
             

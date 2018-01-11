@@ -23,7 +23,7 @@ module StreetFighterCards {
             super();
         }
         
-        public create() {
+        public create():void {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
             
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage)
@@ -44,17 +44,16 @@ module StreetFighterCards {
             this.createButtons();
         }
 
-        public shutdown(){
-            this.buttonStart.removeAll();
-            this.buttonSettings.removeAll();
-            this.buttonInvate.removeAll();
+        public shutdown():void {
+            this.buttonStart.shutdown();
+            this.buttonSettings.shutdown();
+            this.buttonInvate.shutdown();
             this.groupMenu.removeAll();
             this.groupButtons.removeAll();
             this.game.stage.removeChildren();
         }
 
-        public createButtons()
-        {
+        public createButtons():void {
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
@@ -69,7 +68,7 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick.bind(this));
         }
 
-        private onButtonClick(event) {
+        private onButtonClick(event):void {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
