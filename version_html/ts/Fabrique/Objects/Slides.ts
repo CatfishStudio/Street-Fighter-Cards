@@ -6,32 +6,9 @@ module Fabrique {
         private buttonRight:Phaser.Button;
 
         private canClick:boolean;
-        private fighterIndex:number = 0;
-
-        private fighters:Game.IFighter[] = [];
-        private data:any[][] = [
-            [0, 'Akuma', 'akuma_card.png'],
-            [1, 'Alex', 'alex_card.png'],
-            [2, 'Chun Li', 'chun_li_card.png'],
-            [3, 'Dudley', 'dudley_card.png'],
-            [4, 'Elena', 'elena_card.png'],
-            [5, 'Gill', 'gill_card.png'],
-            [6, 'Hugo', 'hugo_card.png'],
-            [7, 'Ibuki', 'ibuki_card.png'],
-            [8, 'Ken', 'ken_card.png'],
-            [9, 'Makoto', 'makoto_card.png'],
-            [10, 'Necro', 'necro_card.png'],
-            [11, 'Oro', 'oro_card.png'],
-            [12, 'Q', 'q_card.png'],
-            [13, 'Remy', 'remy_card.png'],
-            [14, 'Ryu', 'ryu_card.png'],
-            [15, 'Sean', 'sean_card.png'],
-            [16, 'Twelve', 'twelve_card.png'],
-            [17, 'Urien', 'urien_card.png'],
-            [18, 'Yang', 'yang_card.png'],
-            [19, 'Yun', 'yun_card.png']
-        ];
-
+        
+        private fighters:GameData.IFighter[] = [];
+        
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
             this.init();
@@ -44,13 +21,13 @@ module Fabrique {
         }
 
         private init():void {
-            this.fighterIndex = 1;
-            for(let i:number = 0; i < this.data.length; i++){
-                let fighter:Game.IFighter = <Game.IFighter>{};
-                fighter.id = this.data[i][0];
-                fighter.name = this.data[i][1];
-                fighter.frame = this.data[i][2];
-                this.fighters.push(fighter);
+            GameData.Data.fighterIndex = 1;
+            for(let i:number = 0; i < GameData.Data.fighters.length; i++){
+                let fighter:GameData.IFighter = <GameData.IFighter>{};
+                fighter.id = GameData.Data.fighters[i][0];
+                fighter.name = GameData.Data.fighters[i][1];
+                fighter.frame = GameData.Data.fighters[i][2];
+                this.fighters.push(fighter); 
             }
             this.canClick = true;
         }
@@ -80,7 +57,7 @@ module Fabrique {
                     {
                         if(this.canClick){
                             this.canClick = false;
-                            this.fighterIndex--;
+                            GameData.Data.fighterIndex--;
                             let tween: Phaser.Tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x + 300}, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -92,7 +69,7 @@ module Fabrique {
                     {
                         if(this.canClick){
                             this.canClick = false;
-                            this.fighterIndex++;
+                            GameData.Data.fighterIndex++;
                             let tween: Phaser.Tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x - 300}, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -106,10 +83,10 @@ module Fabrique {
         }
 
         private onTweenComplete(event:any):void {
-            if(this.fighterIndex === 0){
+            if(GameData.Data.fighterIndex === 0){
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
-            }else if(this.fighterIndex === this.fighters.length-1){
+            }else if(GameData.Data.fighterIndex === this.fighters.length-1){
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }else{

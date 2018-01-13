@@ -101,6 +101,38 @@ var Sheet = (function () {
     ];
     return Sheet;
 }());
+var GameData;
+(function (GameData) {
+    var Data = (function () {
+        function Data() {
+        }
+        Data.fighters = [
+            [0, 'Akuma', 'akuma_card.png'],
+            [1, 'Alex', 'alex_card.png'],
+            [2, 'Chun Li', 'chun_li_card.png'],
+            [3, 'Dudley', 'dudley_card.png'],
+            [4, 'Elena', 'elena_card.png'],
+            [5, 'Gill', 'gill_card.png'],
+            [6, 'Hugo', 'hugo_card.png'],
+            [7, 'Ibuki', 'ibuki_card.png'],
+            [8, 'Ken', 'ken_card.png'],
+            [9, 'Makoto', 'makoto_card.png'],
+            [10, 'Necro', 'necro_card.png'],
+            [11, 'Oro', 'oro_card.png'],
+            [12, 'Q', 'q_card.png'],
+            [13, 'Remy', 'remy_card.png'],
+            [14, 'Ryu', 'ryu_card.png'],
+            [15, 'Sean', 'sean_card.png'],
+            [16, 'Twelve', 'twelve_card.png'],
+            [17, 'Urien', 'urien_card.png'],
+            [18, 'Yang', 'yang_card.png'],
+            [19, 'Yun', 'yun_card.png']
+        ];
+        Data.fighterIndex = 0;
+        return Data;
+    }());
+    GameData.Data = Data;
+})(GameData || (GameData = {}));
 var Fabrique;
 (function (Fabrique) {
     var Tutorial = (function (_super) {
@@ -410,30 +442,7 @@ var Fabrique;
         __extends(Slides, _super);
         function Slides(game, parent) {
             _super.call(this, game, parent);
-            this.fighterIndex = 0;
             this.fighters = [];
-            this.data = [
-                [0, 'Akuma', 'akuma_card.png'],
-                [1, 'Alex', 'alex_card.png'],
-                [2, 'Chun Li', 'chun_li_card.png'],
-                [3, 'Dudley', 'dudley_card.png'],
-                [4, 'Elena', 'elena_card.png'],
-                [5, 'Gill', 'gill_card.png'],
-                [6, 'Hugo', 'hugo_card.png'],
-                [7, 'Ibuki', 'ibuki_card.png'],
-                [8, 'Ken', 'ken_card.png'],
-                [9, 'Makoto', 'makoto_card.png'],
-                [10, 'Necro', 'necro_card.png'],
-                [11, 'Oro', 'oro_card.png'],
-                [12, 'Q', 'q_card.png'],
-                [13, 'Remy', 'remy_card.png'],
-                [14, 'Ryu', 'ryu_card.png'],
-                [15, 'Sean', 'sean_card.png'],
-                [16, 'Twelve', 'twelve_card.png'],
-                [17, 'Urien', 'urien_card.png'],
-                [18, 'Yang', 'yang_card.png'],
-                [19, 'Yun', 'yun_card.png']
-            ];
             this.init();
             this.createSlides();
         }
@@ -442,12 +451,13 @@ var Fabrique;
             this.removeAll();
         };
         Slides.prototype.init = function () {
-            this.fighterIndex = 1;
-            for (var i = 0; i < this.data.length; i++) {
+            //this.fighterIndex = 1;
+            GameData.Data.fighterIndex = 1;
+            for (var i = 0; i < GameData.Data.fighters.length; i++) {
                 var fighter = {};
-                fighter.id = this.data[i][0];
-                fighter.name = this.data[i][1];
-                fighter.frame = this.data[i][2];
+                fighter.id = GameData.Data.fighters[i][0];
+                fighter.name = GameData.Data.fighters[i][1];
+                fighter.frame = GameData.Data.fighters[i][2];
                 this.fighters.push(fighter);
             }
             this.canClick = true;
@@ -473,7 +483,7 @@ var Fabrique;
                     {
                         if (this.canClick) {
                             this.canClick = false;
-                            this.fighterIndex--;
+                            GameData.Data.fighterIndex--;
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -485,7 +495,7 @@ var Fabrique;
                     {
                         if (this.canClick) {
                             this.canClick = false;
-                            this.fighterIndex++;
+                            GameData.Data.fighterIndex++;
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -498,11 +508,11 @@ var Fabrique;
             }
         };
         Slides.prototype.onTweenComplete = function (event) {
-            if (this.fighterIndex === 0) {
+            if (GameData.Data.fighterIndex === 0) {
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
             }
-            else if (this.fighterIndex === this.fighters.length - 1) {
+            else if (GameData.Data.fighterIndex === this.fighters.length - 1) {
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }
