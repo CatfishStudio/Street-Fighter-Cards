@@ -68,12 +68,14 @@ var Images = (function () {
     Images.ChoiceImage = 'choice.png';
     Images.ArrowLeft = 'arrow_left.png';
     Images.ArrowRight = 'arrow_right.png';
+    Images.TutorialImage = 'tutorial.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
         Images.ChoiceImage,
         Images.ArrowLeft,
         Images.ArrowRight,
+        Images.TutorialImage,
     ];
     return Images;
 }());
@@ -138,37 +140,64 @@ var Fabrique;
     var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
-            _super.call(this, game, 0, 0, Atlases.VideoHelp, 0);
+            _super.call(this, game, 25, 600, Images.TutorialImage);
             this.text = text;
             this.init();
         }
+        Tutorial.prototype.shutdown = function () {
+            this.tween.stop();
+            this.removeChild(this.dialog);
+        };
         Tutorial.prototype.init = function () {
+            this.tween = this.game.add.tween(this);
+            this.tween.to({ x: this.x, y: this.y - 225 }, 750, 'Linear');
+            this.tween.onComplete.add(this.onComplete, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.onComplete = function () {
+            this.createDialog();
+        };
+        Tutorial.prototype.createDialog = function () {
+            this.dialog = new Phaser.Sprite(this.game, 0, 0);
             var graphics = this.game.add.graphics(0, 0);
-            graphics.beginFill(0x000000, 0);
-            graphics.lineStyle(10, 0x000000, 1);
-            graphics.drawRect(0, 0, 400, 116);
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.moveTo(-20, 20);
+            graphics.lineTo(5, 30);
+            graphics.lineTo(5, 47);
+            graphics.lineTo(-20, 20);
             graphics.endFill();
-            graphics.beginFill(0x000000, 0.6);
-            graphics.lineStyle(1, 0x000000, 1);
-            graphics.drawRect(150, 0, 250, 116);
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(0, 0x000000, 1);
+            graphics.drawRoundedRect(0, 0, 200, 50, 15);
             graphics.endFill();
-            graphics.beginFill(0x000000, 0.5);
-            graphics.lineStyle(2, 0xFFFFFF, 0.5);
-            graphics.drawRect(0, 0, 400, 116);
+            graphics.beginFill(0xFFFFFF, 0);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.drawRoundedRect(0, 0, 200, 50, 15);
             graphics.endFill();
-            this.addChild(graphics);
-            var messageText = this.game.add.text(175, 10, this.text, { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
-            this.addChild(messageText);
-            var anim = this.animations.add(Atlases.VideoHelp);
-            anim.onComplete.add(this.onCompleteVideo, this);
-            anim.play(10, true, false);
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(1, 0xFFFFFF, 1);
+            graphics.drawRect(-1, 28, 4, 11);
+            graphics.endFill();
+            this.dialog.addChild(graphics);
+            var messageText = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            this.dialog.addChild(messageText);
+            this.dialog.x = 110;
+            this.dialog.y = 75;
+            this.addChild(this.dialog);
+            this.tweenDialogStart();
         };
-        Tutorial.prototype.onCompleteVideo = function () {
+        Tutorial.prototype.tweenDialogStart = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x + 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogEnd, this);
+            this.tween.start();
         };
-        Tutorial.prototype.show = function (x, y) {
-            var tween = this.game.add.tween(this);
-            tween.to({ x: x, y: y }, 500, 'Linear');
-            tween.start();
+        Tutorial.prototype.tweenDialogEnd = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x - 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogStart, this);
+            this.tween.start();
         };
         return Tutorial;
     }(Phaser.Sprite));
@@ -451,7 +480,6 @@ var Fabrique;
             this.removeAll();
         };
         Slides.prototype.init = function () {
-            //this.fighterIndex = 1;
             GameData.Data.fighterIndex = 1;
             for (var i = 0; i < GameData.Data.fighters.length; i++) {
                 var fighter = {};
@@ -701,6 +729,7 @@ var StreetFighterCards;
 (function (StreetFighterCards) {
     var ButtonComix = Fabrique.ButtonComix;
     var Slides = Fabrique.Slides;
+    var Tutorial = Fabrique.Tutorial;
     var ChoiceFighter = (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
@@ -712,6 +741,7 @@ var StreetFighterCards;
             this.createBackground();
             this.createButtons();
             this.createSlides();
+            this.createTutorial();
             this.createBorder();
         };
         ChoiceFighter.prototype.shutdown = function () {
@@ -719,6 +749,7 @@ var StreetFighterCards;
             this.buttonBack.shutdown();
             this.buttonSelect.shutdown();
             this.buttonSettings.shutdown();
+            this.tutorial.shutdown();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         };
@@ -736,6 +767,10 @@ var StreetFighterCards;
         };
         ChoiceFighter.prototype.createSlides = function () {
             this.slides = new Slides(this.game, this.groupWindow);
+        };
+        ChoiceFighter.prototype.createTutorial = function () {
+            this.tutorial = new Tutorial(this.game, 'Выберите персонаж!');
+            this.groupWindow.addChild(this.tutorial);
         };
         ChoiceFighter.prototype.createBorder = function () {
             var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
