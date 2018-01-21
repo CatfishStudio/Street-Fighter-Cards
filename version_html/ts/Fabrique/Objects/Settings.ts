@@ -44,7 +44,7 @@ module Fabrique {
 
             /* sound */
             let buttonSound:Phaser.Button;
-            if(Config.settintSound === true) buttonSound = new Phaser.Button(this.game, startX+25, startY+50, Images.ButtonOn, this.onButtonClick, this);
+            if(Config.settingSound === true) buttonSound = new Phaser.Button(this.game, startX+25, startY+50, Images.ButtonOn, this.onButtonClick, this);
             else buttonSound = new Phaser.Button(this.game, startX+25, startY+50, Images.ButtonOff, this.onButtonClick, this);
             buttonSound.name = 'sound';
             this.addChild(buttonSound);
@@ -54,7 +54,7 @@ module Fabrique {
 
             /* music */
             let buttonMusic:Phaser.Button;
-            if(Config.settintMusic === true) buttonMusic = new Phaser.Button(this.game, startX+155, startY+50, Images.ButtonOn, this.onButtonClick, this);
+            if(Config.settingMusic === true) buttonMusic = new Phaser.Button(this.game, startX+155, startY+50, Images.ButtonOn, this.onButtonClick, this);
             else buttonMusic = new Phaser.Button(this.game, startX+155, startY+50, Images.ButtonOff, this.onButtonClick, this);
             buttonMusic.name = 'music';
             this.addChild(buttonMusic);
@@ -64,7 +64,7 @@ module Fabrique {
 
             /* tutorial */
             let buttonTutorial:Phaser.Button;
-            if(Config.settintTutorial === true) buttonTutorial = new Phaser.Button(this.game, startX+25, startY+100, Images.ButtonOn, this.onButtonClick, this);
+            if(Config.settingTutorial === true) buttonTutorial = new Phaser.Button(this.game, startX+25, startY+100, Images.ButtonOn, this.onButtonClick, this);
             else buttonTutorial = new Phaser.Button(this.game, startX+25, startY+100, Images.ButtonOff, this.onButtonClick, this);
             buttonTutorial.name = 'tutorial';
             this.addChild(buttonTutorial);
@@ -89,14 +89,14 @@ module Fabrique {
              switch (event.name) {
                 case 'sound':
                     {
-                        if(Config.settintSound === true){
-                            Config.settintSound = false;
+                        if(Config.settingSound === true){
+                            Config.settingSound = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
                             event.name = 'sound';
                             this.addChild(event);
                         }else{
-                            Config.settintSound = true;
+                            Config.settingSound = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
                             event.name = 'sound';
@@ -106,14 +106,14 @@ module Fabrique {
                     }
                 case 'music':
                     {
-                        if(Config.settintMusic === true){
-                            Config.settintMusic = false;
+                        if(Config.settingMusic === true){
+                            Config.settingMusic = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
                             event.name = 'music';
                             this.addChild(event);
                         }else{
-                            Config.settintMusic = true;
+                            Config.settingMusic = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
                             event.name = 'music';
@@ -123,14 +123,14 @@ module Fabrique {
                     }
                 case 'tutorial':
                     {
-                        if(Config.settintTutorial === true){
-                            Config.settintTutorial = false;
+                        if(Config.settingTutorial === true){
+                            Config.settingTutorial = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
                             event.name = 'tutorial';
                             this.addChild(event);
                         }else{
-                            Config.settintTutorial = true;
+                            Config.settingTutorial = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
                             event.name = 'tutorial';
