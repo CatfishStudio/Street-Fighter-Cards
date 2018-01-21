@@ -44,6 +44,7 @@ var Constants = (function () {
     Constants.GAME_HEIGHT = 600;
     Constants.BUTTON_PLAY = 'button_play';
     Constants.BUTTON_SETTINGS = 'button_settings';
+    Constants.BUTTON_SETTINGS_CLOSE = 'button_settings_close';
     Constants.BUTTON_INVATE = 'button_invate';
     Constants.BUTTON_BACK = 'button_back';
     Constants.BUTTON_SELECT = 'button_select';
@@ -69,6 +70,8 @@ var Images = (function () {
     Images.ArrowLeft = 'arrow_left.png';
     Images.ArrowRight = 'arrow_right.png';
     Images.TutorialImage = 'tutorial.png';
+    Images.ButtonOff = 'buttons_off.png';
+    Images.ButtonOn = 'buttons_on.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -76,6 +79,8 @@ var Images = (function () {
         Images.ArrowLeft,
         Images.ArrowRight,
         Images.TutorialImage,
+        Images.ButtonOff,
+        Images.ButtonOn,
     ];
     return Images;
 }());
@@ -215,7 +220,7 @@ var Fabrique;
             this.event = new Phaser.Signal();
             var startX = (Constants.GAME_WIDTH / 2) - 150;
             var startY = (Constants.GAME_HEIGHT / 2) - 150;
-            /* bacground and border */
+            /* background and border */
             var polygon = new Phaser.Polygon([
                 new Phaser.Point(startX, startY),
                 new Phaser.Point(startX + 10, startY - 10),
@@ -230,14 +235,14 @@ var Fabrique;
             graphicOverlay.beginFill(0x000000, 0.5);
             graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
             graphicOverlay.endFill();
-            graphicOverlay.beginFill(0x000000, 0.8);
+            graphicOverlay.beginFill(0xFFFFFF, 0.95);
             graphicOverlay.lineStyle(2, 0x777777, 1);
             graphicOverlay.drawPolygon(polygon);
             graphicOverlay.endFill();
             graphicOverlay.inputEnabled = true;
             this.addChild(graphicOverlay);
             /* title */
-            var title = new Phaser.Text(this.game, startX + 35, startY + 5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#FFFFFF", align: "left" });
+            var title = new Phaser.Text(this.game, startX + 35, startY + 5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#222222", align: "left" });
             this.addChild(title);
             /* sound */
             var buttonSound;
@@ -247,7 +252,7 @@ var Fabrique;
                 buttonSound = new Phaser.Button(this.game, startX + 25, startY + 50, Images.ButtonOff, this.onButtonClick, this);
             buttonSound.name = 'sound';
             this.addChild(buttonSound);
-            var labelSound = new Phaser.Text(this.game, startX + 90, startY + 55, "Звук", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            var labelSound = new Phaser.Text(this.game, startX + 90, startY + 55, "Звук", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelSound);
             /* music */
             var buttonMusic;
@@ -257,7 +262,7 @@ var Fabrique;
                 buttonMusic = new Phaser.Button(this.game, startX + 155, startY + 50, Images.ButtonOff, this.onButtonClick, this);
             buttonMusic.name = 'music';
             this.addChild(buttonMusic);
-            var labelMusic = new Phaser.Text(this.game, startX + 220, startY + 55, "Музыка", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            var labelMusic = new Phaser.Text(this.game, startX + 220, startY + 55, "Музыка", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelMusic);
             /* tutorial */
             var buttonTutorial;
@@ -267,15 +272,16 @@ var Fabrique;
                 buttonTutorial = new Phaser.Button(this.game, startX + 25, startY + 100, Images.ButtonOff, this.onButtonClick, this);
             buttonTutorial.name = 'tutorial';
             this.addChild(buttonTutorial);
-            var labelTutorial = new Phaser.Text(this.game, startX + 90, startY + 105, "Обучение в игре", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            var labelTutorial = new Phaser.Text(this.game, startX + 90, startY + 105, "Обучение в игре", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelTutorial);
             /* button close */
-            var buttonClose = new Phaser.Button(this.game, startX + 25, startY + 150, Sheet.ButtonClose, this.onButtonCloseClick, this, 1, 2);
-            buttonClose.name = 'setting_close';
-            this.addChild(buttonClose);
+            this.buttonClose = new Fabrique.ButtonComix(this.game, this, Constants.BUTTON_SETTINGS_CLOSE, 'ЗАКРЫТЬ', 50, startX + 60, startY + 150);
+            this.buttonClose.event.add(this.onButtonCloseClick, this);
             this.updateTransform();
         };
         Settings.prototype.onButtonCloseClick = function (event) {
+            this.buttonClose.shutdown();
+            this.removeAll();
             this.event.dispatch(event);
         };
         Settings.prototype.onButtonClick = function (event) {
@@ -647,6 +653,7 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
+    var Settings = Fabrique.Settings;
     var ButtonOrange = Fabrique.ButtonOrange;
     var AnimationBigKen = Fabrique.AnimationBigKen;
     var AnimationBigRyu = Fabrique.AnimationBigRyu;
@@ -685,11 +692,11 @@ var StreetFighterCards;
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 30, 0, 0);
-            this.buttonStart.event.add(this.onButtonClick.bind(this));
+            this.buttonStart.event.add(this.onButtonClick, this);
             this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35, 0, 50);
-            this.buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 30, 0, 100);
-            this.buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings.event.add(this.onButtonClick, this);
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
@@ -704,12 +711,12 @@ var StreetFighterCards;
                     }
                 case Constants.BUTTON_SETTINGS:
                     {
-                        //this.settingsCreate();
+                        this.settingsCreate();
                         break;
                     }
-                case 'setting_close':
+                case Constants.BUTTON_SETTINGS_CLOSE:
                     {
-                        //this.settingsClose();
+                        this.settingsClose();
                         break;
                     }
                 case Constants.BUTTON_INVATE:
@@ -719,6 +726,14 @@ var StreetFighterCards;
                 default:
                     break;
             }
+        };
+        Menu.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.groupMenu);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        Menu.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.groupMenu.removeChild(this.settings);
         };
         Menu.Name = "menu";
         return Menu;
@@ -730,6 +745,7 @@ var StreetFighterCards;
     var ButtonComix = Fabrique.ButtonComix;
     var Slides = Fabrique.Slides;
     var Tutorial = Fabrique.Tutorial;
+    var Settings = Fabrique.Settings;
     var ChoiceFighter = (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
@@ -776,11 +792,29 @@ var StreetFighterCards;
             var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.groupWindow.addChild(borderSprite);
         };
+        ChoiceFighter.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.groupWindow);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        ChoiceFighter.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.groupWindow.removeChild(this.settings);
+        };
         ChoiceFighter.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case Constants.BUTTON_BACK:
                     {
                         this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
                         break;
                     }
                 default:

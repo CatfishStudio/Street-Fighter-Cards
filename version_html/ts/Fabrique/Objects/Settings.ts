@@ -1,8 +1,9 @@
 module Fabrique {
-
+    
     export class Settings extends Phaser.Group {
         public event: Phaser.Signal;
-
+        private buttonClose: ButtonComix;
+        
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
             this.init();
@@ -13,7 +14,7 @@ module Fabrique {
             
             let startX:number = (Constants.GAME_WIDTH / 2) - 150;
             let startY:number = (Constants.GAME_HEIGHT / 2) - 150;
-            /* bacground and border */
+            /* background and border */
             let polygon:Phaser.Polygon = new Phaser.Polygon([   
                 new Phaser.Point(startX, startY), 
                 new Phaser.Point(startX+10, startY-10), 
@@ -29,7 +30,7 @@ module Fabrique {
             graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
             graphicOverlay.endFill();
             
-            graphicOverlay.beginFill(0x000000, 0.8);
+            graphicOverlay.beginFill(0xFFFFFF, 0.95);
             graphicOverlay.lineStyle(2, 0x777777, 1);
             graphicOverlay.drawPolygon(polygon)
             graphicOverlay.endFill();
@@ -38,7 +39,7 @@ module Fabrique {
             this.addChild(graphicOverlay);
 
             /* title */
-            let title:Phaser.Text = new Phaser.Text(this.game, startX+35, startY+5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#FFFFFF", align: "left" });
+            let title:Phaser.Text = new Phaser.Text(this.game, startX+35, startY+5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#222222", align: "left" });
             this.addChild(title);
 
             /* sound */
@@ -48,7 +49,7 @@ module Fabrique {
             buttonSound.name = 'sound';
             this.addChild(buttonSound);
 
-            let labelSound:Phaser.Text = new Phaser.Text(this.game, startX+90, startY+55, "Звук", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            let labelSound:Phaser.Text = new Phaser.Text(this.game, startX+90, startY+55, "Звук", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelSound);
 
             /* music */
@@ -58,7 +59,7 @@ module Fabrique {
             buttonMusic.name = 'music';
             this.addChild(buttonMusic);
 
-            let labelMusic:Phaser.Text = new Phaser.Text(this.game, startX+220, startY+55, "Музыка", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            let labelMusic:Phaser.Text = new Phaser.Text(this.game, startX+220, startY+55, "Музыка", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelMusic);
 
             /* tutorial */
@@ -68,19 +69,20 @@ module Fabrique {
             buttonTutorial.name = 'tutorial';
             this.addChild(buttonTutorial);
 
-            let labelTutorial:Phaser.Text = new Phaser.Text(this.game, startX+90, startY+105, "Обучение в игре", { font: "18px Georgia", fill: "#FFFFFF", align: "left" });
+            let labelTutorial:Phaser.Text = new Phaser.Text(this.game, startX+90, startY+105, "Обучение в игре", { font: "18px Georgia", fill: "#222222", align: "left" });
             this.addChild(labelTutorial);
-            
+
             /* button close */
-            let buttonClose = new Phaser.Button(this.game, startX+25, startY+150, Sheet.ButtonClose, this.onButtonCloseClick, this, 1, 2);
-            buttonClose.name = 'setting_close';
-            this.addChild(buttonClose);
+            this.buttonClose = new ButtonComix(this.game, this, Constants.BUTTON_SETTINGS_CLOSE, 'ЗАКРЫТЬ', 50, startX+60, startY+150);
+            this.buttonClose.event.add(this.onButtonCloseClick, this);
 
             this.updateTransform();
         }
 
          private onButtonCloseClick(event) {
-             this.event.dispatch(event);
+            this.buttonClose.shutdown();
+            this.removeAll();
+            this.event.dispatch(event);
          }
 
          private onButtonClick(event) {
@@ -140,8 +142,6 @@ module Fabrique {
                     break;
             }
          }
-
-
     }
 
 }

@@ -18,6 +18,7 @@ module StreetFighterCards {
         private buttonStart:ButtonOrange;
         private buttonSettings:ButtonOrange;
         private buttonInvate:ButtonOrange;
+        private settings:Settings;
 
         constructor() {
             super();
@@ -59,13 +60,13 @@ module StreetFighterCards {
             this.groupButtons.y = 300;
 
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 30, 0, 0);
-            this.buttonStart.event.add(this.onButtonClick.bind(this));
+            this.buttonStart.event.add(this.onButtonClick, this);
 
             this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35,  0, 50);
-            this.buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings.event.add(this.onButtonClick, this);
 
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 30,  0, 100);
-            this.buttonSettings.event.add(this.onButtonClick.bind(this));
+            this.buttonSettings.event.add(this.onButtonClick, this);
         }
 
         private onButtonClick(event):void {
@@ -82,12 +83,12 @@ module StreetFighterCards {
                     }
                 case Constants.BUTTON_SETTINGS:
                     {
-                        //this.settingsCreate();
+                        this.settingsCreate();
                         break;
                     }
-                case 'setting_close':
+                case Constants.BUTTON_SETTINGS_CLOSE:
                     {
-                        //this.settingsClose();
+                        this.settingsClose();
                         break;
                     }
                 case Constants.BUTTON_INVATE:
@@ -100,5 +101,14 @@ module StreetFighterCards {
             }
         }
 
+        private settingsCreate() {
+            this.settings = new Settings(this.game, this.groupMenu);
+            this.settings.event.add(this.onButtonClick, this);
+        }
+        
+        private settingsClose() {
+            this.settings.removeAll();
+            this.groupMenu.removeChild(this.settings);
+        }
     }
 }

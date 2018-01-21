@@ -2,6 +2,7 @@ module StreetFighterCards {
     import ButtonComix = Fabrique.ButtonComix;
     import Slides = Fabrique.Slides;
     import Tutorial = Fabrique.Tutorial;
+    import Settings = Fabrique.Settings;
 
     export class ChoiceFighter extends Phaser.State{
 
@@ -16,6 +17,7 @@ module StreetFighterCards {
 
         private slides:Slides;
         private tutorial:Tutorial;
+        private settings:Settings;
 
         constructor() {
             super();
@@ -71,6 +73,16 @@ module StreetFighterCards {
             this.groupWindow.addChild(borderSprite);
         }
 
+        private settingsCreate() {
+            this.settings = new Settings(this.game, this.groupWindow);
+            this.settings.event.add(this.onButtonClick, this);
+        }
+        
+        private settingsClose() {
+            this.settings.removeAll();
+            this.groupWindow.removeChild(this.settings);
+        }
+
         private onButtonClick(event) {
             switch (event.name) {
                 case Constants.BUTTON_BACK:
@@ -78,7 +90,16 @@ module StreetFighterCards {
                         this.game.state.start(Menu.Name, true, false);
                         break;
                     }
-                            
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
+                        break;
+                    }           
                 default:
                     break;
             }

@@ -7,6 +7,8 @@ class Images {
     public static ArrowLeft: string = 'arrow_left.png';
     public static ArrowRight: string = 'arrow_right.png';
     public static TutorialImage: string = 'tutorial.png';
+    public static ButtonOff: string = 'buttons_off.png';
+    public static ButtonOn: string = 'buttons_on.png';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -15,5 +17,7 @@ class Images {
         Images.ArrowLeft,
         Images.ArrowRight,
         Images.TutorialImage,
+        Images.ButtonOff,
+        Images.ButtonOn,
     ]; 
 }
