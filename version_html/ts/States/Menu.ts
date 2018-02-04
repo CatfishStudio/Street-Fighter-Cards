@@ -69,10 +69,15 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick, this);
         }
 
+        private dataInit():void {
+            this.game.cache.getJSON('deck1', true);
+        }
+
         private onButtonClick(event):void {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
+                        this.dataInit();
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }

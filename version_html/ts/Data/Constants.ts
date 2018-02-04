@@ -2,6 +2,9 @@ class Constants {
     public static GAME_WIDTH            = 800;
     public static GAME_HEIGHT           = 600;
 
+    public static CARD_TYPE_ATTACK      = 'card_type_attack';
+    public static CARD_TYPE_DEFENSE     = 'card_type_defense';
+
     public static BUTTON_PLAY           = 'button_play';
     public static BUTTON_SETTINGS       = 'button_settings';
     public static BUTTON_SETTINGS_CLOSE = 'button_settings_close';

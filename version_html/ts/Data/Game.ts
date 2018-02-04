@@ -5,6 +5,22 @@ module GameData {
         frame:string;
     }
 
+    export interface ICard {
+        id:number;
+        type:string;
+        power:number;
+        life:number;
+        energy:number;
+    }
+
+    export interface IPersonage {
+        id:number;
+        attack:number;
+        defense:number;
+        life:number;
+        energy:number;
+    }
+
     export class Data {
         public static fighters:any[][] = [
             [0, 'Akuma', 'akuma_card.png'],
@@ -31,5 +47,10 @@ module GameData {
 
         public static fighterIndex:number = 0;
 
+        public static personages:IPersonage[];
+        public static deck1:ICard[];
+        
     }
+
+
 }

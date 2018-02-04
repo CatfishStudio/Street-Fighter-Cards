@@ -16,7 +16,7 @@
   },
   "private": true,
   "devDependencies": {
-	  "phaser-ce": "^2.9.4",
+	"phaser-ce": "^2.9.4",
     "typescript": "^2.0.x",
     "node-static": "^0.7.10"
   },
