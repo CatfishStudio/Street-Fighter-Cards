@@ -70,7 +70,12 @@ module StreetFighterCards {
         }
 
         private dataInit():void {
-            this.game.cache.getJSON('deck1', true);
+            let deck1 = this.game.cache.getJSON('deck1').Deck;
+            console.log(deck1);
+            for(let key in deck1.cards){
+                console.log(key);
+                console.log(deck1.cards[key].type);
+            }
         }
 
         private onButtonClick(event):void {

@@ -1,6 +1,6 @@
 {
     "Deck":{
-        "card":[
+        "cards":[
             {
                 "id": "1",
                 "type":"card_type_attack",

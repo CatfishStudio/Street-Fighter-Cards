@@ -1,19 +1,14 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Game = /** @class */ (function (_super) {
+    var Game = (function (_super) {
         __extends(Game, _super);
         function Game() {
-            var _this = _super.call(this, {
+            _super.call(this, {
                 enableDebug: false,
                 width: Constants.GAME_WIDTH,
                 height: Constants.GAME_HEIGHT,
@@ -22,12 +17,11 @@ var StreetFighterCards;
                 transparent: true,
                 antialias: true,
                 forceSetTimeOut: false
-            }) || this;
-            _this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
-            _this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
-            _this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
-            _this.state.add(StreetFighterCards.ChoiceFighter.Name, StreetFighterCards.ChoiceFighter, false);
-            return _this;
+            });
+            this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
+            this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
+            this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
+            this.state.add(StreetFighterCards.ChoiceFighter.Name, StreetFighterCards.ChoiceFighter, false);
         }
         Game.getInstance = function () {
             if (StreetFighterCards.Game.instance === null) {
@@ -43,7 +37,7 @@ var StreetFighterCards;
     }(Phaser.Game));
     StreetFighterCards.Game = Game;
 })(StreetFighterCards || (StreetFighterCards = {}));
-var Constants = /** @class */ (function () {
+var Constants = (function () {
     function Constants() {
     }
     Constants.GAME_WIDTH = 800;
@@ -60,7 +54,7 @@ var Constants = /** @class */ (function () {
     Constants.BUTTON_ARROW_RIGHT = 'button_arrow_right';
     return Constants;
 }());
-var Config = /** @class */ (function () {
+var Config = (function () {
     function Config() {
     }
     Config.settingSound = true;
@@ -68,7 +62,7 @@ var Config = /** @class */ (function () {
     Config.settingTutorial = true;
     return Config;
 }());
-var Images = /** @class */ (function () {
+var Images = (function () {
     function Images() {
     }
     Images.PreloaderImage = 'preloader.png';
@@ -92,7 +86,7 @@ var Images = /** @class */ (function () {
     ];
     return Images;
 }());
-var Atlases = /** @class */ (function () {
+var Atlases = (function () {
     function Atlases() {
     }
     Atlases.BigKen = 'BigKen';
@@ -105,7 +99,7 @@ var Atlases = /** @class */ (function () {
     ];
     return Atlases;
 }());
-var Sheet = /** @class */ (function () {
+var Sheet = (function () {
     function Sheet() {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
@@ -118,7 +112,7 @@ var Sheet = /** @class */ (function () {
 }());
 var GameData;
 (function (GameData) {
-    var Data = /** @class */ (function () {
+    var Data = (function () {
         function Data() {
         }
         Data.fighters = [
@@ -150,13 +144,12 @@ var GameData;
 })(GameData || (GameData = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Tutorial = /** @class */ (function (_super) {
+    var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
         function Tutorial(game, text) {
-            var _this = _super.call(this, game, 25, 600, Images.TutorialImage) || this;
-            _this.text = text;
-            _this.init();
-            return _this;
+            _super.call(this, game, 25, 600, Images.TutorialImage);
+            this.text = text;
+            this.init();
         }
         Tutorial.prototype.shutdown = function () {
             this.tween.stop();
@@ -219,12 +212,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Settings = /** @class */ (function (_super) {
+    var Settings = (function (_super) {
         __extends(Settings, _super);
         function Settings(game, parent) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.init();
-            return _this;
+            _super.call(this, game, parent);
+            this.init();
         }
         Settings.prototype.init = function () {
             this.event = new Phaser.Signal();
@@ -360,12 +352,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var ButtonOrange = /** @class */ (function (_super) {
+    var ButtonOrange = (function (_super) {
         __extends(ButtonOrange, _super);
         function ButtonOrange(game, parent, name, text, textX, x, y) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.init(name, text, textX, x, y);
-            return _this;
+            _super.call(this, game, parent);
+            this.init(name, text, textX, x, y);
         }
         ButtonOrange.prototype.shutdown = function () {
             this.removeAll();
@@ -391,12 +382,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var ButtonComix = /** @class */ (function (_super) {
+    var ButtonComix = (function (_super) {
         __extends(ButtonComix, _super);
         function ButtonComix(game, parent, name, text, textX, x, y) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.init(name, text, textX, x, y);
-            return _this;
+            _super.call(this, game, parent);
+            this.init(name, text, textX, x, y);
         }
         ButtonComix.prototype.shutdown = function () {
             this.removeAll();
@@ -428,12 +418,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var AnimationBigKen = /** @class */ (function (_super) {
+    var AnimationBigKen = (function (_super) {
         __extends(AnimationBigKen, _super);
         function AnimationBigKen(game) {
-            var _this = _super.call(this, game, 0, 0, Atlases.BigKen, 0) || this;
-            _this.init();
-            return _this;
+            _super.call(this, game, 0, 0, Atlases.BigKen, 0);
+            this.init();
         }
         AnimationBigKen.prototype.init = function () {
             var anim = this.animations.add(Atlases.BigKen);
@@ -448,12 +437,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var AnimationBigRyu = /** @class */ (function (_super) {
+    var AnimationBigRyu = (function (_super) {
         __extends(AnimationBigRyu, _super);
         function AnimationBigRyu(game) {
-            var _this = _super.call(this, game, 0, 0, Atlases.BigRyu, 0) || this;
-            _this.init();
-            return _this;
+            _super.call(this, game, 0, 0, Atlases.BigRyu, 0);
+            this.init();
         }
         AnimationBigRyu.prototype.init = function () {
             var anim = this.animations.add(Atlases.BigRyu);
@@ -468,13 +456,12 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var FighterCard = /** @class */ (function (_super) {
+    var FighterCard = (function (_super) {
         __extends(FighterCard, _super);
         function FighterCard(game, x, y, data) {
-            var _this = _super.call(this, game, x, y, Atlases.BigCards, data.frame) || this;
-            _this.dataFighter = data;
-            _this.init();
-            return _this;
+            _super.call(this, game, x, y, Atlases.BigCards, data.frame);
+            this.dataFighter = data;
+            this.init();
         }
         FighterCard.prototype.init = function () {
             this.damageText = this.game.add.text(5, 240, "5%", { font: "18px Arial", fill: "#FFFFFF", align: "left" });
@@ -488,14 +475,13 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Slides = /** @class */ (function (_super) {
+    var Slides = (function (_super) {
         __extends(Slides, _super);
         function Slides(game, parent) {
-            var _this = _super.call(this, game, parent) || this;
-            _this.fighters = [];
-            _this.init();
-            _this.createSlides();
-            return _this;
+            _super.call(this, game, parent);
+            this.fighters = [];
+            this.init();
+            this.createSlides();
         }
         Slides.prototype.shutdown = function () {
             this.slideGroup.removeAll();
@@ -578,12 +564,11 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Boot = /** @class */ (function (_super) {
+    var Boot = (function (_super) {
         __extends(Boot, _super);
         function Boot() {
-            var _this = _super.call(this) || this;
-            _this.name = Boot.Name;
-            return _this;
+            _super.call(this);
+            this.name = Boot.Name;
         }
         /*
         * Загружаем ассеты необходимые для прелоадера
@@ -629,13 +614,12 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Preloader = /** @class */ (function (_super) {
+    var Preloader = (function (_super) {
         __extends(Preloader, _super);
         function Preloader() {
-            var _this = _super.call(this) || this;
-            _this.name = Preloader.Name;
-            _this.loadPercent = 0;
-            return _this;
+            _super.call(this);
+            this.name = Preloader.Name;
+            this.loadPercent = 0;
         }
         Preloader.prototype.init = function (config) {
             this.config = config;
@@ -676,12 +660,11 @@ var StreetFighterCards;
     var ButtonOrange = Fabrique.ButtonOrange;
     var AnimationBigKen = Fabrique.AnimationBigKen;
     var AnimationBigRyu = Fabrique.AnimationBigRyu;
-    var Menu = /** @class */ (function (_super) {
+    var Menu = (function (_super) {
         __extends(Menu, _super);
         function Menu() {
-            var _this = _super.call(this) || this;
-            _this.name = Menu.Name;
-            return _this;
+            _super.call(this);
+            this.name = Menu.Name;
         }
         Menu.prototype.create = function () {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
@@ -719,7 +702,12 @@ var StreetFighterCards;
             this.buttonSettings.event.add(this.onButtonClick, this);
         };
         Menu.prototype.dataInit = function () {
-            this.game.cache.getJSON('deck1', true);
+            var deck1 = this.game.cache.getJSON('deck1').Deck;
+            console.log(deck1);
+            for (var key in deck1.cards) {
+                console.log(key);
+                console.log(deck1.cards[key].type);
+            }
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
@@ -770,12 +758,11 @@ var StreetFighterCards;
     var Slides = Fabrique.Slides;
     var Tutorial = Fabrique.Tutorial;
     var Settings = Fabrique.Settings;
-    var ChoiceFighter = /** @class */ (function (_super) {
+    var ChoiceFighter = (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
-            var _this = _super.call(this) || this;
-            _this.name = StreetFighterCards.Menu.Name;
-            return _this;
+            _super.call(this);
+            this.name = StreetFighterCards.Menu.Name;
         }
         ChoiceFighter.prototype.create = function () {
             this.groupWindow = new Phaser.Group(this.game, this.stage);
