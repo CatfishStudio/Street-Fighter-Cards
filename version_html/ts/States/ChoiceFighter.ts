@@ -85,6 +85,11 @@ module StreetFighterCards {
 
         private onButtonClick(event) {
             switch (event.name) {
+                case Constants.BUTTON_SELECT:
+                    {
+                        this.game.state.start(Tournament.Name, true, false);
+                        break;
+                    }
                 case Constants.BUTTON_BACK:
                     {
                         this.game.state.start(Menu.Name, true, false);

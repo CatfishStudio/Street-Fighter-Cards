@@ -18,6 +18,7 @@ module StreetFighterCards{
                         this.state.add(Preloader.Name, Preloader, false);
                         this.state.add(Menu.Name, Menu, false);
                         this.state.add(ChoiceFighter.Name, ChoiceFighter, false);
+                        this.state.add(Tournament.Name, Tournament, false);
                 }
                 
                 public static getInstance(): Game {

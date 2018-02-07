@@ -9,6 +9,7 @@ class Images {
     public static TutorialImage: string = 'tutorial.png';
     public static ButtonOff: string = 'buttons_off.png';
     public static ButtonOn: string = 'buttons_on.png';
+    public static BackgroundTournament: string = 'tournament/background_tournament.jpg';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -19,5 +20,6 @@ class Images {
         Images.TutorialImage,
         Images.ButtonOff,
         Images.ButtonOn,
+        Images.BackgroundTournament,
     ]; 
 }
