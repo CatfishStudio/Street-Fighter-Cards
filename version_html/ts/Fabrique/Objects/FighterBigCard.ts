@@ -15,10 +15,16 @@ module Fabrique {
         }
 
         private init():void{
-            this.damageText = this.game.add.text(5, 240, "5%", { font: "18px Arial", fill: "#FFFFFF", align: "left" })
-            this.addChild(this.damageText);
-            this.defenseText = this.game.add.text(5, 45, "10%", { font: "18px Arial", fill: "#FFFFFF", align: "left" })
+            this.defenseText = this.game.add.text(13, 13, "500", { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
             this.addChild(this.defenseText);
+            this.healthText = this.game.add.text(150, 13, "200", { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
+            this.addChild(this.healthText);
+
+            this.damageText = this.game.add.text(11, 242, "300", { font: "bold 18px Times New Roman", fill: "#D83900", align: "left"})
+            this.addChild(this.damageText);
+            this.energyText = this.game.add.text(157, 242, "10", { font: "bold 18px Times New Roman", fill: "#0026FF", align: "left" })
+            this.addChild(this.energyText);
+            
         }
 
 

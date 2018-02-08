@@ -21,10 +21,10 @@ module Fabrique {
             button.name = name;
             this.addChild(button);
 
-            let textBack = new Phaser.Text(this.game, textX - 1, 14, text, {font: "16px Arial Black", fill: "#FFFFFF"});
+            let textBack = new Phaser.Text(this.game, textX - 1, 14, text, {font: "bold 16px Arial", fill: "#FFFFFF"});
             this.addChild(textBack);
 
-            let textFront = new Phaser.Text(this.game, textX, 15, text, {font: "16px Arial Black", fill: "#9B372C"});
+            let textFront = new Phaser.Text(this.game, textX, 15, text, {font: "bold 16px Arial", fill: "#9B372C"});
             this.addChild(textFront);
         }
 

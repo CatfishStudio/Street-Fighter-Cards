@@ -24,7 +24,7 @@ module Fabrique {
             button.events.onInputOver.add(this.onButtonInputOver, this);
             this.addChild(button);
 
-            this.textButton = new Phaser.Text(this.game, textX, 20, text, {font: "16px Arial Black", fill: "#666666"});
+            this.textButton = new Phaser.Text(this.game, textX, 20, text, {font: "bold 16px Arial", fill: "#666666"});
             this.addChild(this.textButton);
         }
 
