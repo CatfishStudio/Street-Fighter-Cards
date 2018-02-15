@@ -33,6 +33,27 @@ class Images {
     public static yangBig: string = 'tournament/yang.png';
     public static yunBig: string = 'tournament/yun.png';
     
+    public static akumaIcon: string = 'icons/akuma.png';
+    public static alexIcon: string = 'icons/alex.png';
+    public static chunliIcon: string = 'icons/chun_li.png';
+    public static dudleyIcon: string = 'icons/dudley.png';
+    public static elenaIcon: string = 'icons/elena.png';
+    public static gillIcon: string = 'icons/gill.png';
+    public static hugoIcon: string = 'icons/hugo.png';
+    public static ibukiIcon: string = 'icons/ibuki.png';
+    public static kenIcon: string = 'icons/ken.png';
+    public static makotoIcon: string = 'icons/makoto.png';
+    public static necroIcon: string = 'icons/necro.png';
+    public static oroIcon: string = 'icons/oro.png';
+    public static qIcon: string = 'icons/q.png';
+    public static remyIcon: string = 'icons/remy.png';
+    public static ryuIcon: string = 'icons/ryu.png';
+    public static seanIcon: string = 'icons/sean.png';
+    public static twelveIcon: string = 'icons/twelve.png';
+    public static urienIcon: string = 'icons/urien.png';
+    public static yangIcon: string = 'icons/yang.png';
+    public static yunIcon: string = 'icons/yun.png';
+    
     public static preloadList:Array<string> = [
         Images.MenuImage,
         Images.BorderImage,
@@ -43,6 +64,7 @@ class Images {
         Images.ButtonOff,
         Images.ButtonOn,
         Images.BackgroundTournament,
+
         Images.akumaBig,
         Images.alexBig,
         Images.chunliBig,
@@ -63,5 +85,26 @@ class Images {
         Images.urienBig,
         Images.yangBig,
         Images.yunBig,
+
+        Images.akumaIcon,
+        Images.alexIcon,
+        Images.chunliIcon,
+        Images.dudleyIcon,
+        Images.elenaIcon,
+        Images.gillIcon,
+        Images.hugoIcon,
+        Images.ibukiIcon,
+        Images.kenIcon,
+        Images.makotoIcon,
+        Images.necroIcon,
+        Images.oroIcon,
+        Images.qIcon,
+        Images.remyIcon,
+        Images.ryuIcon,
+        Images.seanIcon,
+        Images.twelveIcon,
+        Images.urienIcon,
+        Images.yangIcon,
+        Images.yunIcon,
     ]; 
 }

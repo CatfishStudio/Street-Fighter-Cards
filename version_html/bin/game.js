@@ -103,6 +103,26 @@ var Images = /** @class */ (function () {
     Images.urienBig = 'tournament/urien.png';
     Images.yangBig = 'tournament/yang.png';
     Images.yunBig = 'tournament/yun.png';
+    Images.akumaIcon = 'icons/akuma.png';
+    Images.alexIcon = 'icons/alex.png';
+    Images.chunliIcon = 'icons/chun_li.png';
+    Images.dudleyIcon = 'icons/dudley.png';
+    Images.elenaIcon = 'icons/elena.png';
+    Images.gillIcon = 'icons/gill.png';
+    Images.hugoIcon = 'icons/hugo.png';
+    Images.ibukiIcon = 'icons/ibuki.png';
+    Images.kenIcon = 'icons/ken.png';
+    Images.makotoIcon = 'icons/makoto.png';
+    Images.necroIcon = 'icons/necro.png';
+    Images.oroIcon = 'icons/oro.png';
+    Images.qIcon = 'icons/q.png';
+    Images.remyIcon = 'icons/remy.png';
+    Images.ryuIcon = 'icons/ryu.png';
+    Images.seanIcon = 'icons/sean.png';
+    Images.twelveIcon = 'icons/twelve.png';
+    Images.urienIcon = 'icons/urien.png';
+    Images.yangIcon = 'icons/yang.png';
+    Images.yunIcon = 'icons/yun.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -133,6 +153,26 @@ var Images = /** @class */ (function () {
         Images.urienBig,
         Images.yangBig,
         Images.yunBig,
+        Images.akumaIcon,
+        Images.alexIcon,
+        Images.chunliIcon,
+        Images.dudleyIcon,
+        Images.elenaIcon,
+        Images.gillIcon,
+        Images.hugoIcon,
+        Images.ibukiIcon,
+        Images.kenIcon,
+        Images.makotoIcon,
+        Images.necroIcon,
+        Images.oroIcon,
+        Images.qIcon,
+        Images.remyIcon,
+        Images.ryuIcon,
+        Images.seanIcon,
+        Images.twelveIcon,
+        Images.urienIcon,
+        Images.yangIcon,
+        Images.yunIcon,
     ];
     return Images;
 }());
@@ -166,24 +206,24 @@ var GameData;
         function Data() {
         }
         Data.fighters = [
-            [0, 'Akuma', 'akuma_card.png', Images.akumaBig],
-            [1, 'Alex', 'alex_card.png', Images.alexBig],
-            [2, 'Chun Li', 'chun_li_card.png', Images.chunliBig],
-            [3, 'Dudley', 'dudley_card.png', Images.dudleyBig],
-            [4, 'Elena', 'elena_card.png', Images.elenaBig],
-            [5, 'Gill', 'gill_card.png', Images.gillBig],
-            [6, 'Hugo', 'hugo_card.png', Images.hugoBig],
-            [7, 'Ibuki', 'ibuki_card.png', Images.ibukiBig],
-            [8, 'Ken', 'ken_card.png', Images.kenBig],
-            [9, 'Makoto', 'makoto_card.png', Images.makotoBig],
-            [10, 'Necro', 'necro_card.png', Images.necroBig],
-            [11, 'Oro', 'oro_card.png', Images.oroBig],
-            [12, 'Q', 'q_card.png', Images.qBig],
-            [13, 'Remy', 'remy_card.png', Images.remyBig],
-            [14, 'Ryu', 'ryu_card.png', Images.ryuBig],
-            [15, 'Sean', 'sean_card.png', Images.seanBig],
-            [18, 'Yang', 'yang_card.png', Images.yangBig],
-            [19, 'Yun', 'yun_card.png', Images.yunBig]
+            [0, 'Akuma', 'akuma_card.png', Images.akumaBig, Images.akumaIcon],
+            [1, 'Alex', 'alex_card.png', Images.alexBig, Images.alexIcon],
+            [2, 'Chun Li', 'chun_li_card.png', Images.chunliBig, Images.chunliIcon],
+            [3, 'Dudley', 'dudley_card.png', Images.dudleyBig, Images.dudleyIcon],
+            [4, 'Elena', 'elena_card.png', Images.elenaBig, Images.elenaIcon],
+            [5, 'Gill', 'gill_card.png', Images.gillBig, Images.gillBig],
+            [6, 'Hugo', 'hugo_card.png', Images.hugoBig, Images.hugoIcon],
+            [7, 'Ibuki', 'ibuki_card.png', Images.ibukiBig, Images.ibukiIcon],
+            [8, 'Ken', 'ken_card.png', Images.kenBig, Images.kenIcon],
+            [9, 'Makoto', 'makoto_card.png', Images.makotoBig, Images.makotoIcon],
+            [10, 'Necro', 'necro_card.png', Images.necroBig, Images.necroIcon],
+            [11, 'Oro', 'oro_card.png', Images.oroBig, Images.oroIcon],
+            [12, 'Q', 'q_card.png', Images.qBig, Images.qIcon],
+            [13, 'Remy', 'remy_card.png', Images.remyBig, Images.remyBig],
+            [14, 'Ryu', 'ryu_card.png', Images.ryuBig, Images.ryuIcon],
+            [15, 'Sean', 'sean_card.png', Images.seanBig, Images.seanIcon],
+            [18, 'Yang', 'yang_card.png', Images.yangBig, Images.yangIcon],
+            [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];
         Data.fighterIndex = 0;
         return Data;
@@ -622,6 +662,34 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.Slides = Slides;
 })(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var Icon = /** @class */ (function (_super) {
+        __extends(Icon, _super);
+        function Icon(game, parent, fighterIndex, x, y) {
+            var _this = _super.call(this, game, parent) || this;
+            _this.init(fighterIndex, x, y);
+            return _this;
+        }
+        Icon.prototype.shutdown = function () {
+            this.removeAll();
+        };
+        Icon.prototype.init = function (index, x, y) {
+            this.x = x;
+            this.y = y;
+            var iconMask = new Phaser.Graphics(this.game, 0, 0);
+            iconMask.beginFill(0xFFFFFF);
+            iconMask.drawCircle(0, 0, 100);
+            //iconMask.endFill();
+            var iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[index][4]);
+            iconSprite.mask = iconMask;
+            this.addChild(iconSprite);
+            var border;
+        };
+        return Icon;
+    }(Phaser.Group));
+    Fabrique.Icon = Icon;
+})(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var Boot = /** @class */ (function (_super) {
@@ -909,6 +977,7 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
+    var Icon = Fabrique.Icon;
     var Tournament = /** @class */ (function (_super) {
         __extends(Tournament, _super);
         function Tournament() {
@@ -927,10 +996,12 @@ var StreetFighterCards;
             this.group.addChild(this.player);
             this.opponent = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
             this.group.addChild(this.opponent);
+            this.icon = new Icon(this.game, this.group, 0, 50, 50);
             this.border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(this.border);
         };
         Tournament.prototype.shutdown = function () {
+            this.icon.shutdown();
             this.group.removeAll();
         };
         Tournament.Name = "tournament";
@@ -953,6 +1024,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\FighterBigCard.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
+/// <reference path="Fabrique\Objects\Icon.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
