@@ -6,11 +6,6 @@ module StreetFighterCards {
         public static Name: string = "tournament";
         public name: string = Tournament.Name;
 
-        private background: Phaser.Sprite;
-        private player: Phaser.Sprite;
-        private opponent: Phaser.Sprite;
-        private border: Phaser.Sprite; 
-        
         private icon: Icon;
 
         private group: Phaser.Group;
@@ -22,22 +17,31 @@ module StreetFighterCards {
         public create():void {
             this.group = new Phaser.Group(this.game, this.stage);
             
-            this.background = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament)
-            this.group.addChild(this.background);
+            /* Background */
+            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament)
+            this.group.addChild(background);
 
-            this.player = new Phaser.Sprite(this.game, 200, 300, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
-            this.player.anchor.setTo(.5,.5);
-            this.player.scale.x *= -1;
+            /* Player */
+            let player: Phaser.Sprite = new Phaser.Sprite(this.game, 200, 300, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
+            player.anchor.setTo(.5,.5);
+            player.scale.x *= -1;
             //this.player.scale.y *= -1;
-            this.group.addChild(this.player);
+            this.group.addChild(player);
 
-            this.opponent = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
-            this.group.addChild(this.opponent);
+            /* Opponent */
+            let opponent: Phaser.Sprite = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
+            this.group.addChild(opponent);
 
-            this.icon = new Icon(this.game, this.group, 0, 50, 50);
+            /* VS */
+            let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 150, 200, Images.vsTournament);
+            this.group.addChild(vs);
 
-            this.border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
-            this.group.addChild(this.border);
+            /* Icons */
+            this.icon = new Icon(this.game, this.group, 0, 25, 425);
+
+            /* Border */
+            let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
+            this.group.addChild(border);
         }
 
         public shutdown():void {

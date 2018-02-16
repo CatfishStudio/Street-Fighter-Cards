@@ -64,6 +64,7 @@ class Images {
         Images.ButtonOff,
         Images.ButtonOn,
         Images.BackgroundTournament,
+        Images.vsTournament,
 
         Images.akumaBig,
         Images.alexBig,
