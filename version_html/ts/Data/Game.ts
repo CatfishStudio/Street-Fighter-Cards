@@ -6,7 +6,6 @@ module GameData {
     }
 
     export interface ICard {
-        id:number;
         type:string;
         power:number;
         life:number;
@@ -15,10 +14,12 @@ module GameData {
 
     export interface IPersonage {
         id:number;
+        name:string;
         attack:number;
         defense:number;
         life:number;
         energy:number;
+        deck:ICard[];
     }
 
     export class Data {

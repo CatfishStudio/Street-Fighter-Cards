@@ -42,7 +42,10 @@ module StreetFighterCards {
                     this.game.load.spritesheet(Sheet.preloadList[0], 'assets/images/' + Sheet.preloadList[0], 186, 46);
                     this.game.load.spritesheet(Sheet.preloadList[1], 'assets/images/' + Sheet.preloadList[1], 187, 56);
 
-                    this.game.load.json('deck1', 'assets/data/deck1.json');
+                    Decks.preloadList.forEach((assetName: string) => {
+                        this.game.load.json(assetName, 'assets/data/'+ assetName);
+                    });
+                    
                 }
             });
         }

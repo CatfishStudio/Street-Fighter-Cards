@@ -195,6 +195,15 @@ var Sheet = (function () {
     ];
     return Sheet;
 }());
+var Decks = (function () {
+    function Decks() {
+    }
+    Decks.akumaDeckJson = 'akuma_deck.json';
+    Decks.preloadList = [
+        Decks.akumaDeckJson,
+    ];
+    return Decks;
+}());
 var GameData;
 (function (GameData) {
     var Data = (function () {
@@ -686,19 +695,11 @@ var Fabrique;
             var iconMask = new Phaser.Graphics(this.game, 0, 0);
             iconMask.beginFill(0xFFFFFF);
             iconMask.drawPolygon(polygonMask);
-            //iconMask.drawCircle(x, y, 100);
             iconMask.endFill();
             var iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[index][4]);
             iconSprite.mask = iconMask;
             this.addChild(iconSprite);
-            /*
-                        let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-                        border.beginFill(0xFFFFFF, 0.95);
-                        border.lineStyle(2, 0x777777, 1);
-                        border.drawPolygon(polygonLeft);
-                        border.endFill();
-                        this.addChild(border);
-            */
+            //let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
         };
         return Icon;
     }(Phaser.Group));
@@ -742,7 +743,9 @@ var StreetFighterCards;
                     */
                     _this.game.load.spritesheet(Sheet.preloadList[0], 'assets/images/' + Sheet.preloadList[0], 186, 46);
                     _this.game.load.spritesheet(Sheet.preloadList[1], 'assets/images/' + Sheet.preloadList[1], 187, 56);
-                    _this.game.load.json('deck1', 'assets/data/deck1.json');
+                    Decks.preloadList.forEach(function (assetName) {
+                        _this.game.load.json(assetName, 'assets/data/' + assetName);
+                    });
                 }
             });
         };
@@ -844,12 +847,36 @@ var StreetFighterCards;
             this.buttonSettings.event.add(this.onButtonClick, this);
         };
         Menu.prototype.dataInit = function () {
-            var deck1 = this.game.cache.getJSON('deck1').Deck;
-            console.log(deck1);
-            for (var key in deck1.cards) {
-                console.log(key);
-                console.log(deck1.cards[key].type);
+            /*
+            let idPers = this.game.cache.getJSON(Decks.akumaDeckJson).id;
+            let namePers = this.game.cache.getJSON(Decks.akumaDeckJson).name;
+            let energyPers = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
+            let deckPers = this.game.cache.getJSON(Decks.akumaDeckJson).deck;
+
+            console.log("ID:" + idPers);
+            console.log("NAME:" + namePers);
+            console.log("ENERGY:" + energyPers);
+            console.log(deckPers);
+
+            for(let key in deckPers.cards){
+                console.log("KEY:" + key);
+                console.log("TYPE:" + deckPers.cards[key].type);
+                console.log("POWER:" + deckPers.cards[key].power);
+                console.log("LIFE:" + deckPers.cards[key].life);
+                console.log("ENERGY:" + deckPers.cards[key].energy);
             }
+            */
+            var personage = {};
+            personage.id = this.game.cache.getJSON(Decks.akumaDeckJson).id;
+            personage.name = this.game.cache.getJSON(Decks.akumaDeckJson).name;
+            personage.attack = 0;
+            personage.defense = 0;
+            personage.energy = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
+            personage.life = 200;
+            personage.deck = [];
+            GameData.Data.personages = [];
+            GameData.Data.personages.push(personage);
+            console.log(GameData.Data.personages[0]);
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
@@ -1032,6 +1059,7 @@ var StreetFighterCards;
 /// <reference path="Data\Images.ts" />
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
+/// <reference path="Data\Decks.ts" />
 /// <reference path="Data\Game.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />

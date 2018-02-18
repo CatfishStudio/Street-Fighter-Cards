@@ -5,6 +5,7 @@
 /// <reference path="Data\Images.ts" />
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
+/// <reference path="Data\Decks.ts" />
 /// <reference path="Data\Game.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />

@@ -5,7 +5,8 @@ module StreetFighterCards {
     import ButtonOrange = Fabrique.ButtonOrange;
     import AnimationBigKen = Fabrique.AnimationBigKen;
     import AnimationBigRyu = Fabrique.AnimationBigRyu;
-
+    import IPersonage = GameData.IPersonage;
+    
     export class Menu extends Phaser.State{
 
         public static Name: string = "menu";
@@ -70,12 +71,40 @@ module StreetFighterCards {
         }
 
         private dataInit():void {
-            let deck1 = this.game.cache.getJSON('deck1').Deck;
-            console.log(deck1);
-            for(let key in deck1.cards){
-                console.log(key);
-                console.log(deck1.cards[key].type);
+            
+            /*
+            let idPers = this.game.cache.getJSON(Decks.akumaDeckJson).id;
+            let namePers = this.game.cache.getJSON(Decks.akumaDeckJson).name;
+            let energyPers = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
+            let deckPers = this.game.cache.getJSON(Decks.akumaDeckJson).deck;
+
+            console.log("ID:" + idPers);
+            console.log("NAME:" + namePers);
+            console.log("ENERGY:" + energyPers);
+            console.log(deckPers);
+
+            for(let key in deckPers.cards){
+                console.log("KEY:" + key);
+                console.log("TYPE:" + deckPers.cards[key].type);
+                console.log("POWER:" + deckPers.cards[key].power);
+                console.log("LIFE:" + deckPers.cards[key].life);
+                console.log("ENERGY:" + deckPers.cards[key].energy);
             }
+            */
+
+            let personage: GameData.IPersonage = <IPersonage>{};
+            personage.id = this.game.cache.getJSON(Decks.akumaDeckJson).id;
+            personage.name = this.game.cache.getJSON(Decks.akumaDeckJson).name;
+            personage.attack = 0;
+            personage.defense = 0;
+            personage.energy = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
+            personage.life = 200;
+            personage.deck = [];
+
+            GameData.Data.personages = [];
+            GameData.Data.personages.push(personage);
+
+            console.log(GameData.Data.personages[0]);
         }
 
         private onButtonClick(event):void {
