@@ -199,8 +199,10 @@ var Decks = (function () {
     function Decks() {
     }
     Decks.akumaDeckJson = 'akuma_deck.json';
+    Decks.alexDeckJson = 'alex_deck.json';
     Decks.preloadList = [
         Decks.akumaDeckJson,
+        Decks.alexDeckJson,
     ];
     return Decks;
 }());
@@ -550,19 +552,18 @@ var Fabrique;
 (function (Fabrique) {
     var FighterCard = (function (_super) {
         __extends(FighterCard, _super);
-        function FighterCard(game, x, y, data) {
-            _super.call(this, game, x, y, Atlases.BigCards, data.frame);
-            this.dataFighter = data;
-            this.init();
+        function FighterCard(game, x, y, frame, index) {
+            _super.call(this, game, x, y, Atlases.BigCards, frame);
+            this.init(index);
         }
-        FighterCard.prototype.init = function () {
-            this.defenseText = this.game.add.text(13, 13, "500", { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+        FighterCard.prototype.init = function (index) {
+            this.defenseText = this.game.add.text(13, 13, GameData.Data.personages[index].defense.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
             this.addChild(this.defenseText);
-            this.healthText = this.game.add.text(150, 13, "200", { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.healthText = this.game.add.text(150, 13, GameData.Data.personages[index].life.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
             this.addChild(this.healthText);
-            this.damageText = this.game.add.text(11, 242, "300", { font: "bold 18px Times New Roman", fill: "#D83900", align: "left" });
+            this.damageText = this.game.add.text(11, 242, GameData.Data.personages[index].attack.toString(), { font: "bold 18px Times New Roman", fill: "#D83900", align: "left" });
             this.addChild(this.damageText);
-            this.energyText = this.game.add.text(157, 242, "10", { font: "bold 18px Times New Roman", fill: "#0026FF", align: "left" });
+            this.energyText = this.game.add.text(157, 242, GameData.Data.personages[index].energy.toString(), { font: "bold 18px Times New Roman", fill: "#0026FF", align: "left" });
             this.addChild(this.energyText);
         };
         return FighterCard;
@@ -575,7 +576,6 @@ var Fabrique;
         __extends(Slides, _super);
         function Slides(game, parent) {
             _super.call(this, game, parent);
-            this.fighters = [];
             this.init();
             this.createSlides();
         }
@@ -585,21 +585,14 @@ var Fabrique;
         };
         Slides.prototype.init = function () {
             GameData.Data.fighterIndex = 1;
-            for (var i = 0; i < GameData.Data.fighters.length; i++) {
-                var fighter = {};
-                fighter.id = GameData.Data.fighters[i][0];
-                fighter.name = GameData.Data.fighters[i][1];
-                fighter.frame = GameData.Data.fighters[i][2];
-                this.fighters.push(fighter);
-            }
             this.canClick = true;
         };
         Slides.prototype.createSlides = function () {
             this.slideGroup = new Phaser.Group(this.game, this);
             var posX = 5;
             var posY = 90;
-            for (var i = 0; i < this.fighters.length; i++) {
-                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, this.fighters[i]);
+            for (var i = 0; i < GameData.Data.personages.length; i++) {
+                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
                 this.slideGroup.addChild(fCard);
             }
             this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
@@ -608,6 +601,9 @@ var Fabrique;
             this.buttonRight = new Phaser.Button(this.game, 505, 190, Images.ArrowRight, this.onButtonClick, this);
             this.buttonRight.name = Constants.BUTTON_ARROW_RIGHT;
             this.addChild(this.buttonRight);
+            if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
+                this.buttonRight.visible = false;
+            }
         };
         Slides.prototype.onButtonClick = function (event) {
             switch (event.name) {
@@ -644,7 +640,7 @@ var Fabrique;
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
             }
-            else if (GameData.Data.fighterIndex === this.fighters.length - 1) {
+            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }
@@ -860,7 +856,7 @@ var StreetFighterCards;
                 personage.attack = 0;
                 personage.defense = 0;
                 personage.energy = _this.game.cache.getJSON(value).energy;
-                personage.life = 200;
+                personage.life = 0;
                 personage.deck = [];
                 deck = _this.game.cache.getJSON(value).deck;
                 for (var key in deck.cards) {
@@ -870,6 +866,13 @@ var StreetFighterCards;
                     card.life = deck.cards[key].life;
                     card.energy = deck.cards[key].energy;
                     personage.deck.push(card);
+                    if (deck.cards[key].type === Constants.CARD_TYPE_ATTACK) {
+                        personage.attack += Number(deck.cards[key].power);
+                    }
+                    else {
+                        personage.defense += Number(deck.cards[key].power);
+                    }
+                    personage.life += Number(deck.cards[key].life);
                 }
                 GameData.Data.personages.push(personage);
                 console.log(GameData.Data.personages[i]);
@@ -1058,14 +1061,14 @@ var StreetFighterCards;
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
 /// <reference path="Data\Decks.ts" />
-/// <reference path="Data\Game.ts" />
+/// <reference path="Data\GameData.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
-/// <reference path="Fabrique\Objects\FighterBigCard.ts" />
+/// <reference path="Fabrique\Objects\FighterCard.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Icon.ts" />
 /// <reference path="States\Boot.ts" />

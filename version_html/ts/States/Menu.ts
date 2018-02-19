@@ -86,7 +86,7 @@ module StreetFighterCards {
                 personage.attack = 0;
                 personage.defense = 0;
                 personage.energy = this.game.cache.getJSON(value).energy;
-                personage.life = 200;
+                personage.life = 0;
                 personage.deck = [];
 
                 deck = this.game.cache.getJSON(value).deck;
@@ -97,6 +97,13 @@ module StreetFighterCards {
                     card.life = deck.cards[key].life;
                     card.energy = deck.cards[key].energy;
                     personage.deck.push(card);
+
+                    if(deck.cards[key].type === Constants.CARD_TYPE_ATTACK){
+                        personage.attack += Number(deck.cards[key].power);
+                    }else{
+                        personage.defense += Number(deck.cards[key].power);
+                    }
+                    personage.life += Number(deck.cards[key].life);
                 }
 
                 GameData.Data.personages.push(personage);

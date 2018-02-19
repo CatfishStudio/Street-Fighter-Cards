@@ -7,8 +7,6 @@ module Fabrique {
 
         private canClick:boolean;
         
-        private fighters:GameData.IFighter[] = [];
-        
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
             this.init();
@@ -22,13 +20,6 @@ module Fabrique {
 
         private init():void {
             GameData.Data.fighterIndex = 1;
-            for(let i:number = 0; i < GameData.Data.fighters.length; i++){
-                let fighter:GameData.IFighter = <GameData.IFighter>{};
-                fighter.id = GameData.Data.fighters[i][0];
-                fighter.name = GameData.Data.fighters[i][1];
-                fighter.frame = GameData.Data.fighters[i][2];
-                this.fighters.push(fighter); 
-            }
             this.canClick = true;
         }
         
@@ -37,18 +28,22 @@ module Fabrique {
             
             let posX:number = 5;
             let posY:number = 90;
-            for(let i:number = 0; i < this.fighters.length; i++){
-                let fCard:Fabrique.FighterCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, this.fighters[i]);
+            for(let i:number = 0; i < GameData.Data.personages.length; i++){
+                let fCard:Fabrique.FighterCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
                 this.slideGroup.addChild(fCard);
             }
-
+            
             this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
             this.buttonLeft.name = Constants.BUTTON_ARROW_LEFT;
             this.addChild(this.buttonLeft);
 
             this.buttonRight = new Phaser.Button(this.game, 505, 190, Images.ArrowRight, this.onButtonClick, this);
             this.buttonRight.name = Constants.BUTTON_ARROW_RIGHT;
-            this.addChild(this.buttonRight);            
+            this.addChild(this.buttonRight); 
+            
+            if(GameData.Data.fighterIndex === GameData.Data.personages.length-1){
+                this.buttonRight.visible = false;
+            }
         }
 
         private onButtonClick(event) {
@@ -86,7 +81,7 @@ module Fabrique {
             if(GameData.Data.fighterIndex === 0){
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
-            }else if(GameData.Data.fighterIndex === this.fighters.length-1){
+            }else if(GameData.Data.fighterIndex === GameData.Data.personages.length-1){
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }else{
