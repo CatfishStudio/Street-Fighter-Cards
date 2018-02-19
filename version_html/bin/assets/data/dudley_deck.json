@@ -1,6 +1,6 @@
 {
-    "id": "0",
-    "name": "Akuma",
+    "id": "3",
+    "name": "Dudley",
     "energy": "10",
     "deck":{
         "cards":[
@@ -60,9 +60,9 @@
             },
             {
                 "type":"card_type_attack",
-                "power":"45",
+                "power":"30",
                 "life":"8",
-                "energy":"9"
+                "energy":"6"
             },
             {
                 "type":"card_type_attack",
@@ -108,7 +108,19 @@
             },
             {
                 "type":"card_type_defense",
+                "power":"10",
+                "life":"8",
+                "energy":"2"
+            },
+            {
+                "type":"card_type_defense",
                 "power":"5",
+                "life":"8",
+                "energy":"1"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"10",
                 "life":"8",
                 "energy":"1"
             },
@@ -126,21 +138,9 @@
             },
             {
                 "type":"card_type_defense",
-                "power":"5",
+                "power":"10",
                 "life":"8",
-                "energy":"1"
-            },
-            {
-                "type":"card_type_defense",
-                "power":"5",
-                "life":"8",
-                "energy":"1"
-            },
-            {
-                "type":"card_type_defense",
-                "power":"5",
-                "life":"8",
-                "energy":"1"
+                "energy":"2"
             },
             {
                 "type":"card_type_defense",
