@@ -153,12 +153,6 @@
                 "power":"5",
                 "life":"10",
                 "energy":"1"
-            },
-            {
-                "type":"card_type_defense",
-                "power":"5",
-                "life":"10",
-                "energy":"1"
             }
         ]
     }

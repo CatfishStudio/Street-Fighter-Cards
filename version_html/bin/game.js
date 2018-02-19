@@ -846,43 +846,41 @@ var StreetFighterCards;
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35, 0, 100);
             this.buttonSettings.event.add(this.onButtonClick, this);
         };
-        Menu.prototype.dataInit = function () {
-            /*
-            let idPers = this.game.cache.getJSON(Decks.akumaDeckJson).id;
-            let namePers = this.game.cache.getJSON(Decks.akumaDeckJson).name;
-            let energyPers = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
-            let deckPers = this.game.cache.getJSON(Decks.akumaDeckJson).deck;
-
-            console.log("ID:" + idPers);
-            console.log("NAME:" + namePers);
-            console.log("ENERGY:" + energyPers);
-            console.log(deckPers);
-
-            for(let key in deckPers.cards){
-                console.log("KEY:" + key);
-                console.log("TYPE:" + deckPers.cards[key].type);
-                console.log("POWER:" + deckPers.cards[key].power);
-                console.log("LIFE:" + deckPers.cards[key].life);
-                console.log("ENERGY:" + deckPers.cards[key].energy);
-            }
-            */
-            var personage = {};
-            personage.id = this.game.cache.getJSON(Decks.akumaDeckJson).id;
-            personage.name = this.game.cache.getJSON(Decks.akumaDeckJson).name;
-            personage.attack = 0;
-            personage.defense = 0;
-            personage.energy = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
-            personage.life = 200;
-            personage.deck = [];
+        Menu.prototype.dataInitialization = function () {
+            var _this = this;
             GameData.Data.personages = [];
-            GameData.Data.personages.push(personage);
-            console.log(GameData.Data.personages[0]);
+            var personage;
+            var card;
+            var deck;
+            var i = 0;
+            Decks.preloadList.forEach(function (value) {
+                personage = {};
+                personage.id = _this.game.cache.getJSON(value).id;
+                personage.name = _this.game.cache.getJSON(value).name;
+                personage.attack = 0;
+                personage.defense = 0;
+                personage.energy = _this.game.cache.getJSON(value).energy;
+                personage.life = 200;
+                personage.deck = [];
+                deck = _this.game.cache.getJSON(value).deck;
+                for (var key in deck.cards) {
+                    card = {};
+                    card.type = deck.cards[key].type;
+                    card.power = deck.cards[key].power;
+                    card.life = deck.cards[key].life;
+                    card.energy = deck.cards[key].energy;
+                    personage.deck.push(card);
+                }
+                GameData.Data.personages.push(personage);
+                console.log(GameData.Data.personages[i]);
+                i++;
+            });
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
-                        this.dataInit();
+                        this.dataInitialization();
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }

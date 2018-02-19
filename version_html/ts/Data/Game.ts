@@ -1,10 +1,5 @@
 module GameData {
-    export interface IFighter {
-        id:number;
-        name:string;
-        frame:string;
-    }
-
+    
     export interface ICard {
         type:string;
         power:number;
@@ -45,9 +40,7 @@ module GameData {
         ];
 
         public static fighterIndex:number = 0;
-
         public static personages:IPersonage[];
-        public static deck1:ICard[];
         
     }
 

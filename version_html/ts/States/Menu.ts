@@ -6,6 +6,7 @@ module StreetFighterCards {
     import AnimationBigKen = Fabrique.AnimationBigKen;
     import AnimationBigRyu = Fabrique.AnimationBigRyu;
     import IPersonage = GameData.IPersonage;
+    import ICard = GameData.ICard;
     
     export class Menu extends Phaser.State{
 
@@ -70,48 +71,48 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick, this);
         }
 
-        private dataInit():void {
-            
-            /*
-            let idPers = this.game.cache.getJSON(Decks.akumaDeckJson).id;
-            let namePers = this.game.cache.getJSON(Decks.akumaDeckJson).name;
-            let energyPers = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
-            let deckPers = this.game.cache.getJSON(Decks.akumaDeckJson).deck;
-
-            console.log("ID:" + idPers);
-            console.log("NAME:" + namePers);
-            console.log("ENERGY:" + energyPers);
-            console.log(deckPers);
-
-            for(let key in deckPers.cards){
-                console.log("KEY:" + key);
-                console.log("TYPE:" + deckPers.cards[key].type);
-                console.log("POWER:" + deckPers.cards[key].power);
-                console.log("LIFE:" + deckPers.cards[key].life);
-                console.log("ENERGY:" + deckPers.cards[key].energy);
-            }
-            */
-
-            let personage: GameData.IPersonage = <IPersonage>{};
-            personage.id = this.game.cache.getJSON(Decks.akumaDeckJson).id;
-            personage.name = this.game.cache.getJSON(Decks.akumaDeckJson).name;
-            personage.attack = 0;
-            personage.defense = 0;
-            personage.energy = this.game.cache.getJSON(Decks.akumaDeckJson).energy;
-            personage.life = 200;
-            personage.deck = [];
-
+        private dataInitialization():void {
             GameData.Data.personages = [];
-            GameData.Data.personages.push(personage);
 
-            console.log(GameData.Data.personages[0]);
+            let personage: GameData.IPersonage;
+            let card: GameData.ICard;
+            let deck;
+            let i: number = 0;
+
+            Decks.preloadList.forEach((value: string) => {
+                personage = <IPersonage>{};
+                personage.id = this.game.cache.getJSON(value).id;
+                personage.name = this.game.cache.getJSON(value).name;
+                personage.attack = 0;
+                personage.defense = 0;
+                personage.energy = this.game.cache.getJSON(value).energy;
+                personage.life = 200;
+                personage.deck = [];
+
+                deck = this.game.cache.getJSON(value).deck;
+                for (let key in deck.cards) {
+                    card = <ICard>{};
+                    card.type = deck.cards[key].type;
+                    card.power = deck.cards[key].power;
+                    card.life = deck.cards[key].life;
+                    card.energy = deck.cards[key].energy;
+                    personage.deck.push(card);
+                }
+
+                GameData.Data.personages.push(personage);
+
+                console.log(GameData.Data.personages[i]);
+                i++;
+            });
+
+            
         }
 
         private onButtonClick(event):void {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
-                        this.dataInit();
+                        this.dataInitialization()
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }
