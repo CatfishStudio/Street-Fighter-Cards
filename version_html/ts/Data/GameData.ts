@@ -35,6 +35,8 @@ module GameData {
             [13, 'Remy', 'remy_card.png', Images.remyBig, Images.remyBig],
             [14, 'Ryu', 'ryu_card.png', Images.ryuBig, Images.ryuIcon],
             [15, 'Sean', 'sean_card.png', Images.seanBig, Images.seanIcon],
+            [16, 'Twelve', 'twelve_card.png', Images.twelveBig, Images.twelveIcon],
+            [17, 'Urien', 'urien_card.png', Images.urienBig, Images.urienIcon],
             [18, 'Yang', 'yang_card.png', Images.yangBig, Images.yangIcon],
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];

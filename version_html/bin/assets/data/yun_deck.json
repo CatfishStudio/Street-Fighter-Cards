@@ -1,32 +1,20 @@
 {
-    "id": "3",
-    "name": "Dudley",
+    "id": "19",
+    "name": "Yun",
     "energy": "10",
     "deck":{
         "cards":[
             {
                 "type":"card_type_attack",
-                "power":"15",
+                "power":"5",
                 "life":"8",
-                "energy":"3"
+                "energy":"1"
             },
             {
                 "type":"card_type_attack",
-                "power":"10",
+                "power":"5",
                 "life":"8",
-                "energy":"2"
-            },
-            {
-                "type":"card_type_attack",
-                "power":"25",
-                "life":"8",
-                "energy":"5"
-            },
-            {
-                "type":"card_type_attack",
-                "power":"25",
-                "life":"8",
-                "energy":"5"
+                "energy":"1"
             },
             {
                 "type":"card_type_attack",
@@ -36,39 +24,15 @@
             },
             {
                 "type":"card_type_attack",
-                "power":"30",
-                "life":"8",
-                "energy":"6"
-            },
-            {
-                "type":"card_type_attack",
-                "power":"10",
-                "life":"8",
-                "energy":"2"
-            },
-            {
-                "type":"card_type_attack",
                 "power":"20",
                 "life":"8",
                 "energy":"4"
             },
             {
                 "type":"card_type_attack",
-                "power":"10",
+                "power":"40",
                 "life":"8",
-                "energy":"2"
-            },
-            {
-                "type":"card_type_attack",
-                "power":"30",
-                "life":"8",
-                "energy":"6"
-            },
-            {
-                "type":"card_type_attack",
-                "power":"15",
-                "life":"8",
-                "energy":"3"
+                "energy":"8"
             },
             {
                 "type":"card_type_attack",
@@ -84,9 +48,15 @@
             },
             {
                 "type":"card_type_attack",
-                "power":"15",
+                "power":"10",
                 "life":"8",
-                "energy":"3"
+                "energy":"2"
+            },
+            {
+                "type":"card_type_attack",
+                "power":"45",
+                "life":"8",
+                "energy":"9"
             },
             {
                 "type":"card_type_attack",
@@ -96,15 +66,51 @@
             },
             {
                 "type":"card_type_defense",
-                "power":"5",
+                "power":"10",
                 "life":"8",
-                "energy":"1"
+                "energy":"2"
             },
             {
                 "type":"card_type_defense",
-                "power":"5",
+                "power":"10",
                 "life":"8",
-                "energy":"1"
+                "energy":"2"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"10",
+                "life":"8",
+                "energy":"2"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"10",
+                "life":"8",
+                "energy":"2"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"10",
+                "life":"8",
+                "energy":"2"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"20",
+                "life":"8",
+                "energy":"4"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"25",
+                "life":"8",
+                "energy":"5"
+            },
+            {
+                "type":"card_type_defense",
+                "power":"10",
+                "life":"8",
+                "energy":"2"
             },
             {
                 "type":"card_type_defense",
@@ -120,12 +126,6 @@
             },
             {
                 "type":"card_type_defense",
-                "power":"10",
-                "life":"8",
-                "energy":"2"
-            },
-            {
-                "type":"card_type_defense",
                 "power":"5",
                 "life":"8",
                 "energy":"1"
@@ -138,9 +138,9 @@
             },
             {
                 "type":"card_type_defense",
-                "power":"10",
+                "power":"5",
                 "life":"8",
-                "energy":"2"
+                "energy":"1"
             },
             {
                 "type":"card_type_defense",
