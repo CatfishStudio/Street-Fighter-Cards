@@ -7,6 +7,7 @@
 /// <reference path="Data\Sheets.ts" />
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
+/// <reference path="Data\Utilits.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />

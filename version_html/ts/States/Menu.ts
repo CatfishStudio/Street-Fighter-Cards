@@ -71,6 +71,16 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick, this);
         }
 
+        private settingsCreate() {
+            this.settings = new Settings(this.game, this.groupMenu);
+            this.settings.event.add(this.onButtonClick, this);
+        }
+        
+        private settingsClose() {
+            this.settings.removeAll();
+            this.groupMenu.removeChild(this.settings);
+        }
+
         private dataInitialization():void {
             GameData.Data.personages = [];
 
@@ -112,7 +122,9 @@ module StreetFighterCards {
                 i++;
             });
 
-            
+            let listIDs:number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+            console.log(Utilits.Data.getRandomIndex());
+            console.log(Utilits.Data.getRandomRangeIndex(0, 2));
         }
 
         private onButtonClick(event):void {
@@ -148,14 +160,6 @@ module StreetFighterCards {
             }
         }
 
-        private settingsCreate() {
-            this.settings = new Settings(this.game, this.groupMenu);
-            this.settings.event.add(this.onButtonClick, this);
-        }
         
-        private settingsClose() {
-            this.settings.removeAll();
-            this.groupMenu.removeChild(this.settings);
-        }
     }
 }

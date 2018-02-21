@@ -274,6 +274,34 @@ var GameData;
     }());
     GameData.Data = Data;
 })(GameData || (GameData = {}));
+var Utilits;
+(function (Utilits) {
+    var Data = (function () {
+        function Data() {
+        }
+        /* Проверка четности и нечетности */
+        Data.checkEvenOrOdd = function (n) {
+            if (n & 1) {
+                return false; // odd (нечетное число)
+            }
+            else {
+                return true; // even (четное число)
+            }
+        };
+        /* Генератор случайных чисел */
+        Data.getRandomIndex = function () {
+            var index = Math.round(Math.random() / 0.1);
+            return index;
+        };
+        Data.getRandomRangeIndex = function (min, max) {
+            max -= min;
+            var index = (Math.random() * ++max) + min;
+            return Math.floor(index);
+        };
+        return Data;
+    }());
+    Utilits.Data = Data;
+})(Utilits || (Utilits = {}));
 var Fabrique;
 (function (Fabrique) {
     var Tutorial = (function (_super) {
@@ -880,6 +908,14 @@ var StreetFighterCards;
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35, 0, 100);
             this.buttonSettings.event.add(this.onButtonClick, this);
         };
+        Menu.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.groupMenu);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        Menu.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.groupMenu.removeChild(this.settings);
+        };
         Menu.prototype.dataInitialization = function () {
             var _this = this;
             GameData.Data.personages = [];
@@ -916,6 +952,9 @@ var StreetFighterCards;
                 console.log(GameData.Data.personages[i]);
                 i++;
             });
+            var listIDs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+            console.log(Utilits.Data.getRandomIndex());
+            console.log(Utilits.Data.getRandomRangeIndex(0, 2));
         };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
@@ -946,14 +985,6 @@ var StreetFighterCards;
                 default:
                     break;
             }
-        };
-        Menu.prototype.settingsCreate = function () {
-            this.settings = new Settings(this.game, this.groupMenu);
-            this.settings.event.add(this.onButtonClick, this);
-        };
-        Menu.prototype.settingsClose = function () {
-            this.settings.removeAll();
-            this.groupMenu.removeChild(this.settings);
         };
         Menu.Name = "menu";
         return Menu;
@@ -1100,6 +1131,7 @@ var StreetFighterCards;
 /// <reference path="Data\Sheets.ts" />
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
+/// <reference path="Data\Utilits.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
