@@ -42,6 +42,7 @@ module GameData {
         ];
 
         public static fighterIndex:number = 0;
+        public static progressIndex:number = 0;
         public static personages:IPersonage[];
         public static tournamentListIds:number[];
 

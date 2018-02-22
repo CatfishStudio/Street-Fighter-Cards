@@ -29,7 +29,8 @@ module StreetFighterCards {
             this.group.addChild(player);
 
             /* Opponent */
-            let opponent: Phaser.Sprite = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
+            let opponentId: number = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
+            let opponent: Phaser.Sprite = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[opponentId][3]);
             this.group.addChild(opponent);
 
             /* VS */

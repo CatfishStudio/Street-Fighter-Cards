@@ -320,6 +320,7 @@ var GameData;
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];
         Data.fighterIndex = 0;
+        Data.progressIndex = 0;
         return Data;
     }());
     GameData.Data = Data;
@@ -1115,7 +1116,8 @@ var StreetFighterCards;
             //this.player.scale.y *= -1;
             this.group.addChild(player);
             /* Opponent */
-            var opponent = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
+            var opponentId = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
+            var opponent = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[opponentId][3]);
             this.group.addChild(opponent);
             /* VS */
             var vs = new Phaser.Sprite(this.game, 150, 200, Images.vsTournament);
