@@ -247,6 +247,56 @@ var GameData;
     var Data = (function () {
         function Data() {
         }
+        Data.initPersonages = function (game) {
+            GameData.Data.personages = [];
+            var personage;
+            var card;
+            var deck;
+            var i = 0;
+            Decks.preloadList.forEach(function (value) {
+                personage = {};
+                personage.id = game.cache.getJSON(value).id;
+                personage.name = game.cache.getJSON(value).name;
+                personage.attack = 0;
+                personage.defense = 0;
+                personage.energy = game.cache.getJSON(value).energy;
+                personage.life = 0;
+                personage.deck = [];
+                deck = game.cache.getJSON(value).deck;
+                for (var key in deck.cards) {
+                    card = {};
+                    card.type = deck.cards[key].type;
+                    card.power = deck.cards[key].power;
+                    card.life = deck.cards[key].life;
+                    card.energy = deck.cards[key].energy;
+                    personage.deck.push(card);
+                    if (deck.cards[key].type === Constants.CARD_TYPE_ATTACK) {
+                        personage.attack += Number(deck.cards[key].power);
+                    }
+                    else {
+                        personage.defense += Number(deck.cards[key].power);
+                    }
+                    personage.life += Number(deck.cards[key].life);
+                }
+                GameData.Data.personages.push(personage);
+                console.log(GameData.Data.personages[i]);
+                i++;
+            });
+        };
+        Data.initTournament = function () {
+            GameData.Data.tournamentListIds = [];
+            var listIDs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+            var id;
+            while (listIDs.length > 0) {
+                id = listIDs.splice(Utilits.Data.getRandomRangeIndex(0, listIDs.length - 1), 1)[0];
+                if (id === 5 || id === GameData.Data.fighterIndex)
+                    continue;
+                GameData.Data.tournamentListIds.push(id);
+            }
+            GameData.Data.tournamentListIds.push(GameData.Data.fighterIndex); // player
+            GameData.Data.tournamentListIds.push(5); // boss
+            console.log(GameData.Data.tournamentListIds);
+        };
         Data.fighters = [
             [0, 'Akuma', 'akuma_card.png', Images.akumaBig, Images.akumaIcon],
             [1, 'Alex', 'alex_card.png', Images.alexBig, Images.alexIcon],
@@ -293,6 +343,7 @@ var Utilits;
             var index = Math.round(Math.random() / 0.1);
             return index;
         };
+        /* Генератор случайных чисел из диапазона чисел мин/макс */
         Data.getRandomRangeIndex = function (min, max) {
             max -= min;
             var index = (Math.random() * ++max) + min;
@@ -916,51 +967,11 @@ var StreetFighterCards;
             this.settings.removeAll();
             this.groupMenu.removeChild(this.settings);
         };
-        Menu.prototype.dataInitialization = function () {
-            var _this = this;
-            GameData.Data.personages = [];
-            var personage;
-            var card;
-            var deck;
-            var i = 0;
-            Decks.preloadList.forEach(function (value) {
-                personage = {};
-                personage.id = _this.game.cache.getJSON(value).id;
-                personage.name = _this.game.cache.getJSON(value).name;
-                personage.attack = 0;
-                personage.defense = 0;
-                personage.energy = _this.game.cache.getJSON(value).energy;
-                personage.life = 0;
-                personage.deck = [];
-                deck = _this.game.cache.getJSON(value).deck;
-                for (var key in deck.cards) {
-                    card = {};
-                    card.type = deck.cards[key].type;
-                    card.power = deck.cards[key].power;
-                    card.life = deck.cards[key].life;
-                    card.energy = deck.cards[key].energy;
-                    personage.deck.push(card);
-                    if (deck.cards[key].type === Constants.CARD_TYPE_ATTACK) {
-                        personage.attack += Number(deck.cards[key].power);
-                    }
-                    else {
-                        personage.defense += Number(deck.cards[key].power);
-                    }
-                    personage.life += Number(deck.cards[key].life);
-                }
-                GameData.Data.personages.push(personage);
-                console.log(GameData.Data.personages[i]);
-                i++;
-            });
-            var listIDs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
-            console.log(Utilits.Data.getRandomIndex());
-            console.log(Utilits.Data.getRandomRangeIndex(0, 2));
-        };
         Menu.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
-                        this.dataInitialization();
+                        GameData.Data.initPersonages(this.game);
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }
@@ -1055,6 +1066,7 @@ var StreetFighterCards;
             switch (event.name) {
                 case Constants.BUTTON_SELECT:
                     {
+                        GameData.Data.initTournament();
                         this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
                         break;
                     }

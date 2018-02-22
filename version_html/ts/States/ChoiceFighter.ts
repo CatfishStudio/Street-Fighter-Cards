@@ -87,6 +87,7 @@ module StreetFighterCards {
             switch (event.name) {
                 case Constants.BUTTON_SELECT:
                     {
+                        GameData.Data.initTournament();
                         this.game.state.start(Tournament.Name, true, false);
                         break;
                     }

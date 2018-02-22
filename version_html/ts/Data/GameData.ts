@@ -43,7 +43,64 @@ module GameData {
 
         public static fighterIndex:number = 0;
         public static personages:IPersonage[];
-        
+        public static tournamentListIds:number[];
+
+        public static initPersonages(game: Phaser.Game):void {
+            GameData.Data.personages = [];
+
+            let personage: GameData.IPersonage;
+            let card: GameData.ICard;
+            let deck;
+            let i: number = 0;
+
+            Decks.preloadList.forEach((value: string) => {
+                personage = <IPersonage>{};
+                personage.id = game.cache.getJSON(value).id;
+                personage.name = game.cache.getJSON(value).name;
+                personage.attack = 0;
+                personage.defense = 0;
+                personage.energy = game.cache.getJSON(value).energy;
+                personage.life = 0;
+                personage.deck = [];
+
+                deck = game.cache.getJSON(value).deck;
+                for (let key in deck.cards) {
+                    card = <ICard>{};
+                    card.type = deck.cards[key].type;
+                    card.power = deck.cards[key].power;
+                    card.life = deck.cards[key].life;
+                    card.energy = deck.cards[key].energy;
+                    personage.deck.push(card);
+
+                    if(deck.cards[key].type === Constants.CARD_TYPE_ATTACK){
+                        personage.attack += Number(deck.cards[key].power);
+                    }else{
+                        personage.defense += Number(deck.cards[key].power);
+                    }
+                    personage.life += Number(deck.cards[key].life);
+                }
+
+                GameData.Data.personages.push(personage);
+
+                console.log(GameData.Data.personages[i]);
+                i++;
+            });
+        }
+
+        public static initTournament():void {
+            GameData.Data.tournamentListIds = [];
+
+            let listIDs:number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
+            let id:number;
+            while(listIDs.length > 0){
+                id = listIDs.splice(Utilits.Data.getRandomRangeIndex(0, listIDs.length-1), 1)[0];
+                if(id === 5 || id === GameData.Data.fighterIndex)continue;
+                GameData.Data.tournamentListIds.push(id);
+            }
+            GameData.Data.tournamentListIds.push(GameData.Data.fighterIndex);   // player
+            GameData.Data.tournamentListIds.push(5);                            // boss
+            console.log(GameData.Data.tournamentListIds);
+        }
     }
 
 

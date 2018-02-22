@@ -81,57 +81,11 @@ module StreetFighterCards {
             this.groupMenu.removeChild(this.settings);
         }
 
-        private dataInitialization():void {
-            GameData.Data.personages = [];
-
-            let personage: GameData.IPersonage;
-            let card: GameData.ICard;
-            let deck;
-            let i: number = 0;
-
-            Decks.preloadList.forEach((value: string) => {
-                personage = <IPersonage>{};
-                personage.id = this.game.cache.getJSON(value).id;
-                personage.name = this.game.cache.getJSON(value).name;
-                personage.attack = 0;
-                personage.defense = 0;
-                personage.energy = this.game.cache.getJSON(value).energy;
-                personage.life = 0;
-                personage.deck = [];
-
-                deck = this.game.cache.getJSON(value).deck;
-                for (let key in deck.cards) {
-                    card = <ICard>{};
-                    card.type = deck.cards[key].type;
-                    card.power = deck.cards[key].power;
-                    card.life = deck.cards[key].life;
-                    card.energy = deck.cards[key].energy;
-                    personage.deck.push(card);
-
-                    if(deck.cards[key].type === Constants.CARD_TYPE_ATTACK){
-                        personage.attack += Number(deck.cards[key].power);
-                    }else{
-                        personage.defense += Number(deck.cards[key].power);
-                    }
-                    personage.life += Number(deck.cards[key].life);
-                }
-
-                GameData.Data.personages.push(personage);
-
-                console.log(GameData.Data.personages[i]);
-                i++;
-            });
-
-            let listIDs:number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
-            console.log(Utilits.Data.getRandomIndex());
-            console.log(Utilits.Data.getRandomRangeIndex(0, 2));
-        }
-
         private onButtonClick(event):void {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
-                        this.dataInitialization()
+                        GameData.Data.initPersonages(this.game);
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }
