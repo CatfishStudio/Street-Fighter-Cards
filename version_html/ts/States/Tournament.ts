@@ -6,7 +6,7 @@ module StreetFighterCards {
         public static Name: string = "tournament";
         public name: string = Tournament.Name;
 
-        private icon: Icon;
+        private icons: Icon[];
 
         private group: Phaser.Group;
 
@@ -38,7 +38,29 @@ module StreetFighterCards {
             this.group.addChild(vs);
 
             /* Icons */
-            this.icon = new Icon(this.game, this.group, 0, 25, 425);
+            let icon: Icon;
+            let position:any[][] = [
+                [25, 415, Icon.LEFT], [110, 415, Icon.LEFT], [195, 415, Icon.LEFT], [280, 415, Icon.LEFT],
+                [440, 415, Icon.RIGHT], [525, 415, Icon.RIGHT], [610, 415, Icon.RIGHT], [695, 415, Icon.RIGHT],
+
+                [45, 455, Icon.LEFT], [130, 455, Icon.LEFT], [215, 455, Icon.LEFT],
+                [505, 455, Icon.RIGHT], [590, 455, Icon.RIGHT], [675, 455, Icon.RIGHT],
+
+                [65, 495, Icon.LEFT], [150, 495, Icon.LEFT],
+                [570, 495, Icon.RIGHT], [655, 495, Icon.RIGHT],
+
+                [85, 535, Icon.LEFT],
+                [635, 535, Icon.RIGHT]
+            ];
+            
+            this.icons = [];
+            let i:number = 0;
+            GameData.Data.tournamentListIds.forEach(index => {
+                icon = new Icon(this.game, this.group, index, position[i][0], position[i][1], position[i][2]);
+                this.icons.push(icon);
+                i++;
+            });
+          
 
             /* Border */
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
@@ -46,7 +68,9 @@ module StreetFighterCards {
         }
 
         public shutdown():void {
-            this.icon.shutdown();
+            this.icons.forEach(icon => {
+                icon.shutdown();
+            });
             this.group.removeAll();
         }
 
