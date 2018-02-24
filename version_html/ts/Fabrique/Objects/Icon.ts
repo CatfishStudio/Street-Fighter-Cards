@@ -90,9 +90,29 @@ module Fabrique {
                 this.addChild(iconSprite);
             }
            
-
+            let playerBorder:Phaser.Polygon = new Phaser.Polygon([   
+                new Phaser.Point(0, 0), 
+                new Phaser.Point(85, 0), 
+                new Phaser.Point(90, 10), 
+                new Phaser.Point(30, 10),
+                new Phaser.Point(10, 20),
+            ]);
            
-            //let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+            if(index === GameData.Data.fighterIndex){
+                let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0x0026FF, 0.95);
+                border.lineStyle(0, 0x0026FF, 0.0);
+                border.drawPolygon(playerBorder);
+                border.endFill();
+                this.addChild(border);
+
+                let playerText1: Phaser.Text = this.game.add.text(7, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(playerText1);
+
+                let playerText2: Phaser.Text = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(playerText2);
+            }
+            
 
         }
     }

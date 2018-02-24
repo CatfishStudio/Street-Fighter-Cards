@@ -861,7 +861,25 @@ var Fabrique;
                 iconSprite.mask = iconMask;
                 this.addChild(iconSprite);
             }
-            //let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+            var playerBorder = new Phaser.Polygon([
+                new Phaser.Point(0, 0),
+                new Phaser.Point(85, 0),
+                new Phaser.Point(90, 10),
+                new Phaser.Point(30, 10),
+                new Phaser.Point(10, 20),
+            ]);
+            if (index === GameData.Data.fighterIndex) {
+                var border = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0x0026FF, 0.95);
+                border.lineStyle(0, 0x0026FF, 0.0);
+                border.drawPolygon(playerBorder);
+                border.endFill();
+                this.addChild(border);
+                var playerText1 = this.game.add.text(7, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(playerText1);
+                var playerText2 = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(playerText2);
+            }
         };
         Icon.LEFT = "left";
         Icon.RIGHT = "right";
