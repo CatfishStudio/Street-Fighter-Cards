@@ -788,14 +788,14 @@ var Fabrique;
 (function (Fabrique) {
     var Icon = (function (_super) {
         __extends(Icon, _super);
-        function Icon(game, parent, fighterIndex, x, y, orientation) {
+        function Icon(game, parent, index, fighterIndex, x, y, orientation) {
             _super.call(this, game, parent);
-            this.init(fighterIndex, x, y, orientation);
+            this.init(index, fighterIndex, x, y, orientation);
         }
         Icon.prototype.shutdown = function () {
             this.removeAll();
         };
-        Icon.prototype.init = function (index, x, y, orientation) {
+        Icon.prototype.init = function (index, fighterIndex, x, y, orientation) {
             this.x = x;
             this.y = y;
             var polygonLeft = new Phaser.Polygon([
@@ -840,7 +840,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
-                iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[index][4]);
+                iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
                 this.addChild(iconSprite);
             }
@@ -855,7 +855,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
-                iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[index][4]);
+                iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.anchor.setTo(.5, .5);
                 iconSprite.scale.x *= -1;
                 iconSprite.mask = iconMask;
@@ -868,17 +868,51 @@ var Fabrique;
                 new Phaser.Point(30, 10),
                 new Phaser.Point(10, 20),
             ]);
-            if (index === GameData.Data.fighterIndex) {
+            if (fighterIndex === GameData.Data.fighterIndex) {
                 var border = new Phaser.Graphics(this.game, 0, 0);
-                border.beginFill(0x0026FF, 0.95);
-                border.lineStyle(0, 0x0026FF, 0.0);
+                border.beginFill(0x005C9E, 0.7);
+                border.lineStyle(0, 0x005C9E, 0.0);
                 border.drawPolygon(playerBorder);
                 border.endFill();
                 this.addChild(border);
-                var playerText1 = this.game.add.text(7, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                var playerText1 = this.game.add.text(8, 0, "P", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText1);
-                var playerText2 = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                var playerText2 = this.game.add.text(16, -2, "layer", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText2);
+            }
+            var opponentLeftBorder = new Phaser.Polygon([
+                new Phaser.Point(0, 0),
+                new Phaser.Point(85, 0),
+                new Phaser.Point(95, 20),
+                new Phaser.Point(55, 10),
+                new Phaser.Point(5, 10),
+            ]);
+            var opponentRightBorder = new Phaser.Polygon([
+                new Phaser.Point(0, 0),
+                new Phaser.Point(85, 0),
+                new Phaser.Point(75, 20),
+                new Phaser.Point(55, 10),
+                new Phaser.Point(-5, 10),
+            ]);
+            if (index === GameData.Data.progressIndex && orientation === Icon.LEFT) {
+                var border = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0xFF0000, 0.5);
+                border.lineStyle(0, 0xFF0000, 0.0);
+                border.drawPolygon(opponentLeftBorder);
+                border.endFill();
+                this.addChild(border);
+                var opponentText = this.game.add.text(62, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(opponentText);
+            }
+            else if (index === GameData.Data.progressIndex && orientation === Icon.RIGHT) {
+                var border = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0xFF0000, 0.5);
+                border.lineStyle(0, 0xFF0000, 0.0);
+                border.drawPolygon(opponentRightBorder);
+                border.endFill();
+                this.addChild(border);
+                var opponentText = this.game.add.text(60, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(opponentText);
             }
         };
         Icon.LEFT = "left";
@@ -1213,7 +1247,7 @@ var StreetFighterCards;
             this.icons = [];
             var i = 0;
             GameData.Data.tournamentListIds.forEach(function (index) {
-                icon = new Icon(_this.game, _this.group, index, position[i][0], position[i][1], position[i][2]);
+                icon = new Icon(_this.game, _this.group, i, index, position[i][0], position[i][1], position[i][2]);
                 _this.icons.push(icon);
                 i++;
             });

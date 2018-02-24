@@ -65,7 +65,7 @@ module StreetFighterCards {
             this.icons = [];
             let i:number = 0;
             GameData.Data.tournamentListIds.forEach(index => {
-                icon = new Icon(this.game, this.group, index, position[i][0], position[i][1], position[i][2]);
+                icon = new Icon(this.game, this.group, i, index, position[i][0], position[i][1], position[i][2]);
                 this.icons.push(icon);
                 i++;
             });

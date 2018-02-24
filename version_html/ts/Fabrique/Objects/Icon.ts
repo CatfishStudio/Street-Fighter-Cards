@@ -2,9 +2,9 @@ module Fabrique {
 
     export class Icon extends Phaser.Group {
         
-        constructor(game:Phaser.Game, parent:Phaser.Group, fighterIndex:number, x:number, y:number, orientation:string){
+        constructor(game:Phaser.Game, parent:Phaser.Group, index:number, fighterIndex:number, x:number, y:number, orientation:string){
             super(game, parent);
-            this.init(fighterIndex, x, y, orientation);
+            this.init(index, fighterIndex, x, y, orientation);
         }
 
         public static LEFT:string = "left";
@@ -14,7 +14,7 @@ module Fabrique {
             this.removeAll();
         }
 
-        private init(index:number, x:number, y:number, orientation:string):void{
+        private init(index:number, fighterIndex:number, x:number, y:number, orientation:string):void{
             this.x = x;
             this.y = y;
            
@@ -67,7 +67,7 @@ module Fabrique {
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
                 
-                iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[index][4]);
+                iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
                 this.addChild(iconSprite);
             }else{
@@ -83,7 +83,7 @@ module Fabrique {
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
                 
-                iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[index][4]);
+                iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.anchor.setTo(.5,.5);
                 iconSprite.scale.x *= -1;
                 iconSprite.mask = iconMask;
@@ -97,20 +97,59 @@ module Fabrique {
                 new Phaser.Point(30, 10),
                 new Phaser.Point(10, 20),
             ]);
-           
-            if(index === GameData.Data.fighterIndex){
+
+            if(fighterIndex === GameData.Data.fighterIndex){
                 let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-                border.beginFill(0x0026FF, 0.95);
-                border.lineStyle(0, 0x0026FF, 0.0);
+                border.beginFill(0x005C9E, 0.7);
+                border.lineStyle(0, 0x005C9E, 0.0);
                 border.drawPolygon(playerBorder);
                 border.endFill();
                 this.addChild(border);
 
-                let playerText1: Phaser.Text = this.game.add.text(7, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                let playerText1: Phaser.Text = this.game.add.text(8, 0, "P", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText1);
 
-                let playerText2: Phaser.Text = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                let playerText2: Phaser.Text = this.game.add.text(16, -2, "layer", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText2);
+            }
+
+            let opponentLeftBorder:Phaser.Polygon = new Phaser.Polygon([   
+                new Phaser.Point(0, 0), 
+                new Phaser.Point(85, 0), 
+                new Phaser.Point(95, 20), 
+                new Phaser.Point(55, 10),
+                new Phaser.Point(5, 10),
+            ]);
+
+            let opponentRightBorder:Phaser.Polygon = new Phaser.Polygon([   
+                new Phaser.Point(0, 0), 
+                new Phaser.Point(85, 0), 
+                new Phaser.Point(75, 20), 
+                new Phaser.Point(55, 10),
+                new Phaser.Point(-5, 10),
+            ]);
+
+            if(index === GameData.Data.progressIndex && orientation === Icon.LEFT){
+                let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0xFF0000, 0.5);
+                border.lineStyle(0, 0xFF0000, 0.0);
+                border.drawPolygon(opponentLeftBorder);
+                border.endFill();
+                this.addChild(border);
+
+                let opponentText: Phaser.Text = this.game.add.text(62, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(opponentText);
+
+            }else if(index === GameData.Data.progressIndex && orientation === Icon.RIGHT){
+                let border: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+                border.beginFill(0xFF0000, 0.5);
+                border.lineStyle(0, 0xFF0000, 0.0);
+                border.drawPolygon(opponentRightBorder);
+                border.endFill();
+                this.addChild(border);
+
+                let opponentText: Phaser.Text = this.game.add.text(60, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                this.addChild(opponentText);
             }
             
 
