@@ -1,5 +1,6 @@
 module StreetFighterCards {
     import Icon = Fabrique.Icon;
+    import ButtonComix = Fabrique.ButtonComix;
 
     export class Tournament extends Phaser.State{
 
@@ -7,6 +8,9 @@ module StreetFighterCards {
         public name: string = Tournament.Name;
 
         private icons: Icon[];
+        private buttonBack: ButtonComix;
+        private buttonSettings: ButtonComix;
+        private buttonStartBattle: ButtonComix;
 
         private group: Phaser.Group;
 
@@ -17,10 +21,29 @@ module StreetFighterCards {
         public create():void {
             this.group = new Phaser.Group(this.game, this.stage);
             
-            /* Background */
+            this.createBackground();
+            this.createVSPlayers();
+            this.createIcons();
+            this.createButtons();          
+            this.createBorder();
+        }
+
+        public shutdown():void {
+            this.icons.forEach(icon => {
+                icon.shutdown();
+            });
+            this.buttonBack.shutdown();
+            this.buttonStartBattle.shutdown();
+            this.buttonSettings.shutdown();
+            this.group.removeAll();
+        }
+
+        private createBackground():void {
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament)
             this.group.addChild(background);
+        }
 
+        private createVSPlayers():void {
             /* Player */
             let player: Phaser.Sprite = new Phaser.Sprite(this.game, 200, 300, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
             player.anchor.setTo(.5,.5);
@@ -45,7 +68,9 @@ module StreetFighterCards {
             let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
             vs.scale.set(0.8, 0.8);
             this.group.addChild(vs);
+        }
 
+        private createIcons():void {
             /* Icons */
             let icon: Icon;
             let position:any[][] = [
@@ -69,20 +94,29 @@ module StreetFighterCards {
                 this.icons.push(icon);
                 i++;
             });
-          
-            //let messageText: Phaser.Text = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
-            
+        }
 
-            /* Border */
+        private createButtons():void {
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БИТВУ', 30, 300, 530);
+            this.buttonStartBattle.event.add(this.onButtonClick, this);
+        }
+
+        private createBorder():void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
         }
 
-        public shutdown():void {
-            this.icons.forEach(icon => {
-                icon.shutdown();
-            });
-            this.group.removeAll();
+        private onButtonClick(event) {
+            switch (event.name) {
+                case Constants.BUTTON_START_BATTLE:
+                    {
+                        //this.game.state.start(Tournament.Name, true, false);
+                        break;
+                    }
+                         
+                default:
+                    break;
+            }
         }
 
     }

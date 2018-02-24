@@ -53,6 +53,7 @@ var Constants = (function () {
     Constants.BUTTON_SELECT = 'button_select';
     Constants.BUTTON_ARROW_LEFT = 'button_arrow_left';
     Constants.BUTTON_ARROW_RIGHT = 'button_arrow_right';
+    Constants.BUTTON_START_BATTLE = 'button_start_battle';
     return Constants;
 }());
 var Config = (function () {
@@ -842,6 +843,8 @@ var Fabrique;
                 iconMask.endFill();
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
+                if (index < GameData.Data.progressIndex)
+                    iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }
             else {
@@ -859,6 +862,8 @@ var Fabrique;
                 iconSprite.anchor.setTo(.5, .5);
                 iconSprite.scale.x *= -1;
                 iconSprite.mask = iconMask;
+                if (index < GameData.Data.progressIndex)
+                    iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }
             var playerBorder = new Phaser.Polygon([
@@ -1200,6 +1205,7 @@ var StreetFighterCards;
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var Icon = Fabrique.Icon;
+    var ButtonComix = Fabrique.ButtonComix;
     var Tournament = (function (_super) {
         __extends(Tournament, _super);
         function Tournament() {
@@ -1207,11 +1213,27 @@ var StreetFighterCards;
             this.name = Tournament.Name;
         }
         Tournament.prototype.create = function () {
-            var _this = this;
             this.group = new Phaser.Group(this.game, this.stage);
-            /* Background */
+            this.createBackground();
+            this.createVSPlayers();
+            this.createIcons();
+            this.createButtons();
+            this.createBorder();
+        };
+        Tournament.prototype.shutdown = function () {
+            this.icons.forEach(function (icon) {
+                icon.shutdown();
+            });
+            this.buttonBack.shutdown();
+            this.buttonStartBattle.shutdown();
+            this.buttonSettings.shutdown();
+            this.group.removeAll();
+        };
+        Tournament.prototype.createBackground = function () {
             var background = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament);
             this.group.addChild(background);
+        };
+        Tournament.prototype.createVSPlayers = function () {
             /* Player */
             var player = new Phaser.Sprite(this.game, 200, 300, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
             player.anchor.setTo(.5, .5);
@@ -1232,6 +1254,9 @@ var StreetFighterCards;
             var vs = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
             vs.scale.set(0.8, 0.8);
             this.group.addChild(vs);
+        };
+        Tournament.prototype.createIcons = function () {
+            var _this = this;
             /* Icons */
             var icon;
             var position = [
@@ -1251,16 +1276,25 @@ var StreetFighterCards;
                 _this.icons.push(icon);
                 i++;
             });
-            //let messageText: Phaser.Text = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
-            /* Border */
+        };
+        Tournament.prototype.createButtons = function () {
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БИТВУ', 30, 300, 530);
+            this.buttonStartBattle.event.add(this.onButtonClick, this);
+        };
+        Tournament.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
         };
-        Tournament.prototype.shutdown = function () {
-            this.icons.forEach(function (icon) {
-                icon.shutdown();
-            });
-            this.group.removeAll();
+        Tournament.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case Constants.BUTTON_START_BATTLE:
+                    {
+                        //this.game.state.start(Tournament.Name, true, false);
+                        break;
+                    }
+                default:
+                    break;
+            }
         };
         Tournament.Name = "tournament";
         return Tournament;
