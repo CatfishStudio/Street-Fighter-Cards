@@ -28,13 +28,22 @@ module StreetFighterCards {
             //this.player.scale.y *= -1;
             this.group.addChild(player);
 
+            let playerName: Phaser.Text = this.game.add.text(35, 350, GameData.Data.personages[GameData.Data.fighterIndex].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
+            playerName.setShadow(-5, 5, 'rgba(0,0,0,0.5)', 0);
+            this.group.addChild(playerName);
+
             /* Opponent */
             let opponentId: number = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
             let opponent: Phaser.Sprite = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[opponentId][3]);
             this.group.addChild(opponent);
 
+            let opponentName: Phaser.Text = this.game.add.text(575, 350, GameData.Data.personages[opponentId].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
+            opponentName.setShadow(5, 5, 'rgba(0,0,0,0.5)', 0);
+            this.group.addChild(opponentName);
+
             /* VS */
-            let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 150, 200, Images.vsTournament);
+            let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
+            vs.scale.set(0.8, 0.8);
             this.group.addChild(vs);
 
             /* Icons */
@@ -61,6 +70,8 @@ module StreetFighterCards {
                 i++;
             });
           
+            //let messageText: Phaser.Text = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            
 
             /* Border */
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);

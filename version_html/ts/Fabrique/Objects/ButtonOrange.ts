@@ -1,6 +1,7 @@
 module Fabrique {
     export class ButtonOrange extends Phaser.Group {
         public event: Phaser.Signal;
+        private textButton:Phaser.Text;
         
         constructor(game:Phaser.Game, parent:Phaser.Group, name:string, text:string, textX:number, x:number, y:number){
             super(game, parent);
@@ -19,17 +20,27 @@ module Fabrique {
 
             let button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
             button.name = name;
+            button.events.onInputOut.add(this.onButtonInputOut, this);
+            button.events.onInputOver.add(this.onButtonInputOver, this);
             this.addChild(button);
 
-            let textBack = new Phaser.Text(this.game, textX - 1, 14, text, {font: "bold 16px Arial", fill: "#FFFFFF"});
-            this.addChild(textBack);
-
-            let textFront = new Phaser.Text(this.game, textX, 15, text, {font: "bold 16px Arial", fill: "#9B372C"});
-            this.addChild(textFront);
+            this.textButton = new Phaser.Text(this.game, textX, 15, text, {font: "bold 16px Arial", fill: "#9B372C"});
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+            this.addChild(this.textButton);
         }
 
         private onButtonClick(event) {
             this.event.dispatch(event);
+        }
+
+        private onButtonInputOut(event){
+            this.textButton.fill = "#9B372C";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+        }
+
+        private onButtonInputOver(event){
+            this.textButton.fill = "#FFFFFF";
+            this.textButton.setShadow(-1, -1, 'rgba(155,55,44,1)', 0);
         }
     }
 }

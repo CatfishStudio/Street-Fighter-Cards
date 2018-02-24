@@ -579,14 +579,23 @@ var Fabrique;
             this.event = new Phaser.Signal();
             var button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle1, this.onButtonClick, this, 1, 2);
             button.name = name;
+            button.events.onInputOut.add(this.onButtonInputOut, this);
+            button.events.onInputOver.add(this.onButtonInputOver, this);
             this.addChild(button);
-            var textBack = new Phaser.Text(this.game, textX - 1, 14, text, { font: "bold 16px Arial", fill: "#FFFFFF" });
-            this.addChild(textBack);
-            var textFront = new Phaser.Text(this.game, textX, 15, text, { font: "bold 16px Arial", fill: "#9B372C" });
-            this.addChild(textFront);
+            this.textButton = new Phaser.Text(this.game, textX, 15, text, { font: "bold 16px Arial", fill: "#9B372C" });
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+            this.addChild(this.textButton);
         };
         ButtonOrange.prototype.onButtonClick = function (event) {
             this.event.dispatch(event);
+        };
+        ButtonOrange.prototype.onButtonInputOut = function (event) {
+            this.textButton.fill = "#9B372C";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+        };
+        ButtonOrange.prototype.onButtonInputOver = function (event) {
+            this.textButton.fill = "#FFFFFF";
+            this.textButton.setShadow(-1, -1, 'rgba(155,55,44,1)', 0);
         };
         return ButtonOrange;
     }(Phaser.Group));
@@ -612,17 +621,20 @@ var Fabrique;
             button.events.onInputOut.add(this.onButtonInputOut, this);
             button.events.onInputOver.add(this.onButtonInputOver, this);
             this.addChild(button);
-            this.textButton = new Phaser.Text(this.game, textX, 20, text, { font: "bold 16px Arial", fill: "#666666" });
+            this.textButton = new Phaser.Text(this.game, textX, 20, text, { font: "bold 16px Arial", fill: "#444444" });
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
             this.addChild(this.textButton);
         };
         ButtonComix.prototype.onButtonClick = function (event) {
             this.event.dispatch(event);
         };
         ButtonComix.prototype.onButtonInputOut = function (event) {
-            this.textButton.fill = "#666666";
+            this.textButton.fill = "#444444";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
         };
         ButtonComix.prototype.onButtonInputOver = function (event) {
             this.textButton.fill = "#9E32EC";
+            this.textButton.setShadow(-1, -1, 'rgba(0,0,0,1)', 0);
         };
         return ButtonComix;
     }(Phaser.Group));
@@ -1075,11 +1087,11 @@ var StreetFighterCards;
             this.groupWindow.addChild(backgroundSprite);
         };
         ChoiceFighter.prototype.createButtons = function () {
-            this.buttonBack = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_BACK, 'НАЗАД', 55, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
-            this.buttonSettings = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 35, 300, 530);
+            this.buttonSettings = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 300, 530);
             this.buttonSettings.event.add(this.onButtonClick, this);
-            this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 50, 600, 530);
+            this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 55, 600, 530);
             this.buttonSelect.event.add(this.onButtonClick, this);
         };
         ChoiceFighter.prototype.createSlides = function () {
@@ -1154,12 +1166,19 @@ var StreetFighterCards;
             player.scale.x *= -1;
             //this.player.scale.y *= -1;
             this.group.addChild(player);
+            var playerName = this.game.add.text(35, 350, GameData.Data.personages[GameData.Data.fighterIndex].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
+            playerName.setShadow(-5, 5, 'rgba(0,0,0,0.5)', 0);
+            this.group.addChild(playerName);
             /* Opponent */
             var opponentId = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
             var opponent = new Phaser.Sprite(this.game, 400, 0, GameData.Data.fighters[opponentId][3]);
             this.group.addChild(opponent);
+            var opponentName = this.game.add.text(575, 350, GameData.Data.personages[opponentId].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
+            opponentName.setShadow(5, 5, 'rgba(0,0,0,0.5)', 0);
+            this.group.addChild(opponentName);
             /* VS */
-            var vs = new Phaser.Sprite(this.game, 150, 200, Images.vsTournament);
+            var vs = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
+            vs.scale.set(0.8, 0.8);
             this.group.addChild(vs);
             /* Icons */
             var icon;
@@ -1180,6 +1199,7 @@ var StreetFighterCards;
                 _this.icons.push(icon);
                 i++;
             });
+            //let messageText: Phaser.Text = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
             /* Border */
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);

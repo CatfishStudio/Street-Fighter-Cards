@@ -24,7 +24,8 @@ module Fabrique {
             button.events.onInputOver.add(this.onButtonInputOver, this);
             this.addChild(button);
 
-            this.textButton = new Phaser.Text(this.game, textX, 20, text, {font: "bold 16px Arial", fill: "#666666"});
+            this.textButton = new Phaser.Text(this.game, textX, 20, text, {font: "bold 16px Arial", fill: "#444444"});
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
             this.addChild(this.textButton);
         }
 
@@ -33,11 +34,13 @@ module Fabrique {
         }
 
         private onButtonInputOut(event){
-            this.textButton.fill = "#666666";
+            this.textButton.fill = "#444444";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
         }
 
         private onButtonInputOver(event){
             this.textButton.fill = "#9E32EC";
+            this.textButton.setShadow(-1, -1, 'rgba(0,0,0,1)', 0);
         }
     }
 }
