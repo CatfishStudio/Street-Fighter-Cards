@@ -97,7 +97,7 @@ module StreetFighterCards {
         }
 
         private createButtons():void {
-            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БИТВУ', 30, 300, 530);
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         }
 

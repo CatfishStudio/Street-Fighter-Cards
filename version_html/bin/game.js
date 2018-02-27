@@ -118,6 +118,7 @@ var Images = (function () {
     Images.urienIcon = 'icons/urien.png';
     Images.yangIcon = 'icons/yang.png';
     Images.yunIcon = 'icons/yun.png';
+    Images.backgroundIcon = 'icons/background_icon.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -169,6 +170,7 @@ var Images = (function () {
         Images.urienIcon,
         Images.yangIcon,
         Images.yunIcon,
+        Images.backgroundIcon
     ];
     return Images;
 }());
@@ -595,8 +597,8 @@ var Fabrique;
             this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
         };
         ButtonOrange.prototype.onButtonInputOver = function (event) {
-            this.textButton.fill = "#FFFFFF";
-            this.textButton.setShadow(-1, -1, 'rgba(155,55,44,1)', 0);
+            this.textButton.fill = "#FF0000";
+            this.textButton.setShadow(-1, -1, 'rgba(255,216,0,1)', 0);
         };
         return ButtonOrange;
     }(Phaser.Group));
@@ -824,11 +826,12 @@ var Fabrique;
                 new Phaser.Point(x + 2, y + 2),
                 new Phaser.Point(x + 82, y + 2),
                 new Phaser.Point(x + 63, y + 38),
-                new Phaser.Point(x - 18, y + 38),
+                new Phaser.Point(x - 16, y + 38),
                 new Phaser.Point(x + 2, y + 2)
             ]);
             var background;
             var iconMask;
+            var iconBackgroundSprite;
             var iconSprite;
             if (orientation === Icon.LEFT) {
                 background = new Phaser.Graphics(this.game, 0, 0);
@@ -841,6 +844,9 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
+                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.backgroundIcon);
+                iconBackgroundSprite.mask = iconMask;
+                this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
                 if (index < GameData.Data.progressIndex)
@@ -858,6 +864,9 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
+                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.backgroundIcon);
+                iconBackgroundSprite.mask = iconMask;
+                this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.anchor.setTo(.5, .5);
                 iconSprite.scale.x *= -1;
@@ -1278,7 +1287,7 @@ var StreetFighterCards;
             });
         };
         Tournament.prototype.createButtons = function () {
-            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БИТВУ', 30, 300, 530);
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         };
         Tournament.prototype.createBorder = function () {

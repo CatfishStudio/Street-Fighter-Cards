@@ -53,6 +53,7 @@ class Images {
     public static urienIcon: string = 'icons/urien.png';
     public static yangIcon: string = 'icons/yang.png';
     public static yunIcon: string = 'icons/yun.png';
+    public static backgroundIcon: string = 'icons/background_icon.png';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -107,5 +108,6 @@ class Images {
         Images.urienIcon,
         Images.yangIcon,
         Images.yunIcon,
+        Images.backgroundIcon
     ]; 
 }

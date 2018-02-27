@@ -46,12 +46,13 @@ module Fabrique {
                 new Phaser.Point(x+2, y+2), 
                 new Phaser.Point(x+82, y+2), 
                 new Phaser.Point(x+63, y+38), 
-                new Phaser.Point(x-18, y+38),  
+                new Phaser.Point(x-16, y+38),  
                 new Phaser.Point(x+2, y+2)
             ]);
 
             let background: Phaser.Graphics;
             let iconMask: Phaser.Graphics;
+            let iconBackgroundSprite: Phaser.Sprite;
             let iconSprite: Phaser.Sprite;
 
             if(orientation === Icon.LEFT){
@@ -66,6 +67,10 @@ module Fabrique {
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
+
+                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.backgroundIcon);
+                iconBackgroundSprite.mask = iconMask;
+                this.addChild(iconBackgroundSprite);
                 
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
@@ -83,6 +88,10 @@ module Fabrique {
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
+
+                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.backgroundIcon);
+                iconBackgroundSprite.mask = iconMask;
+                this.addChild(iconBackgroundSprite);
                 
                 iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.anchor.setTo(.5,.5);
