@@ -1279,6 +1279,7 @@ var StreetFighterCards;
 (function (StreetFighterCards) {
     var Icon = Fabrique.Icon;
     var ButtonComix = Fabrique.ButtonComix;
+    var Settings = Fabrique.Settings;
     var Tournament = (function (_super) {
         __extends(Tournament, _super);
         function Tournament() {
@@ -1300,6 +1301,8 @@ var StreetFighterCards;
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
+            if (this.tutorial != null)
+                this.tutorial.shutdown();
             this.group.removeAll();
         };
         Tournament.prototype.createBackground = function () {
@@ -1351,6 +1354,10 @@ var StreetFighterCards;
             });
         };
         Tournament.prototype.createButtons = function () {
+            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
+            this.buttonBack.event.add(this.onButtonClick, this);
+            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 10);
+            this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         };
@@ -1358,11 +1365,34 @@ var StreetFighterCards;
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
         };
+        Tournament.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.group);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        Tournament.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.group.removeChild(this.settings);
+        };
         Tournament.prototype.onButtonClick = function (event) {
             switch (event.name) {
                 case Constants.BUTTON_START_BATTLE:
                     {
                         //this.game.state.start(Tournament.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_BACK:
+                    {
+                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
                         break;
                     }
                 default:

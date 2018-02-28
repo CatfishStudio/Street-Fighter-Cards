@@ -1,6 +1,8 @@
 module StreetFighterCards {
     import Icon = Fabrique.Icon;
     import ButtonComix = Fabrique.ButtonComix;
+    import Tutorial = Fabrique.Tutorial;
+    import Settings = Fabrique.Settings;
 
     export class Tournament extends Phaser.State{
 
@@ -11,6 +13,8 @@ module StreetFighterCards {
         private buttonBack: ButtonComix;
         private buttonSettings: ButtonComix;
         private buttonStartBattle: ButtonComix;
+        private tutorial:Tutorial;
+        private settings:Settings;
 
         private group: Phaser.Group;
 
@@ -35,6 +39,7 @@ module StreetFighterCards {
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
+            if(this.tutorial != null) this.tutorial.shutdown();
             this.group.removeAll();
         }
 
@@ -97,6 +102,12 @@ module StreetFighterCards {
         }
 
         private createButtons():void {
+            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
+            this.buttonBack.event.add(this.onButtonClick, this);
+
+            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 10);
+            this.buttonSettings.event.add(this.onButtonClick, this);
+
             this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         }
@@ -106,6 +117,16 @@ module StreetFighterCards {
             this.group.addChild(border);
         }
 
+        private settingsCreate() {
+            this.settings = new Settings(this.game, this.group);
+            this.settings.event.add(this.onButtonClick, this);
+        }
+        
+        private settingsClose() {
+            this.settings.removeAll();
+            this.group.removeChild(this.settings);
+        }
+
         private onButtonClick(event) {
             switch (event.name) {
                 case Constants.BUTTON_START_BATTLE:
@@ -113,7 +134,21 @@ module StreetFighterCards {
                         //this.game.state.start(Tournament.Name, true, false);
                         break;
                     }
-                         
+                case Constants.BUTTON_BACK:
+                    {
+                        this.game.state.start(Menu.Name, true, false);
+                        break;
+                    } 
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
+                        break;
+                    }         
                 default:
                     break;
             }
