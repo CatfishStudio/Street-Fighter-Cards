@@ -131,7 +131,7 @@ module StreetFighterCards {
             switch (event.name) {
                 case Constants.BUTTON_START_BATTLE:
                     {
-                        //this.game.state.start(Tournament.Name, true, false);
+                        this.game.state.start(Level.Name, true, false);
                         break;
                     }
                 case Constants.BUTTON_BACK:

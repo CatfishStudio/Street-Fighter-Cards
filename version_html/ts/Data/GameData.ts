@@ -66,7 +66,7 @@ module GameData {
         ];
 
         public static fighterIndex:number = 0;      // id выбранного игроком персонажа
-        public static progressIndex:number = 0;     // индекс прогресса в игре
+        public static progressIndex:number = -1;    // индекс прогресса в игре
         public static personages:IPersonage[];      // массив персонажей и их характеристик
         public static tournamentListIds:number[];   // турнирная таблица
 
@@ -114,6 +114,8 @@ module GameData {
         }
 
         public static initTournament():void {
+            this.progressIndex = 0;
+            
             GameData.Data.tournamentListIds = [];
 
             let listIDs:number[] = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19];
