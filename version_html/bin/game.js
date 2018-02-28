@@ -119,6 +119,26 @@ var Images = (function () {
     Images.yangIcon = 'icons/yang.png';
     Images.yunIcon = 'icons/yun.png';
     Images.backgroundIcon = 'icons/background_icon.png';
+    Images.level1 = 'levels/level_1.jpg';
+    Images.level2 = 'levels/level_2.jpg';
+    Images.level3 = 'levels/level_3.jpg';
+    Images.level4 = 'levels/level_4.jpg';
+    Images.level5 = 'levels/level_5.jpg';
+    Images.level6 = 'levels/level_6.jpg';
+    Images.level7 = 'levels/level_7.jpg';
+    Images.level8 = 'levels/level_8.jpg';
+    Images.level9 = 'levels/level_9.jpg';
+    Images.level10 = 'levels/level_10.jpg';
+    Images.level11 = 'levels/level_11.jpg';
+    Images.level12 = 'levels/level_12.jpg';
+    Images.level13 = 'levels/level_13.jpg';
+    Images.level14 = 'levels/level_14.jpg';
+    Images.level15 = 'levels/level_15.jpg';
+    Images.level16 = 'levels/level_16.jpg';
+    Images.level17 = 'levels/level_17.jpg';
+    Images.level18 = 'levels/level_18.jpg';
+    Images.level19 = 'levels/level_19.jpg';
+    Images.level20 = 'levels/level_20.jpg';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -170,7 +190,27 @@ var Images = (function () {
         Images.urienIcon,
         Images.yangIcon,
         Images.yunIcon,
-        Images.backgroundIcon
+        Images.backgroundIcon,
+        Images.level1,
+        Images.level2,
+        Images.level3,
+        Images.level4,
+        Images.level5,
+        Images.level6,
+        Images.level7,
+        Images.level8,
+        Images.level9,
+        Images.level10,
+        Images.level11,
+        Images.level12,
+        Images.level13,
+        Images.level14,
+        Images.level15,
+        Images.level16,
+        Images.level17,
+        Images.level18,
+        Images.level19,
+        Images.level20
     ];
     return Images;
 }());
@@ -251,6 +291,7 @@ var GameData;
         function Data() {
         }
         Data.initPersonages = function (game) {
+            var _this = this;
             GameData.Data.personages = [];
             var personage;
             var card;
@@ -265,6 +306,7 @@ var GameData;
                 personage.energy = game.cache.getJSON(value).energy;
                 personage.life = 0;
                 personage.deck = [];
+                personage.level = _this.levels[i][1];
                 deck = game.cache.getJSON(value).deck;
                 for (var key in deck.cards) {
                     card = {};
@@ -322,8 +364,30 @@ var GameData;
             [18, 'Yang', 'yang_card.png', Images.yangBig, Images.yangIcon],
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];
-        Data.fighterIndex = 0;
-        Data.progressIndex = 0;
+        Data.levels = [
+            [0, Images.level1],
+            [1, Images.level2],
+            [2, Images.level3],
+            [3, Images.level4],
+            [4, Images.level5],
+            [5, Images.level10],
+            [6, Images.level7],
+            [7, Images.level8],
+            [8, Images.level9],
+            [9, Images.level6],
+            [10, Images.level11],
+            [11, Images.level12],
+            [12, Images.level13],
+            [13, Images.level14],
+            [14, Images.level15],
+            [15, Images.level16],
+            [16, Images.level17],
+            [17, Images.level18],
+            [18, Images.level19],
+            [19, Images.level20],
+        ];
+        Data.fighterIndex = 0; // id выбранного игроком персонажа
+        Data.progressIndex = 0; // индекс прогресса в игре
         return Data;
     }());
     GameData.Data = Data;

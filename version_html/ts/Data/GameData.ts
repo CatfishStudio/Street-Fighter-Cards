@@ -15,6 +15,7 @@ module GameData {
         life:number;
         energy:number;
         deck:ICard[];
+        level:string;
     }
 
     export class Data {
@@ -41,10 +42,33 @@ module GameData {
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];
 
-        public static fighterIndex:number = 0;
-        public static progressIndex:number = 0;
-        public static personages:IPersonage[];
-        public static tournamentListIds:number[];
+        public static levels:any[][] = [
+            [0, Images.level1],
+            [1, Images.level2],
+            [2, Images.level3],
+            [3, Images.level4],
+            [4, Images.level5],
+            [5, Images.level10],
+            [6, Images.level7],
+            [7, Images.level8],
+            [8, Images.level9],
+            [9, Images.level6],
+            [10, Images.level11],
+            [11, Images.level12],
+            [12, Images.level13],
+            [13, Images.level14],
+            [14, Images.level15],
+            [15, Images.level16],
+            [16, Images.level17],
+            [17, Images.level18],
+            [18, Images.level19],
+            [19, Images.level20],
+        ];
+
+        public static fighterIndex:number = 0;      // id выбранного игроком персонажа
+        public static progressIndex:number = 0;     // индекс прогресса в игре
+        public static personages:IPersonage[];      // массив персонажей и их характеристик
+        public static tournamentListIds:number[];   // турнирная таблица
 
         public static initPersonages(game: Phaser.Game):void {
             GameData.Data.personages = [];
@@ -63,6 +87,7 @@ module GameData {
                 personage.energy = game.cache.getJSON(value).energy;
                 personage.life = 0;
                 personage.deck = [];
+                personage.level = this.levels[i][1];
 
                 deck = game.cache.getJSON(value).deck;
                 for (let key in deck.cards) {
