@@ -1,5 +1,4 @@
 module StreetFighterCards {
-
     export class Level extends Phaser.State {
         public static Name: string = "level";
         public name: string = Level.Name;

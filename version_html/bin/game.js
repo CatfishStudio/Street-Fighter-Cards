@@ -57,6 +57,7 @@ var Constants = /** @class */ (function () {
     Constants.BUTTON_SETTINGS_CLOSE = 'button_settings_close';
     Constants.BUTTON_INVATE = 'button_invate';
     Constants.BUTTON_BACK = 'button_back';
+    Constants.BUTTON_NEXT = 'button_next';
     Constants.BUTTON_SELECT = 'button_select';
     Constants.BUTTON_ARROW_LEFT = 'button_arrow_left';
     Constants.BUTTON_ARROW_RIGHT = 'button_arrow_right';
@@ -146,6 +147,8 @@ var Images = /** @class */ (function () {
     Images.level18 = 'levels/level_18.jpg';
     Images.level19 = 'levels/level_19.jpg';
     Images.level20 = 'levels/level_20.jpg';
+    Images.comixPage1 = 'comix/comix_page_1.jpg';
+    Images.comixPage2 = 'comix/comix_page_2.jpg';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -217,7 +220,9 @@ var Images = /** @class */ (function () {
         Images.level17,
         Images.level18,
         Images.level19,
-        Images.level20
+        Images.level20,
+        Images.comixPage1,
+        Images.comixPage2
     ];
     return Images;
 }());
@@ -393,6 +398,10 @@ var GameData;
             [17, Images.level18],
             [18, Images.level19],
             [19, Images.level20],
+        ];
+        Data.comixes = [
+            Images.comixPage1,
+            Images.comixPage2
         ];
         Data.fighterIndex = 0; // id выбранного игроком персонажа
         Data.progressIndex = -1; // индекс прогресса в игре
@@ -1016,6 +1025,45 @@ var Fabrique;
     }(Phaser.Group));
     Fabrique.Icon = Icon;
 })(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var ButtonComix = Fabrique.ButtonComix;
+    var Comix = /** @class */ (function (_super) {
+        __extends(Comix, _super);
+        function Comix(game, parent) {
+            var _this = _super.call(this, game, parent) || this;
+            _this.init();
+            return _this;
+        }
+        Comix.prototype.shutdown = function () {
+            this.buttonNext.shutdown();
+            this.removeAll();
+        };
+        Comix.prototype.init = function () {
+            this.createBackground();
+            this.createButton();
+            this.createBorder();
+        };
+        Comix.prototype.createBackground = function () {
+            var background = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.progressIndex + 1]);
+            this.addChild(background);
+        };
+        Comix.prototype.createButton = function () {
+            this.buttonNext = new ButtonComix(this.game, this, Constants.BUTTON_NEXT, 'ДАЛЕЕ', 60, 600, 530);
+            this.buttonNext.event.add(this.onButtonClick, this);
+        };
+        Comix.prototype.createBorder = function () {
+            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
+            this.addChild(border);
+        };
+        Comix.prototype.onButtonClick = function (event) {
+            this.shutdown();
+            this.parent.removeChild(this);
+        };
+        return Comix;
+    }(Phaser.Group));
+    Fabrique.Comix = Comix;
+})(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var Boot = /** @class */ (function (_super) {
@@ -1209,6 +1257,7 @@ var StreetFighterCards;
     var Slides = Fabrique.Slides;
     var Tutorial = Fabrique.Tutorial;
     var Settings = Fabrique.Settings;
+    var Comix = Fabrique.Comix;
     var ChoiceFighter = /** @class */ (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
@@ -1223,6 +1272,7 @@ var StreetFighterCards;
             this.createSlides();
             this.createTutorial();
             this.createBorder();
+            this.createComix();
         };
         ChoiceFighter.prototype.shutdown = function () {
             this.slides.shutdown();
@@ -1255,6 +1305,9 @@ var StreetFighterCards;
         ChoiceFighter.prototype.createBorder = function () {
             var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.groupWindow.addChild(borderSprite);
+        };
+        ChoiceFighter.prototype.createComix = function () {
+            var comix = new Comix(this.game, this.groupWindow);
         };
         ChoiceFighter.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.groupWindow);
@@ -1301,6 +1354,7 @@ var StreetFighterCards;
     var Icon = Fabrique.Icon;
     var ButtonComix = Fabrique.ButtonComix;
     var Settings = Fabrique.Settings;
+    var Comix = Fabrique.Comix;
     var Tournament = /** @class */ (function (_super) {
         __extends(Tournament, _super);
         function Tournament() {
@@ -1315,6 +1369,7 @@ var StreetFighterCards;
             this.createIcons();
             this.createButtons();
             this.createBorder();
+            this.createComix();
         };
         Tournament.prototype.shutdown = function () {
             this.icons.forEach(function (icon) {
@@ -1386,6 +1441,9 @@ var StreetFighterCards;
         Tournament.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
+        };
+        Tournament.prototype.createComix = function () {
+            var comix = new Comix(this.game, this.group);
         };
         Tournament.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);
@@ -1475,6 +1533,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\FighterCard.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Icon.ts" />
+/// <reference path="Fabrique\Objects\Comix.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />

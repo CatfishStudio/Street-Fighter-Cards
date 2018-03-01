@@ -3,6 +3,7 @@ module StreetFighterCards {
     import ButtonComix = Fabrique.ButtonComix;
     import Tutorial = Fabrique.Tutorial;
     import Settings = Fabrique.Settings;
+    import Comix = Fabrique.Comix;
 
     export class Tournament extends Phaser.State{
 
@@ -30,6 +31,7 @@ module StreetFighterCards {
             this.createIcons();
             this.createButtons();          
             this.createBorder();
+            this.createComix();
         }
 
         public shutdown():void {
@@ -115,6 +117,10 @@ module StreetFighterCards {
         private createBorder():void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
+        }
+
+        private createComix():void {
+            let comix: Comix = new Comix(this.game, this.group);
         }
 
         private settingsCreate() {

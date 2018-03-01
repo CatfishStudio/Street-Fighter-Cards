@@ -75,6 +75,9 @@ class Images {
     public static level18: string = 'levels/level_18.jpg';
     public static level19: string = 'levels/level_19.jpg';
     public static level20: string = 'levels/level_20.jpg';
+
+    public static comixPage1: string = 'comix/comix_page_1.jpg';
+    public static comixPage2: string = 'comix/comix_page_2.jpg';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -150,6 +153,9 @@ class Images {
         Images.level17,
         Images.level18,
         Images.level19,
-        Images.level20
+        Images.level20,
+
+        Images.comixPage1,
+        Images.comixPage2
     ]; 
 }

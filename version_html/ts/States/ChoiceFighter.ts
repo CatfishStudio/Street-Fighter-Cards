@@ -3,6 +3,7 @@ module StreetFighterCards {
     import Slides = Fabrique.Slides;
     import Tutorial = Fabrique.Tutorial;
     import Settings = Fabrique.Settings;
+    import Comix = Fabrique.Comix;
 
     export class ChoiceFighter extends Phaser.State{
 
@@ -31,6 +32,7 @@ module StreetFighterCards {
             this.createSlides();
             this.createTutorial();
             this.createBorder();
+            this.createComix();
         }
 
         public shutdown(){
@@ -71,6 +73,10 @@ module StreetFighterCards {
         private createBorder():void {
             let borderSprite:Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.groupWindow.addChild(borderSprite);
+        }
+
+        private createComix():void {
+            let comix: Comix = new Comix(this.game, this.groupWindow);
         }
 
         private settingsCreate() {

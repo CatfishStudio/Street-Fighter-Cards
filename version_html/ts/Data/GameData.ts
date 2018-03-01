@@ -65,6 +65,11 @@ module GameData {
             [19, Images.level20],
         ];
 
+        public static comixes:any[] = [
+            Images.comixPage1,
+            Images.comixPage2
+        ];
+
         public static fighterIndex:number = 0;      // id выбранного игроком персонажа
         public static progressIndex:number = -1;    // индекс прогресса в игре
         public static personages:IPersonage[];      // массив персонажей и их характеристик
