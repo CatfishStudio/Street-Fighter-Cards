@@ -78,6 +78,29 @@ class Images {
 
     public static comixPage1: string = 'comix/comix_page_1.jpg';
     public static comixPage2: string = 'comix/comix_page_2.jpg';
+    public static comixPage3: string = 'comix/comix_page_3.jpg';
+    public static comixPage4: string = 'comix/comix_page_4.jpg';
+    public static comixPage5_1: string = 'comix/comix_page_5_1.jpg';
+    public static comixPage5_2: string = 'comix/comix_page_5_2.jpg';
+    public static comixPage6: string = 'comix/comix_page_6.jpg';
+    public static comixPage7: string = 'comix/comix_page_7.jpg';
+    public static comixPage8_1: string = 'comix/comix_page_8_1.jpg';
+    public static comixPage8_2: string = 'comix/comix_page_8_2.jpg';
+    public static comixPage9_1: string = 'comix/comix_page_9_1.jpg';
+    public static comixPage9_2: string = 'comix/comix_page_9_2.jpg';
+    public static comixPage10: string = 'comix/comix_page_10.jpg';
+    public static comixPage11: string = 'comix/comix_page_11.jpg';
+    public static comixPage12: string = 'comix/comix_page_12.jpg';
+    public static comixPage13: string = 'comix/comix_page_13.jpg';
+    public static comixPage14: string = 'comix/comix_page_14.jpg';
+    public static comixPage15_1: string = 'comix/comix_page_15_1.jpg';
+    public static comixPage15_2: string = 'comix/comix_page_15_2.jpg';
+    public static comixPage16: string = 'comix/comix_page_16.jpg';
+    public static comixPage17: string = 'comix/comix_page_17.jpg';
+    public static comixPage18: string = 'comix/comix_page_18.jpg';
+    public static comixPage19: string = 'comix/comix_page_19.jpg';
+    public static comixPage20: string = 'comix/comix_page_20.jpg';
+    public static comixPage21: string = 'comix/comix_page_21.jpg';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -156,6 +179,29 @@ class Images {
         Images.level20,
 
         Images.comixPage1,
-        Images.comixPage2
+        Images.comixPage2,
+        Images.comixPage3,
+        Images.comixPage4,
+        Images.comixPage5_1,
+        Images.comixPage5_2,
+        Images.comixPage6,
+        Images.comixPage7,
+        Images.comixPage8_1,
+        Images.comixPage8_2,
+        Images.comixPage9_1,
+        Images.comixPage9_2,
+        Images.comixPage10,
+        Images.comixPage11,
+        Images.comixPage12,
+        Images.comixPage13,
+        Images.comixPage14,
+        Images.comixPage15_1,
+        Images.comixPage15_2,
+        Images.comixPage16,
+        Images.comixPage17,
+        Images.comixPage18,
+        Images.comixPage19,
+        Images.comixPage20,
+        Images.comixPage21
     ]; 
 }

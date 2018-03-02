@@ -3,6 +3,8 @@ module Fabrique {
 
     export class Comix extends Phaser.Group {
         private buttonNext: ButtonComix;
+        private background: Phaser.Sprite;
+        private index:number;
 
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
@@ -21,14 +23,15 @@ module Fabrique {
         }
 
         private init():void {
+            this.index = 0;
             this.createBackground();
             this.createButton();
             this.createBorder();
         }
 
         private createBackground():void {
-            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.comixIndex]);
-            this.addChild(background);
+            this.background = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
+            this.addChild(this.background);
         }
 
         private createButton():void {
@@ -42,8 +45,13 @@ module Fabrique {
         }
 
         private onButtonClick(event) {
-            this.shutdown();
-            this.parent.removeChild(this);
+            if((GameData.Data.comixes[GameData.Data.comixIndex].length-1) === this.index){
+                this.shutdown();
+                this.parent.removeChild(this);
+            }else{
+                this.index++;
+                this.background.loadTexture(GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
+            }
         }
     }
 }

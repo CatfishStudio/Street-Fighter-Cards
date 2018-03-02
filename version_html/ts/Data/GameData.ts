@@ -65,9 +65,28 @@ module GameData {
             [19, Images.level20],
         ];
 
-        public static comixes:any[] = [
-            Images.comixPage1,
-            Images.comixPage2
+        public static comixes:any[][] = [
+            [Images.comixPage1],
+            [Images.comixPage2],
+            [Images.comixPage3],
+            [Images.comixPage4],
+            [Images.comixPage5_1, Images.comixPage5_2],
+            [Images.comixPage6],
+            [Images.comixPage7],
+            [Images.comixPage8_1, Images.comixPage8_2],
+            [Images.comixPage9_1, Images.comixPage9_2],
+            [Images.comixPage10],
+            [Images.comixPage11],
+            [Images.comixPage12],
+            [Images.comixPage13],
+            [Images.comixPage14],
+            [Images.comixPage15_1, Images.comixPage15_2],
+            [Images.comixPage16],
+            [Images.comixPage17],
+            [Images.comixPage18],
+            [Images.comixPage19],
+            [Images.comixPage20],
+            [Images.comixPage21]
         ];
 
         public static fighterIndex:number = 0;      // id выбранного игроком персонажа
