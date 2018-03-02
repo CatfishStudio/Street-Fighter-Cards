@@ -39,8 +39,8 @@ module Fabrique {
         }
 
         private onButtonInputOver(event){
-            this.textButton.fill = "#FF0000";
-            this.textButton.setShadow(-1, -1, 'rgba(255,216,0,1)', 0);
+            this.textButton.fill = "#FF6A00";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
         }
     }
 }

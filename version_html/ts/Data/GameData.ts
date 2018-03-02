@@ -72,10 +72,14 @@ module GameData {
 
         public static fighterIndex:number = 0;      // id выбранного игроком персонажа
         public static progressIndex:number = -1;    // индекс прогресса в игре
+        public static comixIndex:number = 0;        // индекс комикса
         public static personages:IPersonage[];      // массив персонажей и их характеристик
         public static tournamentListIds:number[];   // турнирная таблица
 
         public static initPersonages(game: Phaser.Game):void {
+            this.progressIndex = -1;
+            this.comixIndex = 0;
+
             GameData.Data.personages = [];
 
             let personage: GameData.IPersonage;

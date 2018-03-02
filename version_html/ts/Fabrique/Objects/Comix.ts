@@ -6,10 +6,16 @@ module Fabrique {
 
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
-            this.init();
+
+            if(GameData.Data.comixIndex >= (GameData.Data.progressIndex+2)){
+                this.removeAll();
+            }else{
+                this.init();
+            }
         }
 
         public shutdown():void {
+            GameData.Data.comixIndex++;
             this.buttonNext.shutdown();
             this.removeAll();
         }
@@ -21,7 +27,7 @@ module Fabrique {
         }
 
         private createBackground():void {
-            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.progressIndex+1]);
+            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.comixIndex]);
             this.addChild(background);
         }
 
