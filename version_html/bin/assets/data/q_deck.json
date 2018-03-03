@@ -2,6 +2,7 @@
     "id": "12",
     "name": "Q",
     "energy": "10",
+    "level": "levels/level_12.jpg",
     "deck":{
         "cards":[
             {

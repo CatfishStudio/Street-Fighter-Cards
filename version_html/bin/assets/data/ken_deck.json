@@ -2,6 +2,7 @@
     "id": "8",
     "name": "Ken",
     "energy": "10",
+    "level": "levels/level_14.jpg",
     "deck":{
         "cards":[
             {

@@ -42,29 +42,6 @@ module GameData {
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
         ];
 
-        public static levels:any[][] = [
-            [0, Images.level1],
-            [1, Images.level2],
-            [2, Images.level3],
-            [3, Images.level4],
-            [4, Images.level5],
-            [5, Images.level10],
-            [6, Images.level7],
-            [7, Images.level8],
-            [8, Images.level9],
-            [9, Images.level6],
-            [10, Images.level11],
-            [11, Images.level12],
-            [12, Images.level13],
-            [13, Images.level14],
-            [14, Images.level15],
-            [15, Images.level16],
-            [16, Images.level17],
-            [17, Images.level18],
-            [18, Images.level19],
-            [19, Images.level20],
-        ];
-
         public static comixes:any[][] = [
             ['comix/comix_page_1.jpg'],
             ['comix/comix_page_2.jpg'],
@@ -115,7 +92,7 @@ module GameData {
                 personage.energy = game.cache.getJSON(value).energy;
                 personage.life = 0;
                 personage.deck = [];
-                personage.level = this.levels[i][1];
+                personage.level = game.cache.getJSON(value).level;
 
                 deck = game.cache.getJSON(value).deck;
                 for (let key in deck.cards) {

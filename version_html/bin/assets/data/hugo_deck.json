@@ -2,6 +2,7 @@
     "id": "6",
     "name": "Hugo",
     "energy": "10",
+    "level": "levels/level_19.jpg",
     "deck":{
         "cards":[
             {

@@ -2,6 +2,7 @@
     "id": "3",
     "name": "Dudley",
     "energy": "10",
+    "level": "levels/level_17.jpg",
     "deck":{
         "cards":[
             {

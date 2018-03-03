@@ -2,6 +2,7 @@
     "id": "16",
     "name": "Twelve",
     "energy": "10",
+    "level": "levels/level_2.jpg",
     "deck":{
         "cards":[
             {

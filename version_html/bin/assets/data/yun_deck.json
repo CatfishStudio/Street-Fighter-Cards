@@ -2,6 +2,7 @@
     "id": "19",
     "name": "Yun",
     "energy": "10",
+    "level": "levels/level_3.jpg",
     "deck":{
         "cards":[
             {

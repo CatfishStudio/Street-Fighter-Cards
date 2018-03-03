@@ -2,6 +2,7 @@
     "id": "11",
     "name": "Oro",
     "energy": "10",
+    "level": "levels/level_9.jpg",
     "deck":{
         "cards":[
             {

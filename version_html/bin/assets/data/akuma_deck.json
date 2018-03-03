@@ -2,6 +2,7 @@
     "id": "0",
     "name": "Akuma",
     "energy": "10",
+    "level": "levels/level_16.jpg",
     "deck":{
         "cards":[
             {

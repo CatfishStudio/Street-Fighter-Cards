@@ -2,6 +2,7 @@
     "id": "7",
     "name": "Ibuki",
     "energy": "10",
+    "level": "levels/level_7.jpg",
     "deck":{
         "cards":[
             {

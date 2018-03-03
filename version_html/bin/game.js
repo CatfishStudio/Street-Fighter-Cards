@@ -121,52 +121,27 @@ var Images = (function () {
     Images.yangIcon = 'icons/yang.png';
     Images.yunIcon = 'icons/yun.png';
     Images.backgroundIcon = 'icons/background_icon.png';
-    Images.level1 = 'levels/level_1.jpg';
-    Images.level2 = 'levels/level_2.jpg';
-    Images.level3 = 'levels/level_3.jpg';
-    Images.level4 = 'levels/level_4.jpg';
-    Images.level5 = 'levels/level_5.jpg';
-    Images.level6 = 'levels/level_6.jpg';
-    Images.level7 = 'levels/level_7.jpg';
-    Images.level8 = 'levels/level_8.jpg';
-    Images.level9 = 'levels/level_9.jpg';
-    Images.level10 = 'levels/level_10.jpg';
-    Images.level11 = 'levels/level_11.jpg';
-    Images.level12 = 'levels/level_12.jpg';
-    Images.level13 = 'levels/level_13.jpg';
-    Images.level14 = 'levels/level_14.jpg';
-    Images.level15 = 'levels/level_15.jpg';
-    Images.level16 = 'levels/level_16.jpg';
-    Images.level17 = 'levels/level_17.jpg';
-    Images.level18 = 'levels/level_18.jpg';
-    Images.level19 = 'levels/level_19.jpg';
-    Images.level20 = 'levels/level_20.jpg';
     /*
-    public static comixPage1: string = 'comix/comix_page_1.jpg';
-    public static comixPage2: string = 'comix/comix_page_2.jpg';
-    public static comixPage3: string = 'comix/comix_page_3.jpg';
-    public static comixPage4: string = 'comix/comix_page_4.jpg';
-    public static comixPage5_1: string = 'comix/comix_page_5_1.jpg';
-    public static comixPage5_2: string = 'comix/comix_page_5_2.jpg';
-    public static comixPage6: string = 'comix/comix_page_6.jpg';
-    public static comixPage7: string = 'comix/comix_page_7.jpg';
-    public static comixPage8_1: string = 'comix/comix_page_8_1.jpg';
-    public static comixPage8_2: string = 'comix/comix_page_8_2.jpg';
-    public static comixPage9_1: string = 'comix/comix_page_9_1.jpg';
-    public static comixPage9_2: string = 'comix/comix_page_9_2.jpg';
-    public static comixPage10: string = 'comix/comix_page_10.jpg';
-    public static comixPage11: string = 'comix/comix_page_11.jpg';
-    public static comixPage12: string = 'comix/comix_page_12.jpg';
-    public static comixPage13: string = 'comix/comix_page_13.jpg';
-    public static comixPage14: string = 'comix/comix_page_14.jpg';
-    public static comixPage15_1: string = 'comix/comix_page_15_1.jpg';
-    public static comixPage15_2: string = 'comix/comix_page_15_2.jpg';
-    public static comixPage16: string = 'comix/comix_page_16.jpg';
-    public static comixPage17: string = 'comix/comix_page_17.jpg';
-    public static comixPage18: string = 'comix/comix_page_18.jpg';
-    public static comixPage19: string = 'comix/comix_page_19.jpg';
-    public static comixPage20: string = 'comix/comix_page_20.jpg';
-    public static comixPage21: string = 'comix/comix_page_21.jpg';
+        public static level1: string = 'levels/level_1.jpg';
+        public static level2: string = 'levels/level_2.jpg';
+        public static level3: string = 'levels/level_3.jpg';
+        public static level4: string = 'levels/level_4.jpg';
+        public static level5: string = 'levels/level_5.jpg';
+        public static level6: string = 'levels/level_6.jpg';
+        public static level7: string = 'levels/level_7.jpg';
+        public static level8: string = 'levels/level_8.jpg';
+        public static level9: string = 'levels/level_9.jpg';
+        public static level10: string = 'levels/level_10.jpg';
+        public static level11: string = 'levels/level_11.jpg';
+        public static level12: string = 'levels/level_12.jpg';
+        public static level13: string = 'levels/level_13.jpg';
+        public static level14: string = 'levels/level_14.jpg';
+        public static level15: string = 'levels/level_15.jpg';
+        public static level16: string = 'levels/level_16.jpg';
+        public static level17: string = 'levels/level_17.jpg';
+        public static level18: string = 'levels/level_18.jpg';
+        public static level19: string = 'levels/level_19.jpg';
+        public static level20: string = 'levels/level_20.jpg';
     */
     Images.preloadList = [
         Images.MenuImage,
@@ -220,26 +195,26 @@ var Images = (function () {
         Images.yangIcon,
         Images.yunIcon,
         Images.backgroundIcon,
-        Images.level1,
-        Images.level2,
-        Images.level3,
-        Images.level4,
-        Images.level5,
-        Images.level6,
-        Images.level7,
-        Images.level8,
-        Images.level9,
-        Images.level10,
-        Images.level11,
-        Images.level12,
-        Images.level13,
-        Images.level14,
-        Images.level15,
-        Images.level16,
-        Images.level17,
-        Images.level18,
-        Images.level19,
-        Images.level20,
+        'levels/level_1.jpg',
+        'levels/level_2.jpg',
+        'levels/level_3.jpg',
+        'levels/level_4.jpg',
+        'levels/level_5.jpg',
+        'levels/level_6.jpg',
+        'levels/level_7.jpg',
+        'levels/level_8.jpg',
+        'levels/level_9.jpg',
+        'levels/level_10.jpg',
+        'levels/level_11.jpg',
+        'levels/level_12.jpg',
+        'levels/level_13.jpg',
+        'levels/level_14.jpg',
+        'levels/level_15.jpg',
+        'levels/level_16.jpg',
+        'levels/level_17.jpg',
+        'levels/level_18.jpg',
+        'levels/level_19.jpg',
+        'levels/level_20.jpg',
         'comix/comix_page_1.jpg',
         'comix/comix_page_2.jpg',
         'comix/comix_page_3.jpg',
@@ -345,7 +320,6 @@ var GameData;
         function Data() {
         }
         Data.initPersonages = function (game) {
-            var _this = this;
             this.progressIndex = -1;
             this.comixIndex = 0;
             GameData.Data.personages = [];
@@ -362,7 +336,7 @@ var GameData;
                 personage.energy = game.cache.getJSON(value).energy;
                 personage.life = 0;
                 personage.deck = [];
-                personage.level = _this.levels[i][1];
+                personage.level = game.cache.getJSON(value).level;
                 deck = game.cache.getJSON(value).deck;
                 for (var key in deck.cards) {
                     card = {};
@@ -420,28 +394,6 @@ var GameData;
             [17, 'Urien', 'urien_card.png', Images.urienBig, Images.urienIcon],
             [18, 'Yang', 'yang_card.png', Images.yangBig, Images.yangIcon],
             [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
-        ];
-        Data.levels = [
-            [0, Images.level1],
-            [1, Images.level2],
-            [2, Images.level3],
-            [3, Images.level4],
-            [4, Images.level5],
-            [5, Images.level10],
-            [6, Images.level7],
-            [7, Images.level8],
-            [8, Images.level9],
-            [9, Images.level6],
-            [10, Images.level11],
-            [11, Images.level12],
-            [12, Images.level13],
-            [13, Images.level14],
-            [14, Images.level15],
-            [15, Images.level16],
-            [16, Images.level17],
-            [17, Images.level18],
-            [18, Images.level19],
-            [19, Images.level20],
         ];
         Data.comixes = [
             ['comix/comix_page_1.jpg'],
@@ -1564,7 +1516,9 @@ var StreetFighterCards;
             this.game.stage.removeChildren();
         };
         Level.prototype.createBackground = function () {
-            var background = new Phaser.Sprite(this.game, 0, 0, GameData.Data.personages[GameData.Data.progressIndex].level);
+            var opponentID = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
+            var levelTexture = GameData.Data.personages[opponentID].level;
+            var background = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
         };
         Level.prototype.createBorder = function () {

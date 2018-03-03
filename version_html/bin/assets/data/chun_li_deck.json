@@ -2,6 +2,7 @@
     "id": "2",
     "name": "Chun Li",
     "energy": "10",
+    "level": "levels/level_6.jpg",
     "deck":{
         "cards":[
             {

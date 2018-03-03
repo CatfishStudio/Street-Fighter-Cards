@@ -2,6 +2,7 @@
     "id": "5",
     "name": "Gill",
     "energy": "10",
+    "level": "levels/level_10.jpg",
     "deck":{
         "cards":[
             {

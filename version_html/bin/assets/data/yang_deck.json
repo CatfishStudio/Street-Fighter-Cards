@@ -2,6 +2,7 @@
     "id": "18",
     "name": "Yang",
     "energy": "10",
+    "level": "levels/level_8.jpg",
     "deck":{
         "cards":[
             {

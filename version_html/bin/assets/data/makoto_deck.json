@@ -2,6 +2,7 @@
     "id": "9",
     "name": "Makoto",
     "energy": "10",
+    "level": "levels/level_11.jpg",
     "deck":{
         "cards":[
             {

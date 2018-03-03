@@ -54,28 +54,6 @@ class Images {
     public static yangIcon: string = 'icons/yang.png';
     public static yunIcon: string = 'icons/yun.png';
     public static backgroundIcon: string = 'icons/background_icon.png';
-
-    public static level1: string = 'levels/level_1.jpg';
-    public static level2: string = 'levels/level_2.jpg';
-    public static level3: string = 'levels/level_3.jpg';
-    public static level4: string = 'levels/level_4.jpg';
-    public static level5: string = 'levels/level_5.jpg';
-    public static level6: string = 'levels/level_6.jpg';
-    public static level7: string = 'levels/level_7.jpg';
-    public static level8: string = 'levels/level_8.jpg';
-    public static level9: string = 'levels/level_9.jpg';
-    public static level10: string = 'levels/level_10.jpg';
-    public static level11: string = 'levels/level_11.jpg';
-    public static level12: string = 'levels/level_12.jpg';
-    public static level13: string = 'levels/level_13.jpg';
-    public static level14: string = 'levels/level_14.jpg';
-    public static level15: string = 'levels/level_15.jpg';
-    public static level16: string = 'levels/level_16.jpg';
-    public static level17: string = 'levels/level_17.jpg';
-    public static level18: string = 'levels/level_18.jpg';
-    public static level19: string = 'levels/level_19.jpg';
-    public static level20: string = 'levels/level_20.jpg';
-
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -132,26 +110,26 @@ class Images {
         Images.yunIcon,
         Images.backgroundIcon,
 
-        Images.level1,
-        Images.level2,
-        Images.level3,
-        Images.level4,
-        Images.level5,
-        Images.level6,
-        Images.level7,
-        Images.level8,
-        Images.level9,
-        Images.level10,
-        Images.level11,
-        Images.level12,
-        Images.level13,
-        Images.level14,
-        Images.level15,
-        Images.level16,
-        Images.level17,
-        Images.level18,
-        Images.level19,
-        Images.level20,
+        'levels/level_1.jpg',
+        'levels/level_2.jpg',
+        'levels/level_3.jpg',
+        'levels/level_4.jpg',
+        'levels/level_5.jpg',
+        'levels/level_6.jpg',
+        'levels/level_7.jpg',
+        'levels/level_8.jpg',
+        'levels/level_9.jpg',
+        'levels/level_10.jpg',
+        'levels/level_11.jpg',
+        'levels/level_12.jpg',
+        'levels/level_13.jpg',
+        'levels/level_14.jpg',
+        'levels/level_15.jpg',
+        'levels/level_16.jpg',
+        'levels/level_17.jpg',
+        'levels/level_18.jpg',
+        'levels/level_19.jpg',
+        'levels/level_20.jpg',
 
         'comix/comix_page_1.jpg',
         'comix/comix_page_2.jpg',

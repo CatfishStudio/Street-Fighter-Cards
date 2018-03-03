@@ -2,6 +2,7 @@
     "id": "10",
     "name": "Necro",
     "energy": "10",
+    "level": "levels/level_13.jpg",
     "deck":{
         "cards":[
             {

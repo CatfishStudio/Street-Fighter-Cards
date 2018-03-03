@@ -2,6 +2,7 @@
     "id": "14",
     "name": "Ryu",
     "energy": "10",
+    "level": "levels/level_15.jpg",
     "deck":{
         "cards":[
             {

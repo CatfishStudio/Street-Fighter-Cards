@@ -2,6 +2,7 @@
     "id": "4",
     "name": "Elena",
     "energy": "10",
+    "level": "levels/level_20.jpg",
     "deck":{
         "cards":[
             {

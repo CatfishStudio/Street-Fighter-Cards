@@ -2,6 +2,7 @@
     "id": "17",
     "name": "Urien",
     "energy": "10",
+    "level": "levels/level_5.jpg",
     "deck":{
         "cards":[
             {

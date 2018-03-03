@@ -22,7 +22,9 @@ module StreetFighterCards {
         }
 
         private createBackground():void {
-            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.personages[GameData.Data.progressIndex].level)
+            let opponentID: number = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
+            let levelTexture: string = GameData.Data.personages[opponentID].level;
+            let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
         }
 
