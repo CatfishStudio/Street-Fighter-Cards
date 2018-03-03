@@ -80,69 +80,6 @@ var Images = (function () {
     Images.ButtonOn = 'buttons_on.png';
     Images.BackgroundTournament = 'tournament/background_tournament.jpg';
     Images.vsTournament = 'tournament/vs.png';
-    Images.akumaBig = 'tournament/akuma.png';
-    Images.alexBig = 'tournament/alex.png';
-    Images.chunliBig = 'tournament/chun_li.png';
-    Images.dudleyBig = 'tournament/dudley.png';
-    Images.elenaBig = 'tournament/elena.png';
-    Images.gillBig = 'tournament/gill.png';
-    Images.hugoBig = 'tournament/hugo.png';
-    Images.ibukiBig = 'tournament/ibuki.png';
-    Images.kenBig = 'tournament/ken.png';
-    Images.makotoBig = 'tournament/makoto.png';
-    Images.necroBig = 'tournament/necro.png';
-    Images.oroBig = 'tournament/oro.png';
-    Images.qBig = 'tournament/q.png';
-    Images.remyBig = 'tournament/remy.png';
-    Images.ryuBig = 'tournament/ryu.png';
-    Images.seanBig = 'tournament/sean.png';
-    Images.twelveBig = 'tournament/twelve.png';
-    Images.urienBig = 'tournament/urien.png';
-    Images.yangBig = 'tournament/yang.png';
-    Images.yunBig = 'tournament/yun.png';
-    Images.akumaIcon = 'icons/akuma.png';
-    Images.alexIcon = 'icons/alex.png';
-    Images.chunliIcon = 'icons/chun_li.png';
-    Images.dudleyIcon = 'icons/dudley.png';
-    Images.elenaIcon = 'icons/elena.png';
-    Images.gillIcon = 'icons/gill.png';
-    Images.hugoIcon = 'icons/hugo.png';
-    Images.ibukiIcon = 'icons/ibuki.png';
-    Images.kenIcon = 'icons/ken.png';
-    Images.makotoIcon = 'icons/makoto.png';
-    Images.necroIcon = 'icons/necro.png';
-    Images.oroIcon = 'icons/oro.png';
-    Images.qIcon = 'icons/q.png';
-    Images.remyIcon = 'icons/remy.png';
-    Images.ryuIcon = 'icons/ryu.png';
-    Images.seanIcon = 'icons/sean.png';
-    Images.twelveIcon = 'icons/twelve.png';
-    Images.urienIcon = 'icons/urien.png';
-    Images.yangIcon = 'icons/yang.png';
-    Images.yunIcon = 'icons/yun.png';
-    Images.backgroundIcon = 'icons/background_icon.png';
-    /*
-        public static level1: string = 'levels/level_1.jpg';
-        public static level2: string = 'levels/level_2.jpg';
-        public static level3: string = 'levels/level_3.jpg';
-        public static level4: string = 'levels/level_4.jpg';
-        public static level5: string = 'levels/level_5.jpg';
-        public static level6: string = 'levels/level_6.jpg';
-        public static level7: string = 'levels/level_7.jpg';
-        public static level8: string = 'levels/level_8.jpg';
-        public static level9: string = 'levels/level_9.jpg';
-        public static level10: string = 'levels/level_10.jpg';
-        public static level11: string = 'levels/level_11.jpg';
-        public static level12: string = 'levels/level_12.jpg';
-        public static level13: string = 'levels/level_13.jpg';
-        public static level14: string = 'levels/level_14.jpg';
-        public static level15: string = 'levels/level_15.jpg';
-        public static level16: string = 'levels/level_16.jpg';
-        public static level17: string = 'levels/level_17.jpg';
-        public static level18: string = 'levels/level_18.jpg';
-        public static level19: string = 'levels/level_19.jpg';
-        public static level20: string = 'levels/level_20.jpg';
-    */
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -154,47 +91,47 @@ var Images = (function () {
         Images.ButtonOn,
         Images.BackgroundTournament,
         Images.vsTournament,
-        Images.akumaBig,
-        Images.alexBig,
-        Images.chunliBig,
-        Images.dudleyBig,
-        Images.elenaBig,
-        Images.gillBig,
-        Images.hugoBig,
-        Images.ibukiBig,
-        Images.kenBig,
-        Images.makotoBig,
-        Images.necroBig,
-        Images.oroBig,
-        Images.qBig,
-        Images.remyBig,
-        Images.ryuBig,
-        Images.seanBig,
-        Images.twelveBig,
-        Images.urienBig,
-        Images.yangBig,
-        Images.yunBig,
-        Images.akumaIcon,
-        Images.alexIcon,
-        Images.chunliIcon,
-        Images.dudleyIcon,
-        Images.elenaIcon,
-        Images.gillIcon,
-        Images.hugoIcon,
-        Images.ibukiIcon,
-        Images.kenIcon,
-        Images.makotoIcon,
-        Images.necroIcon,
-        Images.oroIcon,
-        Images.qIcon,
-        Images.remyIcon,
-        Images.ryuIcon,
-        Images.seanIcon,
-        Images.twelveIcon,
-        Images.urienIcon,
-        Images.yangIcon,
-        Images.yunIcon,
-        Images.backgroundIcon,
+        'tournament/akuma.png',
+        'tournament/alex.png',
+        'tournament/chun_li.png',
+        'tournament/dudley.png',
+        'tournament/elena.png',
+        'tournament/gill.png',
+        'tournament/hugo.png',
+        'tournament/ibuki.png',
+        'tournament/ken.png',
+        'tournament/makoto.png',
+        'tournament/necro.png',
+        'tournament/oro.png',
+        'tournament/q.png',
+        'tournament/remy.png',
+        'tournament/ryu.png',
+        'tournament/sean.png',
+        'tournament/twelve.png',
+        'tournament/urien.png',
+        'tournament/yang.png',
+        'tournament/yun.png',
+        'icons/akuma.png',
+        'icons/alex.png',
+        'icons/chun_li.png',
+        'icons/dudley.png',
+        'icons/elena.png',
+        'icons/gill.png',
+        'icons/hugo.png',
+        'icons/ibuki.png',
+        'icons/ken.png',
+        'icons/makoto.png',
+        'icons/necro.png',
+        'icons/oro.png',
+        'icons/q.png',
+        'icons/remy.png',
+        'icons/ryu.png',
+        'icons/sean.png',
+        'icons/twelve.png',
+        'icons/urien.png',
+        'icons/yang.png',
+        'icons/yun.png',
+        'icons/background_icon.png',
         'levels/level_1.jpg',
         'levels/level_2.jpg',
         'levels/level_3.jpg',
@@ -374,26 +311,26 @@ var GameData;
             console.log(GameData.Data.tournamentListIds);
         };
         Data.fighters = [
-            [0, 'Akuma', 'akuma_card.png', Images.akumaBig, Images.akumaIcon],
-            [1, 'Alex', 'alex_card.png', Images.alexBig, Images.alexIcon],
-            [2, 'Chun Li', 'chun_li_card.png', Images.chunliBig, Images.chunliIcon],
-            [3, 'Dudley', 'dudley_card.png', Images.dudleyBig, Images.dudleyIcon],
-            [4, 'Elena', 'elena_card.png', Images.elenaBig, Images.elenaIcon],
-            [5, 'Gill', 'gill_card.png', Images.gillBig, Images.gillIcon],
-            [6, 'Hugo', 'hugo_card.png', Images.hugoBig, Images.hugoIcon],
-            [7, 'Ibuki', 'ibuki_card.png', Images.ibukiBig, Images.ibukiIcon],
-            [8, 'Ken', 'ken_card.png', Images.kenBig, Images.kenIcon],
-            [9, 'Makoto', 'makoto_card.png', Images.makotoBig, Images.makotoIcon],
-            [10, 'Necro', 'necro_card.png', Images.necroBig, Images.necroIcon],
-            [11, 'Oro', 'oro_card.png', Images.oroBig, Images.oroIcon],
-            [12, 'Q', 'q_card.png', Images.qBig, Images.qIcon],
-            [13, 'Remy', 'remy_card.png', Images.remyBig, Images.remyIcon],
-            [14, 'Ryu', 'ryu_card.png', Images.ryuBig, Images.ryuIcon],
-            [15, 'Sean', 'sean_card.png', Images.seanBig, Images.seanIcon],
-            [16, 'Twelve', 'twelve_card.png', Images.twelveBig, Images.twelveIcon],
-            [17, 'Urien', 'urien_card.png', Images.urienBig, Images.urienIcon],
-            [18, 'Yang', 'yang_card.png', Images.yangBig, Images.yangIcon],
-            [19, 'Yun', 'yun_card.png', Images.yunBig, Images.yunIcon]
+            [0, 'Akuma', 'akuma_card.png', 'tournament/akuma.png', 'icons/akuma.png'],
+            [1, 'Alex', 'alex_card.png', 'tournament/alex.png', 'icons/alex.png'],
+            [2, 'Chun Li', 'chun_li_card.png', 'tournament/chun_li.png', 'icons/chun_li.png'],
+            [3, 'Dudley', 'dudley_card.png', 'tournament/dudley.png', 'icons/dudley.png'],
+            [4, 'Elena', 'elena_card.png', 'tournament/elena.png', 'icons/elena.png'],
+            [5, 'Gill', 'gill_card.png', 'tournament/gill.png', 'icons/gill.png'],
+            [6, 'Hugo', 'hugo_card.png', 'tournament/hugo.png', 'icons/hugo.png'],
+            [7, 'Ibuki', 'ibuki_card.png', 'tournament/ibuki.png', 'icons/ibuki.png'],
+            [8, 'Ken', 'ken_card.png', 'tournament/ken.png', 'icons/ken.png'],
+            [9, 'Makoto', 'makoto_card.png', 'tournament/makoto.png', 'icons/makoto.png'],
+            [10, 'Necro', 'necro_card.png', 'tournament/necro.png', 'icons/necro.png'],
+            [11, 'Oro', 'oro_card.png', 'tournament/oro.png', 'icons/oro.png'],
+            [12, 'Q', 'q_card.png', 'tournament/q.png', 'icons/q.png'],
+            [13, 'Remy', 'remy_card.png', 'tournament/remy.png', 'icons/remy.png'],
+            [14, 'Ryu', 'ryu_card.png', 'tournament/ryu.png', 'icons/ryu.png'],
+            [15, 'Sean', 'sean_card.png', 'tournament/sean.png', 'icons/sean.png'],
+            [16, 'Twelve', 'twelve_card.png', 'tournament/twelve.png', 'icons/twelve.png'],
+            [17, 'Urien', 'urien_card.png', 'tournament/urien.png', 'icons/urien.png'],
+            [18, 'Yang', 'yang_card.png', 'tournament/yang.png', 'icons/yang.png'],
+            [19, 'Yun', 'yun_card.png', 'tournament/yun.png', 'icons/yun.png',]
         ];
         Data.comixes = [
             ['comix/comix_page_1.jpg'],
@@ -941,7 +878,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
-                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.backgroundIcon);
+                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, 'icons/background_icon.png');
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
@@ -961,7 +898,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
-                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.backgroundIcon);
+                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, 'icons/background_icon.png');
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);

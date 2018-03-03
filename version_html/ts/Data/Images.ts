@@ -11,49 +11,6 @@ class Images {
     public static ButtonOn: string = 'buttons_on.png';
     public static BackgroundTournament: string = 'tournament/background_tournament.jpg';
     public static vsTournament: string = 'tournament/vs.png';
-
-    public static akumaBig: string = 'tournament/akuma.png';
-    public static alexBig: string = 'tournament/alex.png';
-    public static chunliBig: string = 'tournament/chun_li.png';
-    public static dudleyBig: string = 'tournament/dudley.png';
-    public static elenaBig: string = 'tournament/elena.png';
-    public static gillBig: string = 'tournament/gill.png';
-    public static hugoBig: string = 'tournament/hugo.png';
-    public static ibukiBig: string = 'tournament/ibuki.png';
-    public static kenBig: string = 'tournament/ken.png';
-    public static makotoBig: string = 'tournament/makoto.png';
-    public static necroBig: string = 'tournament/necro.png';
-    public static oroBig: string = 'tournament/oro.png';
-    public static qBig: string = 'tournament/q.png';
-    public static remyBig: string = 'tournament/remy.png';
-    public static ryuBig: string = 'tournament/ryu.png';
-    public static seanBig: string = 'tournament/sean.png';
-    public static twelveBig: string = 'tournament/twelve.png';
-    public static urienBig: string = 'tournament/urien.png';
-    public static yangBig: string = 'tournament/yang.png';
-    public static yunBig: string = 'tournament/yun.png';
-    
-    public static akumaIcon: string = 'icons/akuma.png';
-    public static alexIcon: string = 'icons/alex.png';
-    public static chunliIcon: string = 'icons/chun_li.png';
-    public static dudleyIcon: string = 'icons/dudley.png';
-    public static elenaIcon: string = 'icons/elena.png';
-    public static gillIcon: string = 'icons/gill.png';
-    public static hugoIcon: string = 'icons/hugo.png';
-    public static ibukiIcon: string = 'icons/ibuki.png';
-    public static kenIcon: string = 'icons/ken.png';
-    public static makotoIcon: string = 'icons/makoto.png';
-    public static necroIcon: string = 'icons/necro.png';
-    public static oroIcon: string = 'icons/oro.png';
-    public static qIcon: string = 'icons/q.png';
-    public static remyIcon: string = 'icons/remy.png';
-    public static ryuIcon: string = 'icons/ryu.png';
-    public static seanIcon: string = 'icons/sean.png';
-    public static twelveIcon: string = 'icons/twelve.png';
-    public static urienIcon: string = 'icons/urien.png';
-    public static yangIcon: string = 'icons/yang.png';
-    public static yunIcon: string = 'icons/yun.png';
-    public static backgroundIcon: string = 'icons/background_icon.png';
     
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -67,48 +24,48 @@ class Images {
         Images.BackgroundTournament,
         Images.vsTournament,
 
-        Images.akumaBig,
-        Images.alexBig,
-        Images.chunliBig,
-        Images.dudleyBig,
-        Images.elenaBig,
-        Images.gillBig,
-        Images.hugoBig,
-        Images.ibukiBig,
-        Images.kenBig,
-        Images.makotoBig,
-        Images.necroBig,
-        Images.oroBig,
-        Images.qBig,
-        Images.remyBig,
-        Images.ryuBig,
-        Images.seanBig,
-        Images.twelveBig,
-        Images.urienBig,
-        Images.yangBig,
-        Images.yunBig,
+        'tournament/akuma.png',
+        'tournament/alex.png',
+        'tournament/chun_li.png',
+        'tournament/dudley.png',
+        'tournament/elena.png',
+        'tournament/gill.png',
+        'tournament/hugo.png',
+        'tournament/ibuki.png',
+        'tournament/ken.png',
+        'tournament/makoto.png',
+        'tournament/necro.png',
+        'tournament/oro.png',
+        'tournament/q.png',
+        'tournament/remy.png',
+        'tournament/ryu.png',
+        'tournament/sean.png',
+        'tournament/twelve.png',
+        'tournament/urien.png',
+        'tournament/yang.png',
+        'tournament/yun.png',
 
-        Images.akumaIcon,
-        Images.alexIcon,
-        Images.chunliIcon,
-        Images.dudleyIcon,
-        Images.elenaIcon,
-        Images.gillIcon,
-        Images.hugoIcon,
-        Images.ibukiIcon,
-        Images.kenIcon,
-        Images.makotoIcon,
-        Images.necroIcon,
-        Images.oroIcon,
-        Images.qIcon,
-        Images.remyIcon,
-        Images.ryuIcon,
-        Images.seanIcon,
-        Images.twelveIcon,
-        Images.urienIcon,
-        Images.yangIcon,
-        Images.yunIcon,
-        Images.backgroundIcon,
+        'icons/akuma.png',
+        'icons/alex.png',
+        'icons/chun_li.png',
+        'icons/dudley.png',
+        'icons/elena.png',
+        'icons/gill.png',
+        'icons/hugo.png',
+        'icons/ibuki.png',
+        'icons/ken.png',
+        'icons/makoto.png',
+        'icons/necro.png',
+        'icons/oro.png',
+        'icons/q.png',
+        'icons/remy.png',
+        'icons/ryu.png',
+        'icons/sean.png',
+        'icons/twelve.png',
+        'icons/urien.png',
+        'icons/yang.png',
+        'icons/yun.png',
+        'icons/background_icon.png',
 
         'levels/level_1.jpg',
         'levels/level_2.jpg',
