@@ -68,7 +68,7 @@ module Fabrique {
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
 
-                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, 'icons/background_icon.png');
+                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundIcon);
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 
@@ -89,7 +89,7 @@ module Fabrique {
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
 
-                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, 'icons/background_icon.png');
+                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.BackgroundIcon);
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 

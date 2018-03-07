@@ -1,0 +1,83 @@
+{"frames": {
+
+"akuma_block.png":
+{
+	"frame": {"x":0,"y":0,"w":95,"h":114},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":27,"w":95,"h":114},
+	"sourceSize": {"w":125,"h":170}
+},
+"akuma_hit_hand.png":
+{
+	"frame": {"x":0,"y":114,"w":103,"h":116},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":26,"w":103,"h":116},
+	"sourceSize": {"w":125,"h":170}
+},
+"akuma_hit_leg.png":
+{
+	"frame": {"x":0,"y":230,"w":105,"h":118},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":24,"w":105,"h":118},
+	"sourceSize": {"w":125,"h":170}
+},
+"attack.png":
+{
+	"frame": {"x":0,"y":348,"w":36,"h":46},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":46},
+	"sourceSize": {"w":36,"h":46}
+},
+"attack_hand_bg.jpg":
+{
+	"frame": {"x":0,"y":394,"w":125,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":170},
+	"sourceSize": {"w":125,"h":170}
+},
+"attack_leg_bg.jpg":
+{
+	"frame": {"x":0,"y":564,"w":125,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":170},
+	"sourceSize": {"w":125,"h":170}
+},
+"defence_bg.jpg":
+{
+	"frame": {"x":0,"y":734,"w":125,"h":170},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":125,"h":170},
+	"sourceSize": {"w":125,"h":170}
+},
+"energy.png":
+{
+	"frame": {"x":0,"y":904,"w":50,"h":52},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":50,"h":52},
+	"sourceSize": {"w":50,"h":52}
+},
+"shield.png":
+{
+	"frame": {"x":50,"y":904,"w":33,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":33,"h":36},
+	"sourceSize": {"w":33,"h":36}
+}
+}, 
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "Cards.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":1024}
+}
+}

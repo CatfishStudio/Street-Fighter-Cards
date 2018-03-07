@@ -11,7 +11,8 @@ class Images {
     public static ButtonOn: string = 'buttons_on.png';
     public static BackgroundTournament: string = 'tournament/background_tournament.jpg';
     public static vsTournament: string = 'tournament/vs.png';
-    
+    public static BackgroundIcon: string = 'icons/background_icon.png';
+
     public static preloadList:Array<string> = [
         Images.MenuImage,
         Images.BorderImage,
@@ -23,6 +24,7 @@ class Images {
         Images.ButtonOn,
         Images.BackgroundTournament,
         Images.vsTournament,
+        Images.BackgroundIcon,
 
         'tournament/akuma.png',
         'tournament/alex.png',
@@ -65,7 +67,6 @@ class Images {
         'icons/urien.png',
         'icons/yang.png',
         'icons/yun.png',
-        'icons/background_icon.png',
 
         'levels/level_1.jpg',
         'levels/level_2.jpg',

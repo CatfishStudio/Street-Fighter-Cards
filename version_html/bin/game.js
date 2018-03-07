@@ -80,6 +80,7 @@ var Images = (function () {
     Images.ButtonOn = 'buttons_on.png';
     Images.BackgroundTournament = 'tournament/background_tournament.jpg';
     Images.vsTournament = 'tournament/vs.png';
+    Images.BackgroundIcon = 'icons/background_icon.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -91,6 +92,7 @@ var Images = (function () {
         Images.ButtonOn,
         Images.BackgroundTournament,
         Images.vsTournament,
+        Images.BackgroundIcon,
         'tournament/akuma.png',
         'tournament/alex.png',
         'tournament/chun_li.png',
@@ -131,7 +133,6 @@ var Images = (function () {
         'icons/urien.png',
         'icons/yang.png',
         'icons/yun.png',
-        'icons/background_icon.png',
         'levels/level_1.jpg',
         'levels/level_2.jpg',
         'levels/level_3.jpg',
@@ -878,7 +879,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonLeftMask);
                 iconMask.endFill();
-                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, 'icons/background_icon.png');
+                iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundIcon);
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
@@ -898,7 +899,7 @@ var Fabrique;
                 iconMask.beginFill(0xFFFFFF);
                 iconMask.drawPolygon(polygonRightMask);
                 iconMask.endFill();
-                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, 'icons/background_icon.png');
+                iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.BackgroundIcon);
                 iconBackgroundSprite.mask = iconMask;
                 this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[fighterIndex][4]);
