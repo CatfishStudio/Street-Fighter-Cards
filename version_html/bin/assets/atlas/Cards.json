@@ -1,6 +1,6 @@
 {"frames": {
 
-"akuma_block.png":
+"Akuma_block.png":
 {
 	"frame": {"x":0,"y":0,"w":95,"h":114},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":15,"y":27,"w":95,"h":114},
 	"sourceSize": {"w":125,"h":170}
 },
-"akuma_hit_hand.png":
+"Akuma_hit_hand.png":
 {
 	"frame": {"x":0,"y":114,"w":103,"h":116},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":12,"y":26,"w":103,"h":116},
 	"sourceSize": {"w":125,"h":170}
 },
-"akuma_hit_leg.png":
+"Akuma_hit_leg.png":
 {
 	"frame": {"x":0,"y":230,"w":105,"h":118},
 	"rotated": false,
