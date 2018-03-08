@@ -14,6 +14,7 @@
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
+/// <reference path="Fabrique\Objects\AnimationFighter.ts" />
 /// <reference path="Fabrique\Objects\FighterCard.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Icon.ts" />

@@ -1,9 +1,12 @@
 module StreetFighterCards {
+import AnimationFighter = Fabrique.AnimationFighter;
+
     export class Level extends Phaser.State {
         public static Name: string = "level";
         public name: string = Level.Name;
 
         private group: Phaser.Group;
+        private playerAnimation: AnimationFighter;
 
         constructor() {
             super();
@@ -13,6 +16,7 @@ module StreetFighterCards {
             this.group = new Phaser.Group(this.game, this.stage);
 
             this.createBackground();
+            this.createFighters();
             this.createBorder();
         }
 
@@ -26,6 +30,13 @@ module StreetFighterCards {
             let levelTexture: string = GameData.Data.personages[opponentID].level;
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
+        }
+
+        private createFighters():void {
+            this.playerAnimation = new AnimationFighter(this.game, Atlases.Akuma);
+            this.playerAnimation.x = 50;
+            this.playerAnimation.y = 50;
+            this.group.addChild(this.playerAnimation);
         }
 
         private createBorder():void {
