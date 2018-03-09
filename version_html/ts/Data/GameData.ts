@@ -16,6 +16,13 @@ module GameData {
         energy:number;
         deck:ICard[];
         level:string;
+        animBlock:string[];
+        animDamage:string[];
+        animHitHand:string[];
+        animHitLeg:string[];
+        animLose:string[];
+        animStance:string[];
+        animWin:string[];
     }
 
     export class Data {
@@ -74,8 +81,6 @@ module GameData {
             ['comix/comix_page_21.jpg']
         ];
 
-        
-
         public static initPersonages(game: Phaser.Game):void {
             this.progressIndex = -1;
             this.comixIndex = 0;
@@ -95,6 +100,7 @@ module GameData {
                 personage.level = game.cache.getJSON(value).level;
 
                 this.createDeck(game, value, personage);
+                this.loadAnimation(game, personage);
 
                 GameData.Data.personages.push(personage);
             });
@@ -120,6 +126,42 @@ module GameData {
                 }
                 personage.life += Number(deck.cards[key].life);
             }
+        }
+
+        public static loadAnimation(game: Phaser.Game, personage: IPersonage):void {
+            try {
+                let json = game.cache.getJSON(personage.name + '.json');
+                let block:string[] = [];
+                let damage:string[] = [];
+                let hit_hand:string[] = [];
+                let hit_leg:string[] = [];
+                let lose:string[] = [];
+                let stance:string[] = [];
+                let win:string[] = [];
+                
+                for (let key in json.frames) {
+                    if('block' == key.substr(0, 5)) block.push(key);
+                    if('damage' == key.substr(0, 6)) damage.push(key);
+                    if('hit_hand' == key.substr(0, 8)) hit_hand.push(key);
+                    if('hit_leg' == key.substr(0, 7)) hit_leg.push(key);
+                    if('lose' == key.substr(0, 4)) lose.push(key);
+                    if('stance' == key.substr(0, 6)) stance.push(key);
+                    if('win' == key.substr(0, 3)) win.push(key);
+                }
+                
+                personage.animBlock = block;
+                personage.animDamage = damage;
+                personage.animHitHand = hit_hand;
+                personage.animHitLeg = hit_leg;
+                personage.animLose = lose;
+                personage.animStance = stance;
+                personage.animWin = win;
+            } catch (error) {
+                //console.log(error);
+            }
+            
+            
+            
         }
 
         public static initTournament():void {

@@ -183,6 +183,19 @@ var Images = (function () {
     ];
     return Images;
 }());
+var Animations = (function () {
+    function Animations() {
+    }
+    Animations.Akuma = 'Akuma.json';
+    Animations.Alex = 'Alex.json';
+    Animations.ChunLi = 'Chun Li.json';
+    Animations.preloadList = [
+        Animations.Akuma,
+        Animations.Alex,
+        Animations.ChunLi,
+    ];
+    return Animations;
+}());
 var Atlases = (function () {
     function Atlases() {
     }
@@ -273,7 +286,6 @@ var GameData;
             this.comixIndex = 0;
             GameData.Data.personages = [];
             var personage;
-            //let i: number = 0;
             Decks.preloadList.forEach(function (value) {
                 personage = {};
                 personage.id = game.cache.getJSON(value).id;
@@ -285,9 +297,8 @@ var GameData;
                 personage.deck = [];
                 personage.level = game.cache.getJSON(value).level;
                 _this.createDeck(game, value, personage);
+                _this.loadAnimation(game, personage);
                 GameData.Data.personages.push(personage);
-                //console.log(GameData.Data.personages[i]);
-                //i++;
             });
             console.log(GameData.Data.personages);
         };
@@ -308,6 +319,43 @@ var GameData;
                     personage.defense += Number(deck.cards[key].power);
                 }
                 personage.life += Number(deck.cards[key].life);
+            }
+        };
+        Data.loadAnimation = function (game, personage) {
+            try {
+                var json = game.cache.getJSON(personage.name + '.json');
+                var block = [];
+                var damage = [];
+                var hit_hand = [];
+                var hit_leg = [];
+                var lose = [];
+                var stance = [];
+                var win = [];
+                for (var key in json.frames) {
+                    if ('block' == key.substr(0, 5))
+                        block.push(key);
+                    if ('damage' == key.substr(0, 6))
+                        damage.push(key);
+                    if ('hit_hand' == key.substr(0, 8))
+                        hit_hand.push(key);
+                    if ('hit_leg' == key.substr(0, 7))
+                        hit_leg.push(key);
+                    if ('lose' == key.substr(0, 4))
+                        lose.push(key);
+                    if ('stance' == key.substr(0, 6))
+                        stance.push(key);
+                    if ('win' == key.substr(0, 3))
+                        win.push(key);
+                }
+                personage.animBlock = block;
+                personage.animDamage = damage;
+                personage.animHitHand = hit_hand;
+                personage.animHitLeg = hit_leg;
+                personage.animLose = lose;
+                personage.animStance = stance;
+                personage.animWin = win;
+            }
+            catch (error) {
             }
         };
         Data.initTournament = function () {
@@ -1085,6 +1133,9 @@ var StreetFighterCards;
                     Atlases.preloadList.forEach(function (assetName) {
                         _this.game.load.atlas(assetName, 'assets/atlas/' + assetName + '.png', 'assets/atlas/' + assetName + '.json');
                     });
+                    Animations.preloadList.forEach(function (assetName) {
+                        _this.game.load.json(assetName, 'assets/atlas/' + assetName);
+                    });
                     /*
                     Sheet.preloadList.forEach((assetName: string) => {
                         this.game.load.spritesheet(assetName, 'assets/images/' + assetName, 186, 46);
@@ -1495,6 +1546,7 @@ var StreetFighterCards;
             this.group.addChild(background);
         };
         Level.prototype.createFighters = function () {
+            //this.playerAnimation = new AnimationFighter(this.game, GameData.Data.personages[GameData.Data.fighterIndex]);
             this.playerAnimation = new AnimationFighter(this.game, Atlases.Akuma);
             this.playerAnimation.x = 50;
             this.playerAnimation.y = 50;
@@ -1513,6 +1565,7 @@ var StreetFighterCards;
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
 /// <reference path="Data\Images.ts" />
+/// <reference path="Data\Animations.ts" />
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
 /// <reference path="Data\Decks.ts" />

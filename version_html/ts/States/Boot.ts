@@ -33,6 +33,10 @@ module StreetFighterCards {
                     Atlases.preloadList.forEach((assetName: string) => {
                         this.game.load.atlas(assetName, 'assets/atlas/' + assetName + '.png','assets/atlas/' + assetName + '.json');
                     });
+
+                    Animations.preloadList.forEach((assetName: string) => {
+                        this.game.load.json(assetName, 'assets/atlas/'+ assetName);
+                    });
                     
                     /*
                     Sheet.preloadList.forEach((assetName: string) => {
