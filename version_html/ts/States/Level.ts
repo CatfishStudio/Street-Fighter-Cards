@@ -33,9 +33,8 @@ import AnimationFighter = Fabrique.AnimationFighter;
         }
 
         private createFighters():void {
-            //this.playerAnimation = new AnimationFighter(this.game, GameData.Data.personages[GameData.Data.fighterIndex]);
-
-            this.playerAnimation = new AnimationFighter(this.game, Atlases.Akuma);
+            let playerPersonage:GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
+            this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 50;
             this.playerAnimation.y = 50;
             this.group.addChild(this.playerAnimation);

@@ -782,12 +782,12 @@ var Fabrique;
 (function (Fabrique) {
     var AnimationFighter = (function (_super) {
         __extends(AnimationFighter, _super);
-        function AnimationFighter(game, atlas) {
-            _super.call(this, game, 0, 0, atlas, 54);
-            this.init(atlas);
+        function AnimationFighter(game, personageName, personageAnim) {
+            _super.call(this, game, 0, 0, personageName, 54);
+            this.init(personageName, personageAnim);
         }
-        AnimationFighter.prototype.init = function (atlas) {
-            var anim = this.animations.add(atlas, [54, 55, 56, 57, 58, 59, 60, 61, 62, 63]);
+        AnimationFighter.prototype.init = function (personageName, personageAnim) {
+            var anim = this.animations.add(personageName, personageAnim);
             anim.onComplete.add(this.onComplete, this);
             anim.play(10, true, false);
         };
@@ -1546,8 +1546,8 @@ var StreetFighterCards;
             this.group.addChild(background);
         };
         Level.prototype.createFighters = function () {
-            //this.playerAnimation = new AnimationFighter(this.game, GameData.Data.personages[GameData.Data.fighterIndex]);
-            this.playerAnimation = new AnimationFighter(this.game, Atlases.Akuma);
+            var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
+            this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 50;
             this.playerAnimation.y = 50;
             this.group.addChild(this.playerAnimation);

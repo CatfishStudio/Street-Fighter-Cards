@@ -1,13 +1,14 @@
 module Fabrique {
     export class AnimationFighter extends Phaser.Sprite {
         
-        constructor(game:Phaser.Game, atlas:string){
-            super(game, 0, 0, atlas, 54);
-            this.init(atlas);
+        constructor(game:Phaser.Game, personageName: string, personageAnim:string[]){
+            super(game, 0, 0, personageName, 54);
+            this.init(personageName, personageAnim);
         }
 
-        private init(atlas:string):void {
-            let anim: Phaser.Animation = this.animations.add(atlas, [54,55,56,57,58,59,60,61,62,63]);
+        private init(personageName: string, personageAnim:string[]):void {
+
+            let anim: Phaser.Animation = this.animations.add(personageName, personageAnim);
             anim.onComplete.add(this.onComplete, this);
             anim.play(10, true, false);
         }
