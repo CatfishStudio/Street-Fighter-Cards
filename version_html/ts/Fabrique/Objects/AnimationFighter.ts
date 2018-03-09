@@ -7,7 +7,6 @@ module Fabrique {
         }
 
         private init(personageName: string, personageAnim:string[]):void {
-
             let anim: Phaser.Animation = this.animations.add(personageName, personageAnim);
             anim.onComplete.add(this.onComplete, this);
             anim.play(10, true, false);
