@@ -19,6 +19,14 @@ module GameData {
     }
 
     export class Data {
+
+        public static fighterIndex:number = 0;      // id выбранного игроком персонажа (в сохранение)
+        public static progressIndex:number = -1;    // индекс прогресса в игре (в сохранение)
+        public static comixIndex:number = 0;        // индекс комикса
+        public static personages:IPersonage[];      // массив персонажей и их характеристик
+        public static tournamentListIds:number[];   // турнирная таблица (в сохранение)
+
+
         public static fighters:any[][] = [
             [0, 'Akuma', 'akuma_card.png', 'tournament/akuma.png', 'icons/akuma.png'],
             [1, 'Alex', 'alex_card.png', 'tournament/alex.png', 'icons/alex.png'],
@@ -66,11 +74,7 @@ module GameData {
             ['comix/comix_page_21.jpg']
         ];
 
-        public static fighterIndex:number = 0;      // id выбранного игроком персонажа
-        public static progressIndex:number = -1;    // индекс прогресса в игре
-        public static comixIndex:number = 0;        // индекс комикса
-        public static personages:IPersonage[];      // массив персонажей и их характеристик
-        public static tournamentListIds:number[];   // турнирная таблица
+        
 
         public static initPersonages(game: Phaser.Game):void {
             this.progressIndex = -1;
@@ -79,10 +83,6 @@ module GameData {
             GameData.Data.personages = [];
 
             let personage: GameData.IPersonage;
-            let card: GameData.ICard;
-            let deck;
-            let i: number = 0;
-
             Decks.preloadList.forEach((value: string) => {
                 personage = <IPersonage>{};
                 personage.id = game.cache.getJSON(value).id;
@@ -94,28 +94,32 @@ module GameData {
                 personage.deck = [];
                 personage.level = game.cache.getJSON(value).level;
 
-                deck = game.cache.getJSON(value).deck;
-                for (let key in deck.cards) {
-                    card = <ICard>{};
-                    card.type = deck.cards[key].type;
-                    card.power = deck.cards[key].power;
-                    card.life = deck.cards[key].life;
-                    card.energy = deck.cards[key].energy;
-                    personage.deck.push(card);
-
-                    if(deck.cards[key].type === Constants.CARD_TYPE_ATTACK){
-                        personage.attack += Number(deck.cards[key].power);
-                    }else{
-                        personage.defense += Number(deck.cards[key].power);
-                    }
-                    personage.life += Number(deck.cards[key].life);
-                }
+                this.createDeck(game, value, personage);
 
                 GameData.Data.personages.push(personage);
-
-                console.log(GameData.Data.personages[i]);
-                i++;
             });
+
+            console.log(GameData.Data.personages);
+        }
+
+        public static createDeck(game: Phaser.Game, value: string, personage: IPersonage):void {
+            let card: GameData.ICard;
+            let deck = game.cache.getJSON(value).deck;
+            for (let key in deck.cards) {
+                card = <ICard>{};
+                card.type = deck.cards[key].type;
+                card.power = deck.cards[key].power;
+                card.life = deck.cards[key].life;
+                card.energy = deck.cards[key].energy;
+                personage.deck.push(card);
+
+                if(deck.cards[key].type === Constants.CARD_TYPE_ATTACK){
+                    personage.attack += Number(deck.cards[key].power);
+                }else{
+                    personage.defense += Number(deck.cards[key].power);
+                }
+                personage.life += Number(deck.cards[key].life);
+            }
         }
 
         public static initTournament():void {

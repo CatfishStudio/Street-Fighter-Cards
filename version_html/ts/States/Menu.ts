@@ -85,7 +85,6 @@ module StreetFighterCards {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
-                        GameData.Data.initPersonages(this.game);
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }

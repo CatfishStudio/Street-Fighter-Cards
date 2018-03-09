@@ -46,6 +46,7 @@ module StreetFighterCards {
         }
        
         private onLoadComplete() {
+            GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
             this.game.state.start(this.config.nextStage, true, false);
         }
