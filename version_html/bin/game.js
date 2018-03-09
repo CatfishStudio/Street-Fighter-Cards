@@ -190,11 +190,13 @@ var Animations = (function () {
     Animations.Alex = 'Alex.json';
     Animations.ChunLi = 'Chun Li.json';
     Animations.Dudley = 'Dudley.json';
+    Animations.Elena = 'Elena.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
         Animations.ChunLi,
         Animations.Dudley,
+        Animations.Elena,
     ];
     return Animations;
 }());
@@ -209,6 +211,7 @@ var Atlases = (function () {
     Atlases.Alex = 'Alex';
     Atlases.ChunLi = 'Chun Li';
     Atlases.Dudley = 'Dudley';
+    Atlases.Elena = 'Elena';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -218,6 +221,7 @@ var Atlases = (function () {
         Atlases.Alex,
         Atlases.ChunLi,
         Atlases.Dudley,
+        Atlases.Elena,
     ];
     return Atlases;
 }());
