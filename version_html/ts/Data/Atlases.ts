@@ -9,6 +9,7 @@ class Atlases {
     public static Dudley: string = 'Dudley';
     public static Elena: string = 'Elena';
     public static Gill: string = 'Gill';
+    public static Hugo: string = 'Hugo';
     
     public static preloadList:Array<string> = [
         Atlases.BigKen,
@@ -21,5 +22,6 @@ class Atlases {
         Atlases.Dudley,
         Atlases.Elena,
         Atlases.Gill,
+        Atlases.Hugo,
     ];
 }

@@ -5,6 +5,7 @@ class Animations {
     public static Dudley: string = 'Dudley.json';
     public static Elena: string = 'Elena.json';
     public static Gill: string = 'Gill.json';
+    public static Hugo: string = 'Hugo.json';
     
     public static preloadList:Array<string> = [
         Animations.Akuma,
@@ -13,5 +14,6 @@ class Animations {
         Animations.Dudley,
         Animations.Elena,
         Animations.Gill,
+        Animations.Hugo,
     ];
 }
