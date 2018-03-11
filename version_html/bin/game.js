@@ -191,12 +191,14 @@ var Animations = (function () {
     Animations.ChunLi = 'Chun Li.json';
     Animations.Dudley = 'Dudley.json';
     Animations.Elena = 'Elena.json';
+    Animations.Gill = 'Gill.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
         Animations.ChunLi,
         Animations.Dudley,
         Animations.Elena,
+        Animations.Gill,
     ];
     return Animations;
 }());
@@ -212,6 +214,7 @@ var Atlases = (function () {
     Atlases.ChunLi = 'Chun Li';
     Atlases.Dudley = 'Dudley';
     Atlases.Elena = 'Elena';
+    Atlases.Gill = 'Gill';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -222,6 +225,7 @@ var Atlases = (function () {
         Atlases.ChunLi,
         Atlases.Dudley,
         Atlases.Elena,
+        Atlases.Gill,
     ];
     return Atlases;
 }());
