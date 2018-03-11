@@ -193,6 +193,7 @@ var Animations = (function () {
     Animations.Elena = 'Elena.json';
     Animations.Gill = 'Gill.json';
     Animations.Hugo = 'Hugo.json';
+    Animations.Ibuki = 'Ibuki.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
@@ -201,6 +202,7 @@ var Animations = (function () {
         Animations.Elena,
         Animations.Gill,
         Animations.Hugo,
+        Animations.Ibuki,
     ];
     return Animations;
 }());
@@ -218,6 +220,7 @@ var Atlases = (function () {
     Atlases.Elena = 'Elena';
     Atlases.Gill = 'Gill';
     Atlases.Hugo = 'Hugo';
+    Atlases.Ibuki = 'Ibuki';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -230,6 +233,7 @@ var Atlases = (function () {
         Atlases.Elena,
         Atlases.Gill,
         Atlases.Hugo,
+        Atlases.Ibuki,
     ];
     return Atlases;
 }());
@@ -1564,8 +1568,8 @@ var StreetFighterCards;
         Level.prototype.createFighters = function () {
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
-            this.playerAnimation.x = 50;
-            this.playerAnimation.y = 50;
+            this.playerAnimation.x = 300;
+            this.playerAnimation.y = 350;
             this.group.addChild(this.playerAnimation);
         };
         Level.prototype.createBorder = function () {
