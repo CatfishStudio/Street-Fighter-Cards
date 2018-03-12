@@ -12,7 +12,9 @@ class Images {
     public static BackgroundTournament: string = 'tournament/background_tournament.jpg';
     public static vsTournament: string = 'tournament/vs.png';
     public static BackgroundIcon: string = 'icons/background_icon.png';
-    public static HandBackground: string = 'levels/hand.png';
+    public static HandBackground: string = 'levels/hand_bg.jpg';
+    public static HandGradient: string = 'levels/hand_gr.png';
+    public static BorderLevel: string = 'levels/border_level.png';
 
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -27,6 +29,8 @@ class Images {
         Images.vsTournament,
         Images.BackgroundIcon,
         Images.HandBackground,
+        Images.HandGradient,
+        Images.BorderLevel,
 
         'tournament/akuma.png',
         'tournament/alex.png',

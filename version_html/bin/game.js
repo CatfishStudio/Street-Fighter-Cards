@@ -56,6 +56,7 @@ var Constants = (function () {
     Constants.BUTTON_ARROW_LEFT = 'button_arrow_left';
     Constants.BUTTON_ARROW_RIGHT = 'button_arrow_right';
     Constants.BUTTON_START_BATTLE = 'button_start_battle';
+    Constants.BUTTON_EXIT_BATTLE = 'button_exit_battle';
     return Constants;
 }());
 var Config = (function () {
@@ -81,7 +82,9 @@ var Images = (function () {
     Images.BackgroundTournament = 'tournament/background_tournament.jpg';
     Images.vsTournament = 'tournament/vs.png';
     Images.BackgroundIcon = 'icons/background_icon.png';
-    Images.HandBackground = 'levels/hand.png';
+    Images.HandBackground = 'levels/hand_bg.jpg';
+    Images.HandGradient = 'levels/hand_gr.png';
+    Images.BorderLevel = 'levels/border_level.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -95,6 +98,8 @@ var Images = (function () {
         Images.vsTournament,
         Images.BackgroundIcon,
         Images.HandBackground,
+        Images.HandGradient,
+        Images.BorderLevel,
         'tournament/akuma.png',
         'tournament/alex.png',
         'tournament/chun_li.png',
@@ -1543,6 +1548,8 @@ var StreetFighterCards;
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var AnimationFighter = Fabrique.AnimationFighter;
+    var ButtonComix = Fabrique.ButtonComix;
+    var Settings = Fabrique.Settings;
     var Level = (function (_super) {
         __extends(Level, _super);
         function Level() {
@@ -1553,9 +1560,13 @@ var StreetFighterCards;
             this.group = new Phaser.Group(this.game, this.stage);
             this.createBackground();
             this.createFighters();
+            this.createButtons();
+            this.createHand();
             this.createBorder();
         };
         Level.prototype.shutdown = function () {
+            this.buttonExit.shutdown();
+            this.buttonSettings.shutdown();
             this.group.removeAll();
             this.game.stage.removeChildren();
         };
@@ -1565,16 +1576,55 @@ var StreetFighterCards;
             var background = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
         };
+        Level.prototype.createHand = function () {
+            var background = new Phaser.Sprite(this.game, 0, 375, Images.HandBackground);
+            this.group.addChild(background);
+        };
         Level.prototype.createFighters = function () {
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
-            this.playerAnimation.x = 300;
-            this.playerAnimation.y = 350;
+            this.playerAnimation.x = 280;
+            this.playerAnimation.y = 200;
             this.group.addChild(this.playerAnimation);
         };
+        Level.prototype.createButtons = function () {
+            this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
+            this.buttonExit.event.add(this.onButtonClick, this);
+            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 310);
+            this.buttonSettings.event.add(this.onButtonClick, this);
+        };
         Level.prototype.createBorder = function () {
-            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
+            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.group.addChild(border);
+        };
+        Level.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.group);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        Level.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.group.removeChild(this.settings);
+        };
+        Level.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case Constants.BUTTON_EXIT_BATTLE:
+                    {
+                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
+                        break;
+                    }
+                default:
+                    break;
+            }
         };
         Level.Name = "level";
         return Level;
