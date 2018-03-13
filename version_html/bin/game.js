@@ -201,6 +201,7 @@ var Animations = (function () {
     Animations.Ibuki = 'Ibuki.json';
     Animations.Ken = 'Ken.json';
     Animations.Makoto = 'Makoto.json';
+    Animations.Necro = 'Necro.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
@@ -212,6 +213,7 @@ var Animations = (function () {
         Animations.Ibuki,
         Animations.Ken,
         Animations.Makoto,
+        Animations.Necro,
     ];
     return Animations;
 }());
@@ -232,6 +234,7 @@ var Atlases = (function () {
     Atlases.Ibuki = 'Ibuki';
     Atlases.Ken = 'Ken';
     Atlases.Makoto = 'Makoto';
+    Atlases.Necro = 'Necro';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -247,6 +250,7 @@ var Atlases = (function () {
         Atlases.Ibuki,
         Atlases.Ken,
         Atlases.Makoto,
+        Atlases.Necro,
     ];
     return Atlases;
 }());
@@ -1038,9 +1042,9 @@ var Fabrique;
                 border.drawPolygon(playerBorder);
                 border.endFill();
                 this.addChild(border);
-                var playerText1 = this.game.add.text(8, 0, "P", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                var playerText1 = this.game.add.text(8, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText1);
-                var playerText2 = this.game.add.text(16, -2, "layer", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                var playerText2 = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText2);
             }
             var opponentLeftBorder = new Phaser.Polygon([
@@ -1064,7 +1068,7 @@ var Fabrique;
                 border.drawPolygon(opponentLeftBorder);
                 border.endFill();
                 this.addChild(border);
-                var opponentText = this.game.add.text(62, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                var opponentText = this.game.add.text(67, 0, "ПК", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(opponentText);
             }
             else if (index === GameData.Data.progressIndex && orientation === Icon.RIGHT) {
@@ -1592,7 +1596,7 @@ var StreetFighterCards;
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 280;
-            this.playerAnimation.y = 200;
+            this.playerAnimation.y = 210;
             this.group.addChild(this.playerAnimation);
         };
         Level.prototype.createButtons = function () {

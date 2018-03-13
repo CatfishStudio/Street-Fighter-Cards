@@ -117,10 +117,10 @@ module Fabrique {
                 border.endFill();
                 this.addChild(border);
 
-                let playerText1: Phaser.Text = this.game.add.text(8, 0, "P", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
+                let playerText1: Phaser.Text = this.game.add.text(8, 0, "И", { font: "12px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText1);
 
-                let playerText2: Phaser.Text = this.game.add.text(16, -2, "layer", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                let playerText2: Phaser.Text = this.game.add.text(17, -2, "грок", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(playerText2);
             }
 
@@ -148,7 +148,7 @@ module Fabrique {
                 border.endFill();
                 this.addChild(border);
 
-                let opponentText: Phaser.Text = this.game.add.text(62, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                let opponentText: Phaser.Text = this.game.add.text(67, 0, "ПК", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(opponentText);
 
             }else if(index === GameData.Data.progressIndex && orientation === Icon.RIGHT){
