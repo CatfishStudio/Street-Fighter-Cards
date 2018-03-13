@@ -15,6 +15,7 @@ class Atlases {
     public static Makoto: string = 'Makoto';
     public static Necro: string = 'Necro';
     public static Oro: string = 'Oro';
+    public static Q: string = 'Q';
     
     public static preloadList:Array<string> = [
         Atlases.BigKen,
@@ -33,5 +34,6 @@ class Atlases {
         Atlases.Makoto,
         Atlases.Necro,
         Atlases.Oro,
+        Atlases.Q,
     ];
 }
