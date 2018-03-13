@@ -202,6 +202,7 @@ var Animations = (function () {
     Animations.Ken = 'Ken.json';
     Animations.Makoto = 'Makoto.json';
     Animations.Necro = 'Necro.json';
+    Animations.Oro = 'Oro.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
@@ -214,6 +215,7 @@ var Animations = (function () {
         Animations.Ken,
         Animations.Makoto,
         Animations.Necro,
+        Animations.Oro,
     ];
     return Animations;
 }());
@@ -235,6 +237,7 @@ var Atlases = (function () {
     Atlases.Ken = 'Ken';
     Atlases.Makoto = 'Makoto';
     Atlases.Necro = 'Necro';
+    Atlases.Oro = 'Oro';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -251,6 +254,7 @@ var Atlases = (function () {
         Atlases.Ken,
         Atlases.Makoto,
         Atlases.Necro,
+        Atlases.Oro,
     ];
     return Atlases;
 }());
