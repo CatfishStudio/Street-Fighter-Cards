@@ -206,6 +206,7 @@ var Animations = (function () {
     Animations.Q = 'Q.json';
     Animations.Remy = 'Remy.json';
     Animations.Ryu = 'Ryu.json';
+    Animations.Sean = 'Sean.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
@@ -222,6 +223,7 @@ var Animations = (function () {
         Animations.Q,
         Animations.Remy,
         Animations.Ryu,
+        Animations.Sean,
     ];
     return Animations;
 }());
@@ -247,6 +249,7 @@ var Atlases = (function () {
     Atlases.Q = 'Q';
     Atlases.Remy = 'Remy';
     Atlases.Ryu = 'Ryu';
+    Atlases.Sean = 'Sean';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -267,6 +270,7 @@ var Atlases = (function () {
         Atlases.Q,
         Atlases.Remy,
         Atlases.Ryu,
+        Atlases.Sean,
     ];
     return Atlases;
 }());
