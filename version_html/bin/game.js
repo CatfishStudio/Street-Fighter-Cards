@@ -204,6 +204,7 @@ var Animations = (function () {
     Animations.Necro = 'Necro.json';
     Animations.Oro = 'Oro.json';
     Animations.Q = 'Q.json';
+    Animations.Remy = 'Remy.json';
     Animations.preloadList = [
         Animations.Akuma,
         Animations.Alex,
@@ -218,6 +219,7 @@ var Animations = (function () {
         Animations.Necro,
         Animations.Oro,
         Animations.Q,
+        Animations.Remy,
     ];
     return Animations;
 }());
@@ -241,6 +243,7 @@ var Atlases = (function () {
     Atlases.Necro = 'Necro';
     Atlases.Oro = 'Oro';
     Atlases.Q = 'Q';
+    Atlases.Remy = 'Remy';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -259,6 +262,7 @@ var Atlases = (function () {
         Atlases.Necro,
         Atlases.Oro,
         Atlases.Q,
+        Atlases.Remy,
     ];
     return Atlases;
 }());
@@ -1604,7 +1608,7 @@ var StreetFighterCards;
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 280;
-            this.playerAnimation.y = 190;
+            this.playerAnimation.y = 185;
             this.group.addChild(this.playerAnimation);
         };
         Level.prototype.createButtons = function () {

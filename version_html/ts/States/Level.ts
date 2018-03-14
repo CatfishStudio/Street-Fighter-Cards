@@ -50,7 +50,7 @@ module StreetFighterCards {
             let playerPersonage:GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 280;
-            this.playerAnimation.y = 190;
+            this.playerAnimation.y = 185;
             this.group.addChild(this.playerAnimation);
         }
 
