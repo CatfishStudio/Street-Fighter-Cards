@@ -21,6 +21,8 @@ class Atlases {
     public static Sean: string = 'Sean';
     public static Twelve: string = 'Twelve';
     public static Urien: string = 'Urien';
+    public static Yang: string = 'Yang';
+    public static Yun: string = 'Yun';
     
     public static preloadList:Array<string> = [
         Atlases.BigKen,
@@ -45,5 +47,7 @@ class Atlases {
         Atlases.Sean,
         Atlases.Twelve,
         Atlases.Urien,
+        Atlases.Yang,
+        Atlases.Yun
     ];
 }
