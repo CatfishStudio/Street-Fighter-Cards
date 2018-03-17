@@ -9,6 +9,7 @@ module StreetFighterCards {
 
         private group: Phaser.Group;
         private playerAnimation: AnimationFighter;
+        private opponentAnimation: AnimationFighter;
         private settings:Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
@@ -52,6 +53,12 @@ module StreetFighterCards {
             this.playerAnimation.x = 280;
             this.playerAnimation.y = 185;
             this.group.addChild(this.playerAnimation);
+
+            let opponentPersonage:GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
+            this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
+            this.opponentAnimation.x = 480;
+            this.opponentAnimation.y = 185;
+            this.group.addChild(this.opponentAnimation);
         }
 
         private createButtons():void {

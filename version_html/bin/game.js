@@ -1634,6 +1634,11 @@ var StreetFighterCards;
             this.playerAnimation.x = 280;
             this.playerAnimation.y = 185;
             this.group.addChild(this.playerAnimation);
+            var opponentPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
+            this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
+            this.opponentAnimation.x = 480;
+            this.opponentAnimation.y = 185;
+            this.group.addChild(this.opponentAnimation);
         };
         Level.prototype.createButtons = function () {
             this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
