@@ -128,6 +128,11 @@ module GameData {
             }
         }
 
+        public static deckMix(index: number):void {
+            GameData.Data.personages[index].deck.sort(Utilits.Data.compareRandom);
+            console.log(GameData.Data.personages[index].deck);
+        }
+
         public static loadAnimation(game: Phaser.Game, personage: IPersonage):void {
             try {
                 let json = game.cache.getJSON(personage.name + '.json');
@@ -159,9 +164,6 @@ module GameData {
             } catch (error) {
                 //console.log(error);
             }
-            
-            
-            
         }
 
         public static initTournament():void {

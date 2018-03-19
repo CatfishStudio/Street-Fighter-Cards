@@ -14,12 +14,30 @@ module StreetFighterCards {
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
 
+        private playerDeck: GameData.ICard[];
+        private playerHand: GameData.ICard[];
+        private playerSlots: GameData.ICard[];
+
+        private opponentDeck: GameData.ICard[];
+        private opponentHand: GameData.ICard[];
+        private opponentSlots: GameData.ICard[];
+        
         constructor() {
             super();
         }
 
         public create():void {
             this.group = new Phaser.Group(this.game, this.stage);
+
+            GameData.Data.deckMix(GameData.Data.fighterIndex);
+            this.playerDeck = GameData.Data.personages[GameData.Data.fighterIndex].deck;
+            this.playerHand = [null, null, null, null, null];
+            this.playerSlots = [null, null, null];
+            
+            GameData.Data.deckMix(GameData.Data.progressIndex);
+            this.opponentDeck = GameData.Data.personages[GameData.Data.progressIndex].deck;
+            this.opponentHand = [null, null, null, null, null];
+            this.opponentSlots = [null, null, null];
 
             this.createBackground();
             this.createFighters();
@@ -58,6 +76,8 @@ module StreetFighterCards {
             this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
             this.opponentAnimation.x = 480;
             this.opponentAnimation.y = 185;
+            this.opponentAnimation.anchor.setTo(.5,.5);
+            this.opponentAnimation.scale.x *= -1;
             this.group.addChild(this.opponentAnimation);
         }
 
