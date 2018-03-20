@@ -1640,26 +1640,8 @@ var StreetFighterCards;
             this.name = Level.Name;
         }
         Level.prototype.create = function () {
-            var _this = this;
             this.group = new Phaser.Group(this.game, this.stage);
             GameData.Data.deckMix(GameData.Data.fighterIndex);
-            /*
-            this.playerDeck = GameData.Data.personages[GameData.Data.fighterIndex].deck;
-            this.playerHand = [null, null, null, null, null];
-            this.playerSlots = [null, null, null];
-            
-            GameData.Data.deckMix(GameData.Data.progressIndex);
-            this.opponentDeck = GameData.Data.personages[GameData.Data.progressIndex].deck;
-            this.opponentHand = [null, null, null, null, null];
-            this.opponentSlots = [null, null, null];
-            */
-            var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
-            this.playerDeck = [];
-            GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
-                _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
-            });
-            this.playerHand = [];
-            this.playerSlots = [];
             this.createBackground();
             this.createFighters();
             this.createButtons();
@@ -1708,9 +1690,30 @@ var StreetFighterCards;
             this.group.addChild(border);
         };
         Level.prototype.createDeck = function () {
-            this.playerDeck[0].x = 0;
-            this.playerDeck[0].y = 0;
-            this.group.addChild(this.playerDeck[0]);
+            var _this = this;
+            // PLAYER
+            this.playerDeck = [];
+            var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
+                _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
+                _this.playerDeck[_this.playerDeck.length - 1].x = 660;
+                _this.playerDeck[_this.playerDeck.length - 1].y = 390;
+            });
+            this.playerHand = [];
+            this.playerSlots = [];
+            this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
+            this.group.addChild(this.shirt);
+            // OPPONENT
+            this.opponentDeck = [];
+            var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
+            GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach(function (cardData) {
+                _this.opponentDeck.push(new Card(_this.game, _this.group, opponentName, cardData));
+                _this.opponentDeck[_this.opponentDeck.length - 1].x = 0;
+                _this.opponentDeck[_this.opponentDeck.length - 1].y = 0;
+            });
+            this.opponentHand = [];
+            this.opponentSlots = [];
+            this.giveCards();
         };
         Level.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);
@@ -1739,6 +1742,15 @@ var StreetFighterCards;
                     }
                 default:
                     break;
+            }
+        };
+        Level.prototype.giveCards = function () {
+            if (this.playerHand.length === 0) {
+                for (var i = 0; i < 5; i++) {
+                    this.tween = this.game.add.tween(this.playerDeck[i]);
+                    this.tween.to({ x: 20 + (128 * i) }, 500, 'Linear');
+                    this.tween.start();
+                }
             }
         };
         Level.Name = "level";

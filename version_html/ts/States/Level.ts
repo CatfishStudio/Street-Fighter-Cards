@@ -14,20 +14,16 @@ module StreetFighterCards {
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
-
-        /*
-        private playerDeck: GameData.ICard[];
-        private playerHand: GameData.ICard[];
-        private playerSlots: GameData.ICard[];
-
-        private opponentDeck: GameData.ICard[];
-        private opponentHand: GameData.ICard[];
-        private opponentSlots: GameData.ICard[];
-        */
+        private shirt: Phaser.Sprite;
+        private tween: Phaser.Tween;
 
         private playerDeck: Card[];
         private playerHand: Card[];
         private playerSlots: Card[];
+
+        private opponentDeck: Card[];
+        private opponentHand: Card[];
+        private opponentSlots: Card[];
 
         constructor() {
             super();
@@ -37,25 +33,7 @@ module StreetFighterCards {
             this.group = new Phaser.Group(this.game, this.stage);
 
             GameData.Data.deckMix(GameData.Data.fighterIndex);
-            /*
-            this.playerDeck = GameData.Data.personages[GameData.Data.fighterIndex].deck;
-            this.playerHand = [null, null, null, null, null];
-            this.playerSlots = [null, null, null];
             
-            GameData.Data.deckMix(GameData.Data.progressIndex);
-            this.opponentDeck = GameData.Data.personages[GameData.Data.progressIndex].deck;
-            this.opponentHand = [null, null, null, null, null];
-            this.opponentSlots = [null, null, null];
-            */
-
-            let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
-            this.playerDeck = [];
-            GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
-                this.playerDeck.push(new Card(this.game, this.group, playerName, cardData));
-            });
-            this.playerHand = [];
-            this.playerSlots = [];
-
             this.createBackground();
             this.createFighters();
             this.createButtons();
@@ -113,9 +91,32 @@ module StreetFighterCards {
         }
 
         private createDeck():void {
-            this.playerDeck[0].x = 0;
-            this.playerDeck[0].y = 0;
-            this.group.addChild(this.playerDeck[0]);
+            // PLAYER
+            this.playerDeck = [];
+            let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
+                this.playerDeck.push(new Card(this.game, this.group, playerName, cardData));
+                this.playerDeck[this.playerDeck.length-1].x = 660;
+                this.playerDeck[this.playerDeck.length-1].y = 390;
+            });
+            this.playerHand = [];
+            this.playerSlots = [];
+            
+            this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
+            this.group.addChild(this.shirt);
+
+            // OPPONENT
+            this.opponentDeck = [];
+            let opponentName: string = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
+            GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach((cardData: GameData.ICard) => {
+                this.opponentDeck.push(new Card(this.game, this.group, opponentName, cardData));
+                this.opponentDeck[this.opponentDeck.length-1].x = 0;
+                this.opponentDeck[this.opponentDeck.length-1].y = 0;
+            });
+            this.opponentHand = [];
+            this.opponentSlots = [];
+
+            this.giveCards();
         }
 
         private settingsCreate() {
@@ -150,5 +151,14 @@ module StreetFighterCards {
             }
         }
 
+        private giveCards():void {
+            if(this.playerHand.length === 0){
+                for(let i:number = 0; i < 5; i++){
+                    this.tween = this.game.add.tween(this.playerDeck[i]);
+                    this.tween.to({x: 20 + (128 * i)}, 500, 'Linear');
+                    this.tween.start();
+                }
+            }
+        }
     }
 }
