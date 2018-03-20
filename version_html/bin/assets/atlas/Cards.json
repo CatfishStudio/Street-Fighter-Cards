@@ -1,6 +1,6 @@
 {"frames": {
 
-"Akex_block.png":
+"Alex_block.png":
 {
 	"frame": {"x":0,"y":0,"w":126,"h":190},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":190},
 	"sourceSize": {"w":126,"h":190}
 },
-"Akex_hand.png":
+"Alex_hand.png":
 {
 	"frame": {"x":126,"y":0,"w":126,"h":190},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":126,"h":190},
 	"sourceSize": {"w":126,"h":190}
 },
-"Akex_leg.png":
+"Alex_leg.png":
 {
 	"frame": {"x":252,"y":0,"w":126,"h":190},
 	"rotated": false,

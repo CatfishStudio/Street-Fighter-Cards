@@ -2,6 +2,7 @@ module StreetFighterCards {
     import AnimationFighter = Fabrique.AnimationFighter;
     import ButtonComix = Fabrique.ButtonComix;
     import Settings = Fabrique.Settings;
+    import Card = Fabrique.Card;
 
     export class Level extends Phaser.State {
         public static Name: string = "level";
@@ -10,10 +11,11 @@ module StreetFighterCards {
         private group: Phaser.Group;
         private playerAnimation: AnimationFighter;
         private opponentAnimation: AnimationFighter;
-        private settings:Settings;
+        private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
 
+        /*
         private playerDeck: GameData.ICard[];
         private playerHand: GameData.ICard[];
         private playerSlots: GameData.ICard[];
@@ -21,15 +23,21 @@ module StreetFighterCards {
         private opponentDeck: GameData.ICard[];
         private opponentHand: GameData.ICard[];
         private opponentSlots: GameData.ICard[];
-        
+        */
+
+        private playerDeck: Card[];
+        private playerHand: Card[];
+        private playerSlots: Card[];
+
         constructor() {
             super();
         }
 
-        public create():void {
+        public create(): void {
             this.group = new Phaser.Group(this.game, this.stage);
 
             GameData.Data.deckMix(GameData.Data.fighterIndex);
+            /*
             this.playerDeck = GameData.Data.personages[GameData.Data.fighterIndex].deck;
             this.playerHand = [null, null, null, null, null];
             this.playerSlots = [null, null, null];
@@ -38,50 +46,60 @@ module StreetFighterCards {
             this.opponentDeck = GameData.Data.personages[GameData.Data.progressIndex].deck;
             this.opponentHand = [null, null, null, null, null];
             this.opponentSlots = [null, null, null];
+            */
+
+            let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            this.playerDeck = [];
+            GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
+                this.playerDeck.push(new Card(this.game, this.group, playerName, cardData));
+            });
+            this.playerHand = [];
+            this.playerSlots = [];
 
             this.createBackground();
             this.createFighters();
             this.createButtons();
             this.createHand();
+            this.createDeck();
             this.createBorder();
         }
 
-        public shutdown():void {
+        public shutdown(): void {
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
             this.group.removeAll();
             this.game.stage.removeChildren();
         }
 
-        private createBackground():void {
+        private createBackground(): void {
             let opponentID: number = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
             let levelTexture: string = GameData.Data.personages[opponentID].level;
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
         }
 
-        private createHand():void {
+        private createHand(): void {
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 375, Images.HandBackground);
             this.group.addChild(background);
         }
 
-        private createFighters():void {
-            let playerPersonage:GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
+        private createFighters(): void {
+            let playerPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 280;
             this.playerAnimation.y = 185;
             this.group.addChild(this.playerAnimation);
 
-            let opponentPersonage:GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
+            let opponentPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
             this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
             this.opponentAnimation.x = 480;
             this.opponentAnimation.y = 185;
-            this.opponentAnimation.anchor.setTo(.5,.5);
+            this.opponentAnimation.anchor.setTo(.5, .5);
             this.opponentAnimation.scale.x *= -1;
             this.group.addChild(this.opponentAnimation);
         }
 
-        private createButtons():void {
+        private createButtons(): void {
             this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
             this.buttonExit.event.add(this.onButtonClick, this);
 
@@ -89,16 +107,22 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick, this);
         }
 
-        private createBorder():void {
+        private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.group.addChild(border);
+        }
+
+        private createDeck():void {
+            this.playerDeck[0].x = 0;
+            this.playerDeck[0].y = 0;
+            this.group.addChild(this.playerDeck[0]);
         }
 
         private settingsCreate() {
             this.settings = new Settings(this.game, this.group);
             this.settings.event.add(this.onButtonClick, this);
         }
-        
+
         private settingsClose() {
             this.settings.removeAll();
             this.group.removeChild(this.settings);
@@ -120,7 +144,7 @@ module StreetFighterCards {
                     {
                         this.settingsClose();
                         break;
-                    }           
+                    }
                 default:
                     break;
             }
