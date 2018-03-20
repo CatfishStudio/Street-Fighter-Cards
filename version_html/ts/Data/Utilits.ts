@@ -22,5 +22,10 @@ module Utilits {
             let index: number = (Math.random() * ++max) + min;
             return  Math.floor(index);
         }
+
+        /* Функция перемешивает элементы массива */
+        public static compareRandom(a, b) {
+            return Math.random() - 0.5;
+        }
     }
 }
