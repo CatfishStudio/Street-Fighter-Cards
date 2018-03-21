@@ -116,7 +116,7 @@ module StreetFighterCards {
             this.opponentHand = [];
             this.opponentSlots = [];
 
-            this.giveCards();
+            this.moveCardDeckToHand();
         }
 
         private settingsCreate() {
@@ -151,14 +151,16 @@ module StreetFighterCards {
             }
         }
 
-        private giveCards():void {
-            if(this.playerHand.length === 0){
-                for(let i:number = 0; i < 5; i++){
-                    this.tween = this.game.add.tween(this.playerDeck[i]);
-                    this.tween.to({x: 20 + (128 * i)}, 500, 'Linear');
-                    this.tween.start();
-                }
+        private moveCardDeckToHand():void {
+            if(this.playerHand.length < 5){
+                this.playerHand.push(this.playerDeck.shift());
+                this.tween = this.game.add.tween(this.playerHand[this.playerHand.length-1]);
+                this.tween.onComplete.add(this.moveCardDeckToHand, this);
+                this.tween.to({x: 20 + (128 * (this.playerHand.length-1))}, 500, 'Linear');
+                this.tween.start();
             }
         }
+
+        
     }
 }
