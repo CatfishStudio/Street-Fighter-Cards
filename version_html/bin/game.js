@@ -1197,13 +1197,28 @@ var Fabrique;
             this.removeAll();
         };
         Card.prototype.init = function () {
+            var headerSprite;
+            var footerSprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                this.header = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
             }
             else {
-                this.header = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
+            // Size header 126x157
+            var bitmapData = this.game.make.bitmapData(126, 157);
+            bitmapData.copy(headerSprite);
+            bitmapData.update(126, 157);
+            this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
             this.addChild(this.header);
+            // Size footer 126x33
+            bitmapData = this.game.make.bitmapData(126, 33);
+            bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -157);
+            bitmapData.update(126, 33);
+            this.footer = new Phaser.Sprite(this.game, 0, 157, bitmapData);
+            this.addChild(this.footer);
         };
         return Card;
     }(Phaser.Group));
@@ -1751,7 +1766,6 @@ var StreetFighterCards;
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: 20 + (128 * (this.playerHand.length - 1)) }, 500, 'Linear');
                 this.tween.start();
-                console.log(this.playerHand.length);
             }
         };
         Level.Name = "level";
