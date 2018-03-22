@@ -33,13 +33,15 @@ module StreetFighterCards {
             this.group = new Phaser.Group(this.game, this.stage);
 
             GameData.Data.deckMix(GameData.Data.fighterIndex);
+            GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             
             this.createBackground();
             this.createFighters();
             this.createButtons();
             this.createHand();
-            this.createDeck();
             this.createBorder();
+            this.createDeck();
+            
         }
 
         public shutdown(): void {
@@ -91,18 +93,20 @@ module StreetFighterCards {
         }
 
         private createDeck():void {
+            this.group.inputEnableChildren = true; // enable drag and drop
+
             // PLAYER
             this.playerDeck = [];
             let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
                 this.playerDeck.push(new Card(this.game, this.group, playerName, cardData));
-                this.playerDeck[this.playerDeck.length-1].x = 660;
+                this.playerDeck[this.playerDeck.length-1].x = 657;
                 this.playerDeck[this.playerDeck.length-1].y = 390;
             });
             this.playerHand = [];
             this.playerSlots = [];
             
-            this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
+            this.shirt = new Phaser.Sprite(this.game, 657, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
 
             // OPPONENT

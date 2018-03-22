@@ -1207,18 +1207,30 @@ var Fabrique;
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
+            this.cardSprite = new Phaser.Sprite(this.game, 0, 0);
+            this.cardSprite.inputEnabled = true;
+            this.cardSprite.input.enableDrag(false, true);
+            this.cardSprite.events.onDragStart.add(this.onDragStart, this);
+            this.cardSprite.events.onDragStop.add(this.onDragStop, this);
             // Size header 126x157
             var bitmapData = this.game.make.bitmapData(126, 157);
             bitmapData.copy(headerSprite);
             bitmapData.update(126, 157);
             this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
-            this.addChild(this.header);
+            this.cardSprite.addChild(this.header);
             // Size footer 126x33
             bitmapData = this.game.make.bitmapData(126, 33);
             bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -157);
             bitmapData.update(126, 33);
             this.footer = new Phaser.Sprite(this.game, 0, 157, bitmapData);
-            this.addChild(this.footer);
+            this.cardSprite.addChild(this.footer);
+            this.addChild(this.cardSprite);
+        };
+        Card.prototype.onDragStart = function (sprite, pointer, x, y) {
+            console.log("START: x=" + pointer.x + " y=" + pointer.y);
+        };
+        Card.prototype.onDragStop = function (sprite, pointer) {
+            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
         };
         return Card;
     }(Phaser.Group));
@@ -1657,12 +1669,13 @@ var StreetFighterCards;
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
             GameData.Data.deckMix(GameData.Data.fighterIndex);
+            GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             this.createBackground();
             this.createFighters();
             this.createButtons();
             this.createHand();
-            this.createDeck();
             this.createBorder();
+            this.createDeck();
         };
         Level.prototype.shutdown = function () {
             this.buttonExit.shutdown();
@@ -1706,17 +1719,18 @@ var StreetFighterCards;
         };
         Level.prototype.createDeck = function () {
             var _this = this;
+            this.group.inputEnableChildren = true;
             // PLAYER
             this.playerDeck = [];
             var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
                 _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
-                _this.playerDeck[_this.playerDeck.length - 1].x = 660;
+                _this.playerDeck[_this.playerDeck.length - 1].x = 657;
                 _this.playerDeck[_this.playerDeck.length - 1].y = 390;
             });
             this.playerHand = [];
             this.playerSlots = [];
-            this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
+            this.shirt = new Phaser.Sprite(this.game, 657, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
             // OPPONENT
             this.opponentDeck = [];
