@@ -1196,6 +1196,15 @@ var Fabrique;
         Card.prototype.shutdown = function () {
             this.removeAll();
         };
+        Card.prototype.dragAndDrop = function (value) {
+            if (value === true) {
+                this.cardSprite.inputEnabled = true;
+                this.cardSprite.input.enableDrag(false, true);
+            }
+            else {
+                this.cardSprite.inputEnabled = false;
+            }
+        };
         Card.prototype.init = function () {
             var headerSprite;
             var footerSprite;
@@ -1208,10 +1217,6 @@ var Fabrique;
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
             this.cardSprite = new Phaser.Sprite(this.game, 0, 0);
-            this.cardSprite.inputEnabled = true;
-            this.cardSprite.input.enableDrag(false, true);
-            this.cardSprite.events.onDragStart.add(this.onDragStart, this);
-            this.cardSprite.events.onDragStop.add(this.onDragStop, this);
             // Size header 126x157
             var bitmapData = this.game.make.bitmapData(126, 157);
             bitmapData.copy(headerSprite);
@@ -1225,12 +1230,6 @@ var Fabrique;
             this.footer = new Phaser.Sprite(this.game, 0, 157, bitmapData);
             this.cardSprite.addChild(this.footer);
             this.addChild(this.cardSprite);
-        };
-        Card.prototype.onDragStart = function (sprite, pointer, x, y) {
-            console.log("START: x=" + pointer.x + " y=" + pointer.y);
-        };
-        Card.prototype.onDragStop = function (sprite, pointer) {
-            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
         };
         return Card;
     }(Phaser.Group));
@@ -1668,19 +1667,29 @@ var StreetFighterCards;
         }
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
+            this.boardGroup = new Phaser.Group(this.game, this.stage);
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             this.createBackground();
             this.createFighters();
             this.createButtons();
             this.createHand();
-            this.createBorder();
             this.createDeck();
+            this.createBorder();
         };
         Level.prototype.shutdown = function () {
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
             this.group.removeAll();
+            this.playerDeck.forEach(function (card) {
+                card.shutdown();
+            });
+            this.playerHand.forEach(function (card) {
+                card.shutdown();
+            });
+            this.playerSlots.forEach(function (card) {
+                card.shutdown();
+            });
             this.game.stage.removeChildren();
         };
         Level.prototype.createBackground = function () {
@@ -1719,7 +1728,7 @@ var StreetFighterCards;
         };
         Level.prototype.createDeck = function () {
             var _this = this;
-            this.group.inputEnableChildren = true;
+            this.group.inputEnableChildren = true; // enable drag and drop
             // PLAYER
             this.playerDeck = [];
             var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
@@ -1727,6 +1736,8 @@ var StreetFighterCards;
                 _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
                 _this.playerDeck[_this.playerDeck.length - 1].x = 657;
                 _this.playerDeck[_this.playerDeck.length - 1].y = 390;
+                _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStart.add(_this.onDragStart, _this);
+                _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStop.add(_this.onDragStop, _this);
             });
             this.playerHand = [];
             this.playerSlots = [];
@@ -1743,6 +1754,17 @@ var StreetFighterCards;
             this.opponentHand = [];
             this.opponentSlots = [];
             this.moveCardDeckToHand();
+        };
+        Level.prototype.onDragStart = function (sprite, pointer, x, y) {
+            console.log("START: x=" + pointer.x + " y=" + pointer.y);
+            this.boardGroup.addChild(sprite);
+            this.group.removeChild(sprite);
+        };
+        Level.prototype.onDragStop = function (sprite, pointer) {
+            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
+            this.group.addChild(sprite);
+            this.boardGroup.removeChild(sprite);
+            sprite.inputEnabled = false;
         };
         Level.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);
@@ -1776,6 +1798,8 @@ var StreetFighterCards;
         Level.prototype.moveCardDeckToHand = function () {
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
+                this.playerHand[this.playerHand.length - 1].cardSprite.inputEnabled = true;
+                this.playerHand[this.playerHand.length - 1].cardSprite.input.enableDrag(false, true);
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: 20 + (128 * (this.playerHand.length - 1)) }, 500, 'Linear');

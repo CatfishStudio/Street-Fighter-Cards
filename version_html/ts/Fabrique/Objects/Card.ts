@@ -5,7 +5,7 @@ module Fabrique {
         private cardData: GameData.ICard;
         private header: Phaser.Sprite;
         private footer: Phaser.Sprite;
-        private cardSprite: Phaser.Sprite;
+        public cardSprite: Phaser.Sprite;
 
         constructor(game:Phaser.Game, parent:Phaser.Group, fighterName:string, card: GameData.ICard){
             super(game, parent);
@@ -16,6 +16,15 @@ module Fabrique {
 
         public shutdown():void {
             this.removeAll();
+        }
+
+        public dragAndDrop(value:boolean):void {
+            if(value === true){
+                this.cardSprite.inputEnabled = true;
+                this.cardSprite.input.enableDrag(false, true);
+            }else{
+                this.cardSprite.inputEnabled = false;
+            }
         }
 
         private init():void {
@@ -30,11 +39,7 @@ module Fabrique {
             }
 
             this.cardSprite = new Phaser.Sprite(this.game, 0, 0);
-            this.cardSprite.inputEnabled = true;
-            this.cardSprite.input.enableDrag(false, true);
-            this.cardSprite.events.onDragStart.add(this.onDragStart, this);
-            this.cardSprite.events.onDragStop.add(this.onDragStop, this);
-
+            
             // Size header 126x157
             let bitmapData = this.game.make.bitmapData(126, 157);
             bitmapData.copy(headerSprite);
@@ -52,12 +57,5 @@ module Fabrique {
             this.addChild(this.cardSprite);
         }
 
-        private onDragStart(sprite: Phaser.Sprite, pointer:Phaser.Point, x:number, y:number):void {
-            console.log("START: x=" + pointer.x + " y=" + pointer.y);
-        }
-
-        private onDragStop(sprite: Phaser.Sprite, pointer:Phaser.Point):void {
-            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
-        }
     }
 }
