@@ -1205,6 +1205,18 @@ var Fabrique;
                 this.inputEnabled = false;
             }
         };
+        Card.prototype.reduce = function (value) {
+            if (value === true) {
+                this.tweenFooter = this.game.add.tween(this.footer);
+                this.tweenFooter.to({ y: this.footer.y - 50 }, 250, 'Linear');
+                this.tweenFooter.start();
+                this.tweenHeader = this.game.add.tween(this.header);
+                this.tweenHeader.to({ height: this.header.height - 30 }, 250, 'Linear');
+                this.tweenHeader.start();
+            }
+            else {
+            }
+        };
         Card.prototype.init = function () {
             var headerSprite;
             var footerSprite;
@@ -1760,6 +1772,7 @@ var StreetFighterCards;
             console.log("START: x=" + pointer.x + " y=" + pointer.y);
             this.boardGroup.addChild(sprite);
             this.group.removeChild(sprite);
+            sprite.reduce(true);
         };
         Level.prototype.onDragStop = function (sprite, pointer) {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);

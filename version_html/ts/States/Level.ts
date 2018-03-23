@@ -141,7 +141,8 @@ module StreetFighterCards {
         private onDragStart(sprite: Phaser.Sprite, pointer:Phaser.Point, x:number, y:number):void {
             console.log("START: x=" + pointer.x + " y=" + pointer.y);
             this.boardGroup.addChild(sprite);
-            this.group.removeChild(sprite)
+            this.group.removeChild(sprite);
+            (sprite as Card).reduce(true);
         }
 
         private onDragStop(sprite: Phaser.Sprite, pointer:Phaser.Point):void {

@@ -5,6 +5,8 @@ module Fabrique {
         private cardData: GameData.ICard;
         private header: Phaser.Sprite;
         private footer: Phaser.Sprite;
+        private tweenHeader: Phaser.Tween;
+        private tweenFooter: Phaser.Tween;
         
         constructor(game:Phaser.Game, x:number, y:number, fighterName:string, card: GameData.ICard){
             super(game, x, y);
@@ -17,12 +19,26 @@ module Fabrique {
             this.removeChildren();
         }
 
-        public dragAndDrop(value:boolean):void {
+        public dragAndDrop(value:boolean):void { // перетаскивание
             if(value === true){
                 this.inputEnabled = true;
                 this.input.enableDrag(false, true);
             }else{
                 this.inputEnabled = false;
+            }
+        }
+
+        public reduce(value:boolean):void { // уменьшить
+            if(value === true){
+                this.tweenFooter = this.game.add.tween(this.footer);
+                this.tweenFooter.to({y: this.footer.y - 50}, 250, 'Linear');
+                this.tweenFooter.start();
+
+                this.tweenHeader = this.game.add.tween(this.header);
+                this.tweenHeader.to({height: this.header.height - 30}, 250, 'Linear');
+                this.tweenHeader.start();
+            }else{
+
             }
         }
 
