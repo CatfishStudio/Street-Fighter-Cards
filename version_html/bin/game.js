@@ -1664,6 +1664,9 @@ var StreetFighterCards;
         function Level() {
             _super.call(this);
             this.name = Level.Name;
+            this.handPoints = [
+                [20, 390], [148, 390], [276, 390], [404, 390], [532, 390]
+            ];
         }
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
@@ -1734,14 +1737,14 @@ var StreetFighterCards;
             var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
                 _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
-                _this.playerDeck[_this.playerDeck.length - 1].x = 657;
+                _this.playerDeck[_this.playerDeck.length - 1].x = 660;
                 _this.playerDeck[_this.playerDeck.length - 1].y = 390;
                 _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStart.add(_this.onDragStart, _this);
                 _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStop.add(_this.onDragStop, _this);
             });
             this.playerHand = [];
             this.playerSlots = [];
-            this.shirt = new Phaser.Sprite(this.game, 657, 390, Atlases.Cards, "card_back.png");
+            this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
             // OPPONENT
             this.opponentDeck = [];
@@ -1802,7 +1805,8 @@ var StreetFighterCards;
                 this.playerHand[this.playerHand.length - 1].cardSprite.input.enableDrag(false, true);
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
-                this.tween.to({ x: 20 + (128 * (this.playerHand.length - 1)) }, 500, 'Linear');
+                this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
+                //this.tween.to({x: 20 + (128 * (this.playerHand.length-1))}, 500, 'Linear');
                 this.tween.start();
             }
         };
