@@ -1187,22 +1187,22 @@ var Fabrique;
 (function (Fabrique) {
     var Card = (function (_super) {
         __extends(Card, _super);
-        function Card(game, parent, fighterName, card) {
-            _super.call(this, game, parent);
+        function Card(game, x, y, fighterName, card) {
+            _super.call(this, game, x, y);
             this.cardData = card;
             this.nameFighter = fighterName;
             this.init();
         }
         Card.prototype.shutdown = function () {
-            this.removeAll();
+            this.removeChildren();
         };
         Card.prototype.dragAndDrop = function (value) {
             if (value === true) {
-                this.cardSprite.inputEnabled = true;
-                this.cardSprite.input.enableDrag(false, true);
+                this.inputEnabled = true;
+                this.input.enableDrag(false, true);
             }
             else {
-                this.cardSprite.inputEnabled = false;
+                this.inputEnabled = false;
             }
         };
         Card.prototype.init = function () {
@@ -1216,23 +1216,21 @@ var Fabrique;
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
-            this.cardSprite = new Phaser.Sprite(this.game, 0, 0);
             // Size header 126x157
             var bitmapData = this.game.make.bitmapData(126, 157);
             bitmapData.copy(headerSprite);
             bitmapData.update(126, 157);
             this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
-            this.cardSprite.addChild(this.header);
+            this.addChild(this.header);
             // Size footer 126x33
             bitmapData = this.game.make.bitmapData(126, 33);
             bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -157);
             bitmapData.update(126, 33);
             this.footer = new Phaser.Sprite(this.game, 0, 157, bitmapData);
-            this.cardSprite.addChild(this.footer);
-            this.addChild(this.cardSprite);
+            this.addChild(this.footer);
         };
         return Card;
-    }(Phaser.Group));
+    }(Phaser.Sprite));
     Fabrique.Card = Card;
 })(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
@@ -1735,12 +1733,13 @@ var StreetFighterCards;
             // PLAYER
             this.playerDeck = [];
             var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            var card;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
-                _this.playerDeck.push(new Card(_this.game, _this.group, playerName, cardData));
-                _this.playerDeck[_this.playerDeck.length - 1].x = 660;
-                _this.playerDeck[_this.playerDeck.length - 1].y = 390;
-                _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStart.add(_this.onDragStart, _this);
-                _this.playerDeck[_this.playerDeck.length - 1].cardSprite.events.onDragStop.add(_this.onDragStop, _this);
+                card = new Card(_this.game, 660, 390, playerName, cardData);
+                card.events.onDragStart.add(_this.onDragStart, _this);
+                card.events.onDragStop.add(_this.onDragStop, _this);
+                _this.playerDeck.push(card);
+                _this.group.addChild(card);
             });
             this.playerHand = [];
             this.playerSlots = [];
@@ -1750,9 +1749,8 @@ var StreetFighterCards;
             this.opponentDeck = [];
             var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach(function (cardData) {
-                _this.opponentDeck.push(new Card(_this.game, _this.group, opponentName, cardData));
-                _this.opponentDeck[_this.opponentDeck.length - 1].x = 0;
-                _this.opponentDeck[_this.opponentDeck.length - 1].y = 0;
+                card = new Card(_this.game, 0, 0, opponentName, cardData);
+                _this.group.addChild(card);
             });
             this.opponentHand = [];
             this.opponentSlots = [];
@@ -1767,7 +1765,7 @@ var StreetFighterCards;
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
             this.boardGroup.removeChild(sprite);
-            sprite.inputEnabled = false;
+            sprite.dragAndDrop(false);
         };
         Level.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);
@@ -1801,12 +1799,10 @@ var StreetFighterCards;
         Level.prototype.moveCardDeckToHand = function () {
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
-                this.playerHand[this.playerHand.length - 1].cardSprite.inputEnabled = true;
-                this.playerHand[this.playerHand.length - 1].cardSprite.input.enableDrag(false, true);
+                this.playerHand[this.playerHand.length - 1].dragAndDrop(true);
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
-                //this.tween.to({x: 20 + (128 * (this.playerHand.length-1))}, 500, 'Linear');
                 this.tween.start();
             }
         };

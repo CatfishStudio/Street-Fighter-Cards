@@ -111,12 +111,13 @@ module StreetFighterCards {
             // PLAYER
             this.playerDeck = [];
             let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            let card:Card;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
-                this.playerDeck.push(new Card(this.game, this.group, playerName, cardData));
-                this.playerDeck[this.playerDeck.length-1].x = 660;
-                this.playerDeck[this.playerDeck.length-1].y = 390;
-                this.playerDeck[this.playerDeck.length-1].cardSprite.events.onDragStart.add(this.onDragStart, this);
-                this.playerDeck[this.playerDeck.length-1].cardSprite.events.onDragStop.add(this.onDragStop, this);
+                card = new Card(this.game, 660, 390, playerName, cardData);
+                card.events.onDragStart.add(this.onDragStart, this);
+                card.events.onDragStop.add(this.onDragStop, this);
+                this.playerDeck.push(card);
+                this.group.addChild(card);
             });
             this.playerHand = [];
             this.playerSlots = [];
@@ -128,9 +129,8 @@ module StreetFighterCards {
             this.opponentDeck = [];
             let opponentName: string = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach((cardData: GameData.ICard) => {
-                this.opponentDeck.push(new Card(this.game, this.group, opponentName, cardData));
-                this.opponentDeck[this.opponentDeck.length-1].x = 0;
-                this.opponentDeck[this.opponentDeck.length-1].y = 0;
+                card = new Card(this.game, 0, 0, opponentName, cardData);
+                this.group.addChild(card);
             });
             this.opponentHand = [];
             this.opponentSlots = [];
@@ -148,7 +148,7 @@ module StreetFighterCards {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
             this.boardGroup.removeChild(sprite);
-            sprite.inputEnabled = false;
+            (sprite as Card).dragAndDrop(false);
         }
 
         private settingsCreate() {
@@ -183,17 +183,15 @@ module StreetFighterCards {
             }
         }
 
-        private moveCardDeckToHand():void {
+        private moveCardDeckToHand():void { // раздача карт из колоды
             if(this.playerHand.length < 5){
                 this.playerHand.push(this.playerDeck.shift());
                 
-                this.playerHand[this.playerHand.length-1].cardSprite.inputEnabled = true;
-                this.playerHand[this.playerHand.length-1].cardSprite.input.enableDrag(false, true);
-
+                this.playerHand[this.playerHand.length-1].dragAndDrop(true);
+                
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length-1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({x: this.handPoints[this.playerHand.length-1][0]}, 250, 'Linear');
-                //this.tween.to({x: 20 + (128 * (this.playerHand.length-1))}, 500, 'Linear');
                 this.tween.start();
             }
         }
