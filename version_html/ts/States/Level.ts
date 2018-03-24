@@ -3,24 +3,34 @@ module StreetFighterCards {
     import ButtonComix = Fabrique.ButtonComix;
     import Settings = Fabrique.Settings;
     import Card = Fabrique.Card;
+    import FighterProgressBar = Fabrique.FighterProgressBar;
 
     export class Level extends Phaser.State {
         public static Name: string = "level";
         public name: string = Level.Name;
 
+        private tween: Phaser.Tween;
         private group: Phaser.Group;
-        private playerAnimation: AnimationFighter;
-        private opponentAnimation: AnimationFighter;
+        private boardGroup: Phaser.Group;
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
         private shirt: Phaser.Sprite;
-        private tween: Phaser.Tween;
 
-        private boardGroup: Phaser.Group;
+        // Player
+        private playerAnimation: AnimationFighter;
+        private playerProgressBar:FighterProgressBar;
+        private playerLife:number;
+        private playerEnergy:number;
         private playerDeck: Card[];
         private playerHand: Card[];
         private playerSlots: Card[];
+
+        // Opponent
+        private opponentAnimation: AnimationFighter;
+        private opponentProgressBar:FighterProgressBar;
+        private opponentLife:number;
+        private opponentEnergy:number;
         private opponentDeck: Card[];
         private opponentHand: Card[];
         private opponentSlots: Card[];
@@ -37,12 +47,25 @@ module StreetFighterCards {
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
 
+            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerEnergy = 1;
+            this.playerDeck = [];
+            this.playerHand = [];
+            this.playerSlots = [];
+
+            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentEnergy = 1;
+            this.opponentDeck = [];
+            this.opponentHand = [];
+            this.opponentSlots = [];
+
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             
             this.createBackground();
-            this.createFighters();
             this.createButtons();
+            this.createBars();
+            this.createFighters();
             this.createHand();
             this.createDeck();
             this.createBorder();
@@ -76,6 +99,23 @@ module StreetFighterCards {
             this.group.addChild(background);
         }
 
+        private createButtons(): void {
+            this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
+            this.buttonExit.event.add(this.onButtonClick, this);
+
+            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 310);
+            this.buttonSettings.event.add(this.onButtonClick, this);
+        }
+
+        private createBars(): void {
+            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT);
+            this.playerProgressBar.setEnergy(this.playerEnergy);
+            this.playerProgressBar.setLife(this.playerLife);
+            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT);
+            this.opponentProgressBar.setEnergy(this.opponentEnergy);
+            this.opponentProgressBar.setLife(this.opponentLife);
+        }
+
         private createFighters(): void {
             let playerPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
@@ -92,14 +132,6 @@ module StreetFighterCards {
             this.group.addChild(this.opponentAnimation);
         }
 
-        private createButtons(): void {
-            this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
-            this.buttonExit.event.add(this.onButtonClick, this);
-
-            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 310);
-            this.buttonSettings.event.add(this.onButtonClick, this);
-        }
-
         private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.group.addChild(border);
@@ -109,7 +141,6 @@ module StreetFighterCards {
             this.group.inputEnableChildren = true; // enable drag and drop
 
             // PLAYER
-            this.playerDeck = [];
             let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
             let card:Card;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
@@ -119,22 +150,17 @@ module StreetFighterCards {
                 this.playerDeck.push(card);
                 this.group.addChild(card);
             });
-            this.playerHand = [];
-            this.playerSlots = [];
             
             this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
 
             // OPPONENT
-            this.opponentDeck = [];
             let opponentName: string = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach((cardData: GameData.ICard) => {
-                card = new Card(this.game, 0, 0, opponentName, cardData);
+                card = new Card(this.game, 825, 0, opponentName, cardData);
                 this.group.addChild(card);
             });
-            this.opponentHand = [];
-            this.opponentSlots = [];
-
+            
             this.moveCardDeckToHand();
         }
 

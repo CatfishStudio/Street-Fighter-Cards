@@ -27,11 +27,11 @@ module Fabrique {
             ]);
 
             let polygonLeftMask:Phaser.Polygon = new Phaser.Polygon([   
-                new Phaser.Point(x+2, y+2), 
-                new Phaser.Point(x+84, y+2), 
-                new Phaser.Point(x+103, y+38), 
+                new Phaser.Point(x+4, y+2), 
+                new Phaser.Point(x+83, y+2), 
+                new Phaser.Point(x+101, y+38), 
                 new Phaser.Point(x+22, y+38),  
-                new Phaser.Point(x+2, y+2)
+                new Phaser.Point(x+4, y+2)
             ]);
 
             let polygonRight:Phaser.Polygon = new Phaser.Polygon([   

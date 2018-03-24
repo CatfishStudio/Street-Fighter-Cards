@@ -902,6 +902,255 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
+    var FighterProgressBar = (function (_super) {
+        __extends(FighterProgressBar, _super);
+        function FighterProgressBar(game, parent, fighterIndex, x, y, orientation) {
+            _super.call(this, game, parent);
+            this.init(fighterIndex, x, y, orientation);
+        }
+        FighterProgressBar.prototype.shutdown = function () {
+            this.lifeBar.removeAll();
+            this.energyBar.removeAll();
+            this.removeAll();
+        };
+        FighterProgressBar.prototype.init = function (fighterIndex, x, y, orientation) {
+            this.x = x;
+            this.y = y;
+            this.orientation = orientation;
+            this.fighterIndex = fighterIndex;
+            this.energyBar = new Phaser.Group(this.game, this);
+            this.lifeBar = new Phaser.Group(this.game, this);
+            if (orientation === Fabrique.Icon.LEFT) {
+                this.leftBars();
+                this.leftIcon();
+            }
+            else {
+                this.rightBars();
+                this.rightIcon();
+            }
+            this.energyProgress = new Phaser.Graphics(this.game, 0, 0);
+            this.lifeProgress = new Phaser.Graphics(this.game, 0, 20);
+            this.energyBar.addChild(this.energyProgress);
+            this.lifeBar.addChild(this.lifeProgress);
+            this.energyText = this.game.add.text(0, 0, "0/10", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.energyBar.addChild(this.energyText);
+            this.lifeText = this.game.add.text(0, 20, "0/200", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.lifeBar.addChild(this.lifeText);
+        };
+        FighterProgressBar.prototype.leftIcon = function () {
+            var polygonLeft = new Phaser.Polygon([
+                new Phaser.Point(0, 0),
+                new Phaser.Point(85, 0),
+                new Phaser.Point(105, 40),
+                new Phaser.Point(20, 40),
+                new Phaser.Point(0, 0)
+            ]);
+            var polygonLeftMask = new Phaser.Polygon([
+                new Phaser.Point(this.x + 4, this.y + 2),
+                new Phaser.Point(this.x + 83, this.y + 2),
+                new Phaser.Point(this.x + 101, this.y + 38),
+                new Phaser.Point(this.x + 22, this.y + 38),
+                new Phaser.Point(this.x + 4, this.y + 2)
+            ]);
+            var background;
+            var iconMask;
+            var iconBackgroundSprite;
+            var iconSprite;
+            background = new Phaser.Graphics(this.game, 0, 0);
+            background.beginFill(0xFFFFFF, 0.95);
+            background.lineStyle(2, 0x006FBD, 0.95);
+            background.drawPolygon(polygonLeft);
+            background.endFill();
+            this.addChild(background);
+            iconMask = new Phaser.Graphics(this.game, 0, 0);
+            iconMask.beginFill(0xFFFFFF);
+            iconMask.drawPolygon(polygonLeftMask);
+            iconMask.endFill();
+            iconBackgroundSprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundIcon);
+            iconBackgroundSprite.mask = iconMask;
+            this.addChild(iconBackgroundSprite);
+            iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[this.fighterIndex][4]);
+            iconSprite.mask = iconMask;
+            this.addChild(iconSprite);
+        };
+        FighterProgressBar.prototype.rightIcon = function () {
+            var polygonRight = new Phaser.Polygon([
+                new Phaser.Point(0, 0),
+                new Phaser.Point(85, 0),
+                new Phaser.Point(65, 40),
+                new Phaser.Point(-20, 40),
+                new Phaser.Point(0, 0)
+            ]);
+            var polygonRightMask = new Phaser.Polygon([
+                new Phaser.Point(this.x + 2, this.y + 2),
+                new Phaser.Point(this.x + 82, this.y + 2),
+                new Phaser.Point(this.x + 63, this.y + 38),
+                new Phaser.Point(this.x - 16, this.y + 38),
+                new Phaser.Point(this.x + 2, this.y + 2)
+            ]);
+            var background;
+            var iconMask;
+            var iconBackgroundSprite;
+            var iconSprite;
+            background = new Phaser.Graphics(this.game, 0, 0);
+            background.beginFill(0xFFFFFF, 0.95);
+            background.lineStyle(2, 0xBD001D, 0.95);
+            background.drawPolygon(polygonRight);
+            background.endFill();
+            this.addChild(background);
+            iconMask = new Phaser.Graphics(this.game, 0, 0);
+            iconMask.beginFill(0xFFFFFF);
+            iconMask.drawPolygon(polygonRightMask);
+            iconMask.endFill();
+            iconBackgroundSprite = new Phaser.Sprite(this.game, -20, 0, Images.BackgroundIcon);
+            iconBackgroundSprite.mask = iconMask;
+            this.addChild(iconBackgroundSprite);
+            iconSprite = new Phaser.Sprite(this.game, 40, 20, GameData.Data.fighters[this.fighterIndex][4]);
+            iconSprite.anchor.setTo(.5, .5);
+            iconSprite.scale.x *= -1;
+            iconSprite.mask = iconMask;
+            this.addChild(iconSprite);
+        };
+        FighterProgressBar.prototype.leftBars = function () {
+            // Energy
+            var backgroundEnergy;
+            var polygonEnergy = new Phaser.Polygon([
+                new Phaser.Point(0, 0), new Phaser.Point(130, 0),
+                new Phaser.Point(140, 20), new Phaser.Point(0, 20),
+                new Phaser.Point(0, 0)
+            ]);
+            backgroundEnergy = new Phaser.Graphics(this.game, 80, 0);
+            backgroundEnergy.beginFill(0x006FBD, 0.5);
+            backgroundEnergy.lineStyle(2, 0x006FBD, 0.95);
+            backgroundEnergy.drawPolygon(polygonEnergy);
+            backgroundEnergy.endFill();
+            this.energyBar.addChild(backgroundEnergy);
+            // Life
+            var backgroundLife;
+            var polygonLife = new Phaser.Polygon([
+                new Phaser.Point(0, 0), new Phaser.Point(140, 0),
+                new Phaser.Point(150, 20), new Phaser.Point(0, 20),
+                new Phaser.Point(0, 0)
+            ]);
+            backgroundLife = new Phaser.Graphics(this.game, 80, 20);
+            backgroundLife.beginFill(0x000000, 0.5);
+            backgroundLife.lineStyle(2, 0x006FBD, 0.95);
+            backgroundLife.drawPolygon(polygonLife);
+            backgroundLife.endFill();
+            this.lifeBar.addChild(backgroundLife);
+        };
+        FighterProgressBar.prototype.rightBars = function () {
+            // Energy
+            var backgroundEnergy;
+            var polygonEnergy = new Phaser.Polygon([
+                new Phaser.Point(-80, 0), new Phaser.Point(-200, 0),
+                new Phaser.Point(-210, 20), new Phaser.Point(-80, 20),
+                new Phaser.Point(-80, 0)
+            ]);
+            backgroundEnergy = new Phaser.Graphics(this.game, 80, 0);
+            backgroundEnergy.beginFill(0xFFFFFF, 0.5);
+            backgroundEnergy.lineStyle(2, 0xBD001D, 0.95);
+            backgroundEnergy.drawPolygon(polygonEnergy);
+            backgroundEnergy.endFill();
+            this.energyBar.addChild(backgroundEnergy);
+            // Life
+            var backgroundLife;
+            var polygonLife = new Phaser.Polygon([
+                new Phaser.Point(-80, 0), new Phaser.Point(-210, 0),
+                new Phaser.Point(-220, 20), new Phaser.Point(-80, 20),
+                new Phaser.Point(-80, 0)
+            ]);
+            backgroundLife = new Phaser.Graphics(this.game, 80, 20);
+            backgroundLife.beginFill(0x000000, 0.5);
+            backgroundLife.lineStyle(2, 0xBD001D, 0.95);
+            backgroundLife.drawPolygon(polygonLife);
+            backgroundLife.endFill();
+            this.lifeBar.addChild(backgroundLife);
+        };
+        FighterProgressBar.prototype.setEnergy = function (value) {
+            if (this.orientation === FighterProgressBar.LEFT) {
+                var i = (130 / 10);
+                var polygonEnergyProgress = new Phaser.Polygon([
+                    new Phaser.Point(1, 1), new Phaser.Point((value * i), 1),
+                    new Phaser.Point((value * i) + 10, 19), new Phaser.Point(2, 19),
+                    new Phaser.Point(1, 1)
+                ]);
+                this.energyProgress.x = 80;
+                this.energyProgress.y = 0;
+                this.energyProgress.clear();
+                this.energyProgress.beginFill(0x00137F, 0.95);
+                this.energyProgress.lineStyle(0, 0x000000, 0.95);
+                this.energyProgress.drawPolygon(polygonEnergyProgress);
+                this.energyProgress.endFill();
+                this.energyText.x = 150;
+                this.energyText.y = 2;
+                this.energyText.setText(value.toString() + "/10");
+            }
+            else {
+                var i = (125 / 10);
+                var polygonEnergyProgress = new Phaser.Polygon([
+                    new Phaser.Point(-1, 1), new Phaser.Point((value * -i) - 1, 1),
+                    new Phaser.Point((value * -i) - 10, 19), new Phaser.Point(-1, 19),
+                    new Phaser.Point(-1, 1)
+                ]);
+                this.energyProgress.x = 6;
+                this.energyProgress.y = 0;
+                this.energyProgress.clear();
+                this.energyProgress.beginFill(0x00137F, 0.95);
+                this.energyProgress.lineStyle(0, 0x000000, 0.95);
+                this.energyProgress.drawPolygon(polygonEnergyProgress);
+                this.energyProgress.endFill();
+                this.energyText.x = -75;
+                this.energyText.y = 2;
+                this.energyText.setText(value.toString() + "/10");
+            }
+        };
+        FighterProgressBar.prototype.setLife = function (value) {
+            if (this.orientation === FighterProgressBar.LEFT) {
+                var i = (124 / 200);
+                var polygonLifeProgress = new Phaser.Polygon([
+                    new Phaser.Point(1, 1), new Phaser.Point((value * i) + 1, 1),
+                    new Phaser.Point((value * i) + 10, 19), new Phaser.Point(2, 19),
+                    new Phaser.Point(1, 1)
+                ]);
+                this.lifeProgress.x = 95;
+                this.lifeProgress.y = 20;
+                this.lifeProgress.clear();
+                this.lifeProgress.beginFill(0x8E0000, 0.95);
+                this.lifeProgress.lineStyle(0, 0x000000, 0.95);
+                this.lifeProgress.drawPolygon(polygonLifeProgress);
+                this.lifeProgress.endFill();
+                this.lifeText.x = 140;
+                this.lifeText.y = 22;
+                this.lifeText.setText(value.toString() + "/200");
+            }
+            else {
+                var i = (120 / 200);
+                var polygonLifeProgress = new Phaser.Polygon([
+                    new Phaser.Point(-1, 1), new Phaser.Point((value * -i) - 1, 1),
+                    new Phaser.Point((value * -i) - 10, 19), new Phaser.Point(-1, 19),
+                    new Phaser.Point(-1, 1)
+                ]);
+                this.lifeProgress.x = -10;
+                this.lifeProgress.y = 20;
+                this.lifeProgress.clear();
+                this.lifeProgress.beginFill(0x8E0000, 0.95);
+                this.lifeProgress.lineStyle(0, 0x000000, 0.95);
+                this.lifeProgress.drawPolygon(polygonLifeProgress);
+                this.lifeProgress.endFill();
+                this.lifeText.x = -90;
+                this.lifeText.y = 22;
+                this.lifeText.setText(value.toString() + "/200");
+            }
+        };
+        FighterProgressBar.LEFT = "left";
+        FighterProgressBar.RIGHT = "right";
+        return FighterProgressBar;
+    }(Phaser.Group));
+    Fabrique.FighterProgressBar = FighterProgressBar;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
     var Slides = (function (_super) {
         __extends(Slides, _super);
         function Slides(game, parent) {
@@ -1006,11 +1255,11 @@ var Fabrique;
                 new Phaser.Point(0, 0)
             ]);
             var polygonLeftMask = new Phaser.Polygon([
-                new Phaser.Point(x + 2, y + 2),
-                new Phaser.Point(x + 84, y + 2),
-                new Phaser.Point(x + 103, y + 38),
+                new Phaser.Point(x + 4, y + 2),
+                new Phaser.Point(x + 83, y + 2),
+                new Phaser.Point(x + 101, y + 38),
                 new Phaser.Point(x + 22, y + 38),
-                new Phaser.Point(x + 2, y + 2)
+                new Phaser.Point(x + 4, y + 2)
             ]);
             var polygonRight = new Phaser.Polygon([
                 new Phaser.Point(0, 0),
@@ -1669,6 +1918,7 @@ var StreetFighterCards;
     var ButtonComix = Fabrique.ButtonComix;
     var Settings = Fabrique.Settings;
     var Card = Fabrique.Card;
+    var FighterProgressBar = Fabrique.FighterProgressBar;
     var Level = (function (_super) {
         __extends(Level, _super);
         function Level() {
@@ -1681,11 +1931,22 @@ var StreetFighterCards;
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
+            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerEnergy = 1;
+            this.playerDeck = [];
+            this.playerHand = [];
+            this.playerSlots = [];
+            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentEnergy = 1;
+            this.opponentDeck = [];
+            this.opponentHand = [];
+            this.opponentSlots = [];
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             this.createBackground();
-            this.createFighters();
             this.createButtons();
+            this.createBars();
+            this.createFighters();
             this.createHand();
             this.createDeck();
             this.createBorder();
@@ -1715,6 +1976,20 @@ var StreetFighterCards;
             var background = new Phaser.Sprite(this.game, 0, 375, Images.HandBackground);
             this.group.addChild(background);
         };
+        Level.prototype.createButtons = function () {
+            this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
+            this.buttonExit.event.add(this.onButtonClick, this);
+            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 310);
+            this.buttonSettings.event.add(this.onButtonClick, this);
+        };
+        Level.prototype.createBars = function () {
+            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT);
+            this.playerProgressBar.setEnergy(this.playerEnergy);
+            this.playerProgressBar.setLife(this.playerLife);
+            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT);
+            this.opponentProgressBar.setEnergy(this.opponentEnergy);
+            this.opponentProgressBar.setLife(this.opponentLife);
+        };
         Level.prototype.createFighters = function () {
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
@@ -1729,12 +2004,6 @@ var StreetFighterCards;
             this.opponentAnimation.scale.x *= -1;
             this.group.addChild(this.opponentAnimation);
         };
-        Level.prototype.createButtons = function () {
-            this.buttonExit = new ButtonComix(this.game, this.group, Constants.BUTTON_EXIT_BATTLE, 'ВЫЙТИ ИЗ БОЯ', 27, 20, 310);
-            this.buttonExit.event.add(this.onButtonClick, this);
-            this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 310);
-            this.buttonSettings.event.add(this.onButtonClick, this);
-        };
         Level.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.group.addChild(border);
@@ -1743,7 +2012,6 @@ var StreetFighterCards;
             var _this = this;
             this.group.inputEnableChildren = true; // enable drag and drop
             // PLAYER
-            this.playerDeck = [];
             var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
             var card;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach(function (cardData) {
@@ -1753,19 +2021,14 @@ var StreetFighterCards;
                 _this.playerDeck.push(card);
                 _this.group.addChild(card);
             });
-            this.playerHand = [];
-            this.playerSlots = [];
             this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
             // OPPONENT
-            this.opponentDeck = [];
             var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach(function (cardData) {
-                card = new Card(_this.game, 0, 0, opponentName, cardData);
+                card = new Card(_this.game, 825, 0, opponentName, cardData);
                 _this.group.addChild(card);
             });
-            this.opponentHand = [];
-            this.opponentSlots = [];
             this.moveCardDeckToHand();
         };
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
@@ -1842,6 +2105,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
 /// <reference path="Fabrique\Objects\FighterCard.ts" />
+/// <reference path="Fabrique\Objects\FighterProgressBar.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Icon.ts" />
 /// <reference path="Fabrique\Objects\Comix.ts" />
