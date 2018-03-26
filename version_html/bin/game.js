@@ -1931,6 +1931,7 @@ var StreetFighterCards;
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
+            this.handGroup = new Phaser.Group(this.game, this.stage);
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = 1;
             this.playerDeck = [];
@@ -2033,14 +2034,14 @@ var StreetFighterCards;
         };
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
             console.log("START: x=" + pointer.x + " y=" + pointer.y);
-            this.boardGroup.addChild(sprite);
+            this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             sprite.reduce(true);
         };
         Level.prototype.onDragStop = function (sprite, pointer) {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
-            this.boardGroup.removeChild(sprite);
+            this.handGroup.removeChild(sprite);
             sprite.dragAndDrop(false);
         };
         Level.prototype.settingsCreate = function () {

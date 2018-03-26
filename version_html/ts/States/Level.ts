@@ -12,6 +12,7 @@ module StreetFighterCards {
         private tween: Phaser.Tween;
         private group: Phaser.Group;
         private boardGroup: Phaser.Group;
+        private handGroup: Phaser.Group;
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
@@ -46,6 +47,7 @@ module StreetFighterCards {
         public create(): void {
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
+            this.handGroup = new Phaser.Group(this.game, this.stage);
 
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = 1;
@@ -166,7 +168,7 @@ module StreetFighterCards {
 
         private onDragStart(sprite: Phaser.Sprite, pointer:Phaser.Point, x:number, y:number):void {
             console.log("START: x=" + pointer.x + " y=" + pointer.y);
-            this.boardGroup.addChild(sprite);
+            this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
         }
@@ -174,7 +176,7 @@ module StreetFighterCards {
         private onDragStop(sprite: Phaser.Sprite, pointer:Phaser.Point):void {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
-            this.boardGroup.removeChild(sprite);
+            this.handGroup.removeChild(sprite);
             (sprite as Card).dragAndDrop(false);
         }
 
