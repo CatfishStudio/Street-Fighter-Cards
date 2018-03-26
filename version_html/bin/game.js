@@ -1440,6 +1440,8 @@ var Fabrique;
             _super.call(this, game, x, y);
             this.cardData = card;
             this.nameFighter = fighterName;
+            this.headerHeight = 157;
+            this.footerHeight = 33;
             this.init();
         }
         Card.prototype.shutdown = function () {
@@ -1457,14 +1459,44 @@ var Fabrique;
         Card.prototype.reduce = function (value) {
             if (value === true) {
                 this.tweenFooter = this.game.add.tween(this.footer);
-                this.tweenFooter.to({ y: this.footer.y - 50 }, 250, 'Linear');
+                this.tweenFooter.to({ y: this.footer.y - 63 }, 250, 'Linear');
+                this.tweenFooter.onUpdateCallback(this.headerUpdateMinus, this);
                 this.tweenFooter.start();
-                this.tweenHeader = this.game.add.tween(this.header);
-                this.tweenHeader.to({ height: this.header.height - 30 }, 250, 'Linear');
-                this.tweenHeader.start();
             }
             else {
+                this.tweenFooter = this.game.add.tween(this.footer);
+                this.tweenFooter.to({ y: this.footer.y + 63 }, 250, 'Linear');
+                this.tweenFooter.onUpdateCallback(this.headerUpdatePlus, this);
+                this.tweenFooter.start();
             }
+        };
+        Card.prototype.headerUpdateMinus = function (callback, callbackContext) {
+            var headerSprite;
+            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+            }
+            else {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+            }
+            this.headerHeight -= 2;
+            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
+            bitmapData.copy(headerSprite);
+            bitmapData.update(126, 126);
+            this.header.setTexture(bitmapData.texture, true);
+        };
+        Card.prototype.headerUpdatePlus = function (callback, callbackContext) {
+            var headerSprite;
+            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+            }
+            else {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+            }
+            this.headerHeight += 2;
+            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
+            bitmapData.copy(headerSprite);
+            bitmapData.update(126, 126);
+            this.header.setTexture(bitmapData.texture, true);
         };
         Card.prototype.init = function () {
             var headerSprite;
@@ -1478,16 +1510,16 @@ var Fabrique;
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
             // Size header 126x157
-            var bitmapData = this.game.make.bitmapData(126, 157);
+            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
             bitmapData.copy(headerSprite);
-            bitmapData.update(126, 157);
+            bitmapData.update(126, this.headerHeight);
             this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
             this.addChild(this.header);
             // Size footer 126x33
-            bitmapData = this.game.make.bitmapData(126, 33);
-            bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -157);
-            bitmapData.update(126, 33);
-            this.footer = new Phaser.Sprite(this.game, 0, 157, bitmapData);
+            bitmapData = this.game.make.bitmapData(126, this.footerHeight);
+            bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -this.headerHeight);
+            bitmapData.update(126, this.footerHeight);
+            this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
             this.addChild(this.footer);
         };
         return Card;
@@ -2043,6 +2075,7 @@ var StreetFighterCards;
             this.group.addChild(sprite);
             this.handGroup.removeChild(sprite);
             sprite.dragAndDrop(false);
+            sprite.reduce(false);
         };
         Level.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);

@@ -178,6 +178,7 @@ module StreetFighterCards {
             this.group.addChild(sprite);
             this.handGroup.removeChild(sprite);
             (sprite as Card).dragAndDrop(false);
+            (sprite as Card).reduce(false);
         }
 
         private settingsCreate() {
