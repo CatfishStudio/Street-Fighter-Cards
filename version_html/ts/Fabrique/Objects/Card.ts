@@ -35,12 +35,12 @@ module Fabrique {
         public reduce(value: boolean): void { // уменьшить
             if (value === true) {
                 this.tweenFooter = this.game.add.tween(this.footer);
-                this.tweenFooter.to({ y: this.footer.y - 63 }, 250, 'Linear');
+                this.tweenFooter.to({ y: 94 }, 250, 'Linear');
                 this.tweenFooter.onUpdateCallback(this.headerUpdateMinus, this);
                 this.tweenFooter.start();
             } else {
                 this.tweenFooter = this.game.add.tween(this.footer);
-                this.tweenFooter.to({ y: this.footer.y + 63 }, 250, 'Linear');
+                this.tweenFooter.to({ y: 157 }, 250, 'Linear');
                 this.tweenFooter.onUpdateCallback(this.headerUpdatePlus, this);
                 this.tweenFooter.start();
             }
