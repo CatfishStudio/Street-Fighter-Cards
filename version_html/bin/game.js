@@ -2090,8 +2090,13 @@ var StreetFighterCards;
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
             this.handGroup.removeChild(sprite);
-            sprite.dragAndDrop(false);
-            sprite.reduce(false);
+            if (pointer.x === 800 && pointer.y === 600) {
+                sprite.dragAndDrop(false);
+            }
+            else {
+                sprite.reduce(false);
+                this.returnCardToHand(sprite);
+            }
         };
         Level.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.group);
@@ -2126,11 +2131,20 @@ var StreetFighterCards;
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
                 this.playerHand[this.playerHand.length - 1].dragAndDrop(true);
+                this.playerHand[this.playerHand.length - 1].indexInHand = this.playerHand.length - 1;
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
             }
+        };
+        Level.prototype.returnCardToHand = function (card) {
+            this.tween = this.game.add.tween(card);
+            this.tween.to({
+                x: this.handPoints[card.indexInHand][0],
+                y: this.handPoints[card.indexInHand][1]
+            }, 250, 'Linear');
+            this.tween.start();
         };
         Level.Name = "level";
         return Level;

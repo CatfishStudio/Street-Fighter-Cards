@@ -177,8 +177,14 @@ module StreetFighterCards {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
             this.handGroup.removeChild(sprite);
-            (sprite as Card).dragAndDrop(false);
-            (sprite as Card).reduce(false);
+
+            if(pointer.x === 800 && pointer.y === 600){ // Положить карту в слот
+                (sprite as Card).dragAndDrop(false);
+
+            }else{  // Вернуть карту в колоду
+                (sprite as Card).reduce(false);
+                this.returnCardToHand((sprite as Card));
+            }
         }
 
         private settingsCreate() {
@@ -218,6 +224,7 @@ module StreetFighterCards {
                 this.playerHand.push(this.playerDeck.shift());
                 
                 this.playerHand[this.playerHand.length-1].dragAndDrop(true);
+                this.playerHand[this.playerHand.length-1].indexInHand = this.playerHand.length-1;
                 
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length-1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
@@ -226,6 +233,14 @@ module StreetFighterCards {
             }
         }
 
+        private returnCardToHand(card: Card):void {   // Вернуть карту в руку
+            this.tween = this.game.add.tween(card);
+            this.tween.to({
+                x: this.handPoints[card.indexInHand][0], 
+                y:  this.handPoints[card.indexInHand][1]
+            }, 250, 'Linear');
+            this.tween.start();
+        }
         
     }
 }
