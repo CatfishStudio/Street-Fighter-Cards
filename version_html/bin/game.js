@@ -1459,20 +1459,18 @@ var Fabrique;
         Card.prototype.reduce = function (value) {
             if (value === true) {
                 this.tweenFooter = this.game.add.tween(this.footer);
-                //this.tweenFooter.to({ y: this.footer.y - 63 }, 250, 'Linear');
                 this.tweenFooter.to({ y: 94 }, 250, 'Linear');
-                this.tweenFooter.onUpdateCallback(this.headerUpdateMinus, this);
+                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
                 this.tweenFooter.start();
             }
             else {
                 this.tweenFooter = this.game.add.tween(this.footer);
-                //this.tweenFooter.to({ y: this.footer.y + 63 }, 250, 'Linear');
                 this.tweenFooter.to({ y: 157 }, 250, 'Linear');
-                this.tweenFooter.onUpdateCallback(this.headerUpdatePlus, this);
+                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
                 this.tweenFooter.start();
             }
         };
-        Card.prototype.headerUpdateMinus = function (callback, callbackContext) {
+        Card.prototype.headerUpdate = function (callback, callbackContext) {
             var headerSprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
                 if (this.cardData.power > 20) {
@@ -1485,31 +1483,46 @@ var Fabrique;
             else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
-            this.headerHeight -= 2;
-            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
+            var bitmapData = this.game.make.bitmapData(126, this.footer.y + 5);
             bitmapData.copy(headerSprite);
             bitmapData.update(126, 126);
             this.header.setTexture(bitmapData.texture, true);
         };
-        Card.prototype.headerUpdatePlus = function (callback, callbackContext) {
-            var headerSprite;
-            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if (this.cardData.power > 20) {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+        /*
+                private headerUpdateMinus(callback: any, callbackContext: object): void {
+                    let headerSprite: Phaser.Sprite;
+                    if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                        if(this.cardData.power > 20){
+                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                        }else{
+                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                        }
+                    } else {
+                        headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                    }
+                    let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
+                    bitmapData.copy(headerSprite);
+                    bitmapData.update(126, 126);
+                    this.header.setTexture(bitmapData.texture, true);
                 }
-                else {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+        
+                private headerUpdatePlus(callback: any, callbackContext: object): void {
+                    let headerSprite: Phaser.Sprite;
+                    if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                        if(this.cardData.power > 20){
+                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                        }else{
+                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                        }
+                    } else {
+                        headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                    }
+                    let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
+                    bitmapData.copy(headerSprite);
+                    bitmapData.update(126, 126);
+                    this.header.setTexture(bitmapData.texture, true);
                 }
-            }
-            else {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-            }
-            this.headerHeight += 2;
-            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
-            bitmapData.copy(headerSprite);
-            bitmapData.update(126, 126);
-            this.header.setTexture(bitmapData.texture, true);
-        };
+        */
         Card.prototype.init = function () {
             var headerSprite;
             var footerSprite;
