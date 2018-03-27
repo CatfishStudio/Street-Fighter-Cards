@@ -48,7 +48,11 @@ module Fabrique {
         private headerUpdateMinus(callback: any, callbackContext: object): void {
             let headerSprite: Phaser.Sprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                if(this.cardData.power > 20){
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                }else{
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                }
             } else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
@@ -62,7 +66,11 @@ module Fabrique {
         private headerUpdatePlus(callback: any, callbackContext: object): void {
             let headerSprite: Phaser.Sprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                if(this.cardData.power > 20){
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                }else{
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                }
             } else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
@@ -77,8 +85,13 @@ module Fabrique {
             let headerSprite: Phaser.Sprite;
             let footerSprite: Phaser.Sprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                if(this.cardData.power > 20){
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                }else{
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                }
             } else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");

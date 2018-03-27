@@ -81,7 +81,7 @@ module GameData {
             ['comix/comix_page_21.jpg']
         ];
 
-        public static initPersonages(game: Phaser.Game):void {
+        public static initPersonages(game: Phaser.Game):void {  // инициализация персонажей
             this.progressIndex = -1;
             this.comixIndex = 0;
 
@@ -108,7 +108,7 @@ module GameData {
             console.log(GameData.Data.personages);
         }
 
-        public static createDeck(game: Phaser.Game, value: string, personage: IPersonage):void {
+        public static createDeck(game: Phaser.Game, value: string, personage: IPersonage):void { // создание колоды
             let card: GameData.ICard;
             let deck = game.cache.getJSON(value).deck;
             for (let key in deck.cards) {
@@ -128,12 +128,12 @@ module GameData {
             }
         }
 
-        public static deckMix(index: number):void {
+        public static deckMix(index: number):void { // перемешать колоду
             GameData.Data.personages[index].deck.sort(Utilits.Data.compareRandom);
             console.log(GameData.Data.personages[index].deck);
         }
 
-        public static loadAnimation(game: Phaser.Game, personage: IPersonage):void {
+        public static loadAnimation(game: Phaser.Game, personage: IPersonage):void {    // загрузка анимаций бойцов
             try {
                 let json = game.cache.getJSON(personage.name + '.json');
                 let block:string[] = [];
@@ -166,7 +166,7 @@ module GameData {
             }
         }
 
-        public static initTournament():void {
+        public static initTournament():void {   // инициализация турнира
             this.progressIndex = 0;
             
             GameData.Data.tournamentListIds = [];
