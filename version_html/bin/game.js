@@ -1488,42 +1488,9 @@ var Fabrique;
             bitmapData.update(126, 126);
             this.header.setTexture(bitmapData.texture, true);
         };
-        /*
-                private headerUpdateMinus(callback: any, callbackContext: object): void {
-                    let headerSprite: Phaser.Sprite;
-                    if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                        if(this.cardData.power > 20){
-                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                        }else{
-                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                        }
-                    } else {
-                        headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-                    }
-                    let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
-                    bitmapData.copy(headerSprite);
-                    bitmapData.update(126, 126);
-                    this.header.setTexture(bitmapData.texture, true);
-                }
-        
-                private headerUpdatePlus(callback: any, callbackContext: object): void {
-                    let headerSprite: Phaser.Sprite;
-                    if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                        if(this.cardData.power > 20){
-                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                        }else{
-                            headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                        }
-                    } else {
-                        headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-                    }
-                    let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
-                    bitmapData.copy(headerSprite);
-                    bitmapData.update(126, 126);
-                    this.header.setTexture(bitmapData.texture, true);
-                }
-        */
         Card.prototype.init = function () {
+            var energyText;
+            var powerText;
             var headerSprite;
             var footerSprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
@@ -1535,10 +1502,12 @@ var Fabrique;
                     headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
                     footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
                 }
+                powerText = this.game.add.text(40, 5, 'Удар: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
             }
             else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                powerText = this.game.add.text(40, 5, 'Блок: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
             }
             // Size header 126x157
             var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
@@ -1552,6 +1521,10 @@ var Fabrique;
             bitmapData.update(126, this.footerHeight);
             this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
             this.addChild(this.footer);
+            // Text
+            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.addChild(energyText);
+            this.footer.addChild(powerText);
         };
         return Card;
     }(Phaser.Sprite));

@@ -8,7 +8,7 @@ module Fabrique {
         private tweenFooter: Phaser.Tween;
         private headerHeight: number;
         private footerHeight: number;
-        public indexInHand:number;
+        public indexInHand: number;
 
         constructor(game: Phaser.Game, x: number, y: number, fighterName: string, card: GameData.ICard) {
             super(game, x, y);
@@ -49,69 +49,38 @@ module Fabrique {
         private headerUpdate(callback: any, callbackContext: object): void {
             let headerSprite: Phaser.Sprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if(this.cardData.power > 20){
+                if (this.cardData.power > 20) {
                     headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }else{
+                } else {
                     headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
                 }
             } else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
             }
-            let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
+            let bitmapData = this.game.make.bitmapData(126, this.footer.y + 5);
             bitmapData.copy(headerSprite);
             bitmapData.update(126, 126);
             this.header.setTexture(bitmapData.texture, true);
         }
 
-/*
-        private headerUpdateMinus(callback: any, callbackContext: object): void {
-            let headerSprite: Phaser.Sprite;
-            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if(this.cardData.power > 20){
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }else{
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                }
-            } else {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-            }
-            let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
-            bitmapData.copy(headerSprite);
-            bitmapData.update(126, 126);
-            this.header.setTexture(bitmapData.texture, true);
-        }
-
-        private headerUpdatePlus(callback: any, callbackContext: object): void {
-            let headerSprite: Phaser.Sprite;
-            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if(this.cardData.power > 20){
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }else{
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                }
-            } else {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-            }
-            let bitmapData = this.game.make.bitmapData(126, this.footer.y+5);
-            bitmapData.copy(headerSprite);
-            bitmapData.update(126, 126);
-            this.header.setTexture(bitmapData.texture, true);
-        }
-*/
         private init(): void {
+            let energyText: Phaser.Text;
+            let powerText: Phaser.Text;
             let headerSprite: Phaser.Sprite;
             let footerSprite: Phaser.Sprite;
             if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if(this.cardData.power > 20){
+                if (this.cardData.power > 20) {
                     headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
                     footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }else{
+                } else {
                     headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
                     footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
                 }
+                powerText = this.game.add.text(40, 5, 'Удар: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
             } else {
                 headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
                 footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                powerText = this.game.add.text(40, 5, 'Блок: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
             }
 
             // Size header 126x157
@@ -127,6 +96,11 @@ module Fabrique {
             bitmapData.update(126, this.footerHeight);
             this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
             this.addChild(this.footer);
+
+            // Text
+            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
+            this.addChild(energyText);
+            this.footer.addChild(powerText);
         }
 
     }
