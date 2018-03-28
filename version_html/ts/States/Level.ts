@@ -4,6 +4,7 @@ module StreetFighterCards {
     import Settings = Fabrique.Settings;
     import Card = Fabrique.Card;
     import FighterProgressBar = Fabrique.FighterProgressBar;
+    import Slot = Fabrique.Slot;
 
     export class Level extends Phaser.State {
         public static Name: string = "level";
