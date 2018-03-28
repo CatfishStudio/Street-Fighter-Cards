@@ -14,25 +14,27 @@ module StreetFighterCards {
         private group: Phaser.Group;
         private boardGroup: Phaser.Group;
         private handGroup: Phaser.Group;
+        private shirt: Phaser.Sprite;
+
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
-        private shirt: Phaser.Sprite;
+        private slots: Slot[];
 
         // Player
         private playerAnimation: AnimationFighter;
-        private playerProgressBar:FighterProgressBar;
-        private playerLife:number;
-        private playerEnergy:number;
+        private playerProgressBar: FighterProgressBar;
+        private playerLife: number;
+        private playerEnergy: number;
         private playerDeck: Card[];
         private playerHand: Card[];
         private playerSlots: Card[];
 
         // Opponent
         private opponentAnimation: AnimationFighter;
-        private opponentProgressBar:FighterProgressBar;
-        private opponentLife:number;
-        private opponentEnergy:number;
+        private opponentProgressBar: FighterProgressBar;
+        private opponentLife: number;
+        private opponentEnergy: number;
         private opponentDeck: Card[];
         private opponentHand: Card[];
         private opponentSlots: Card[];
@@ -64,8 +66,9 @@ module StreetFighterCards {
 
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
-            
+
             this.createBackground();
+            this.createSlots();
             this.createButtons();
             this.createBars();
             this.createFighters();
@@ -77,16 +80,25 @@ module StreetFighterCards {
         public shutdown(): void {
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
+            this.boardGroup.removeAll();
+            this.handGroup.removeAll();
             this.group.removeAll();
-            this.playerDeck.forEach((card:Card)=>{
+            this.slots.forEach((slot: Slot) => {
+                slot.shutdown();
+            });
+            this.slots = null;
+            this.playerDeck.forEach((card: Card) => {
                 card.shutdown();
             });
-            this.playerHand.forEach((card:Card)=>{
+            this.playerDeck = null;
+            this.playerHand.forEach((card: Card) => {
                 card.shutdown();
             });
-            this.playerSlots.forEach((card:Card)=>{
+            this.playerHand = null;
+            this.playerSlots.forEach((card: Card) => {
                 card.shutdown();
             });
+            this.playerSlots = null;
             this.game.stage.removeChildren();
         }
 
@@ -95,6 +107,19 @@ module StreetFighterCards {
             let levelTexture: string = GameData.Data.personages[opponentID].level;
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
+        }
+
+        private createSlots(): void {
+            let positions: number[][] = [
+                [50, 100], [155, 100], [100, 205],
+                [550, 100], [655, 100], [600, 205]
+            ];
+            //let slot: Slot = new Slot(this.game, 50, 50);
+            this.slots = [];
+            for(let value of positions){
+                this.slots.push(new Slot(this.game, value[0], value[1]));
+                this.group.addChild(this.slots[this.slots.length-1]);
+            }
         }
 
         private createHand(): void {
@@ -140,12 +165,12 @@ module StreetFighterCards {
             this.group.addChild(border);
         }
 
-        private createDeck():void {
+        private createDeck(): void {
             this.group.inputEnableChildren = true; // enable drag and drop
 
             // PLAYER
             let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
-            let card:Card;
+            let card: Card;
             GameData.Data.personages[GameData.Data.fighterIndex].deck.forEach((cardData: GameData.ICard) => {
                 card = new Card(this.game, 660, 390, playerName, cardData);
                 card.events.onDragStart.add(this.onDragStart, this);
@@ -153,7 +178,7 @@ module StreetFighterCards {
                 this.playerDeck.push(card);
                 this.group.addChild(card);
             });
-            
+
             this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
 
@@ -163,26 +188,26 @@ module StreetFighterCards {
                 card = new Card(this.game, 825, 0, opponentName, cardData);
                 this.group.addChild(card);
             });
-            
+
             this.moveCardDeckToHand();
         }
 
-        private onDragStart(sprite: Phaser.Sprite, pointer:Phaser.Point, x:number, y:number):void {
+        private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
             console.log("START: x=" + pointer.x + " y=" + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
         }
 
-        private onDragStop(sprite: Phaser.Sprite, pointer:Phaser.Point):void {
+        private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
             this.group.addChild(sprite);
             this.handGroup.removeChild(sprite);
 
-            if(pointer.x === 800 && pointer.y === 600){ // Положить карту в слот
+            if (pointer.x === 800 && pointer.y === 600) { // Положить карту в слот
                 (sprite as Card).dragAndDrop(false);
 
-            }else{  // Вернуть карту в колоду
+            } else {  // Вернуть карту в колоду
                 (sprite as Card).reduce(false);
                 this.returnCardToHand((sprite as Card));
             }
@@ -220,28 +245,28 @@ module StreetFighterCards {
             }
         }
 
-        private moveCardDeckToHand():void { // раздача карт из колоды
-            if(this.playerHand.length < 5){
+        private moveCardDeckToHand(): void { // раздача карт из колоды
+            if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
-                
-                this.playerHand[this.playerHand.length-1].dragAndDrop(true);
-                this.playerHand[this.playerHand.length-1].indexInHand = this.playerHand.length-1;
-                
-                this.tween = this.game.add.tween(this.playerHand[this.playerHand.length-1]);
+
+                this.playerHand[this.playerHand.length - 1].dragAndDrop(true);
+                this.playerHand[this.playerHand.length - 1].indexInHand = this.playerHand.length - 1;
+
+                this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
-                this.tween.to({x: this.handPoints[this.playerHand.length-1][0]}, 250, 'Linear');
+                this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
             }
         }
 
-        private returnCardToHand(card: Card):void {   // Вернуть карту в руку
+        private returnCardToHand(card: Card): void {   // Вернуть карту в руку
             this.tween = this.game.add.tween(card);
             this.tween.to({
-                x: this.handPoints[card.indexInHand][0], 
-                y:  this.handPoints[card.indexInHand][1]
+                x: this.handPoints[card.indexInHand][0],
+                y: this.handPoints[card.indexInHand][1]
             }, 250, 'Linear');
             this.tween.start();
         }
-        
+
     }
 }

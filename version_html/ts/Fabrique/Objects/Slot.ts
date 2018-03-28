@@ -11,10 +11,11 @@ module Fabrique {
 
         private init():void {
             let graphic: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphic.beginFill(0xFFFFFF, 0.95);
-            graphic.lineStyle(2, 0x777777, 1);
-            graphic.drawRect(0, 0, 100, 100);
+            graphic.beginFill(0xFFFFFF, 0.5);
+            graphic.lineStyle(2, 0xFFFFFF, 0.8);
+            graphic.drawRect(0, 0, 84, 84);
             graphic.endFill();
+            this.addChild(graphic);
 
             /*
             graphics.moveTo(210,300);

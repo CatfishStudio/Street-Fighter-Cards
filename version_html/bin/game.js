@@ -1,14 +1,19 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Game = (function (_super) {
+    var Game = /** @class */ (function (_super) {
         __extends(Game, _super);
         function Game() {
-            _super.call(this, {
+            var _this = _super.call(this, {
                 enableDebug: false,
                 width: Constants.GAME_WIDTH,
                 height: Constants.GAME_HEIGHT,
@@ -17,13 +22,14 @@ var StreetFighterCards;
                 transparent: true,
                 antialias: true,
                 forceSetTimeOut: false
-            });
-            this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
-            this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
-            this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
-            this.state.add(StreetFighterCards.ChoiceFighter.Name, StreetFighterCards.ChoiceFighter, false);
-            this.state.add(StreetFighterCards.Tournament.Name, StreetFighterCards.Tournament, false);
-            this.state.add(StreetFighterCards.Level.Name, StreetFighterCards.Level, false);
+            }) || this;
+            _this.state.add(StreetFighterCards.Boot.Name, StreetFighterCards.Boot, false);
+            _this.state.add(StreetFighterCards.Preloader.Name, StreetFighterCards.Preloader, false);
+            _this.state.add(StreetFighterCards.Menu.Name, StreetFighterCards.Menu, false);
+            _this.state.add(StreetFighterCards.ChoiceFighter.Name, StreetFighterCards.ChoiceFighter, false);
+            _this.state.add(StreetFighterCards.Tournament.Name, StreetFighterCards.Tournament, false);
+            _this.state.add(StreetFighterCards.Level.Name, StreetFighterCards.Level, false);
+            return _this;
         }
         Game.getInstance = function () {
             if (StreetFighterCards.Game.instance === null) {
@@ -39,7 +45,7 @@ var StreetFighterCards;
     }(Phaser.Game));
     StreetFighterCards.Game = Game;
 })(StreetFighterCards || (StreetFighterCards = {}));
-var Constants = (function () {
+var Constants = /** @class */ (function () {
     function Constants() {
     }
     Constants.GAME_WIDTH = 800;
@@ -59,7 +65,7 @@ var Constants = (function () {
     Constants.BUTTON_EXIT_BATTLE = 'button_exit_battle';
     return Constants;
 }());
-var Config = (function () {
+var Config = /** @class */ (function () {
     function Config() {
     }
     Config.settingSound = true;
@@ -67,7 +73,7 @@ var Config = (function () {
     Config.settingTutorial = true;
     return Config;
 }());
-var Images = (function () {
+var Images = /** @class */ (function () {
     function Images() {
     }
     Images.PreloaderImage = 'preloader.png';
@@ -188,7 +194,7 @@ var Images = (function () {
     ];
     return Images;
 }());
-var Animations = (function () {
+var Animations = /** @class */ (function () {
     function Animations() {
     }
     Animations.Akuma = 'Akuma.json';
@@ -235,7 +241,7 @@ var Animations = (function () {
     ];
     return Animations;
 }());
-var Atlases = (function () {
+var Atlases = /** @class */ (function () {
     function Atlases() {
     }
     Atlases.BigKen = 'BigKen';
@@ -290,7 +296,7 @@ var Atlases = (function () {
     ];
     return Atlases;
 }());
-var Sheet = (function () {
+var Sheet = /** @class */ (function () {
     function Sheet() {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
@@ -301,7 +307,7 @@ var Sheet = (function () {
     ];
     return Sheet;
 }());
-var Decks = (function () {
+var Decks = /** @class */ (function () {
     function Decks() {
     }
     Decks.akumaDeckJson = 'akuma_deck.json';
@@ -350,7 +356,7 @@ var Decks = (function () {
 }());
 var GameData;
 (function (GameData) {
-    var Data = (function () {
+    var Data = /** @class */ (function () {
         function Data() {
         }
         Data.initPersonages = function (game) {
@@ -433,6 +439,7 @@ var GameData;
                 personage.animWin = win;
             }
             catch (error) {
+                //console.log(error);
             }
         };
         Data.initTournament = function () {
@@ -504,7 +511,7 @@ var GameData;
 })(GameData || (GameData = {}));
 var Utilits;
 (function (Utilits) {
-    var Data = (function () {
+    var Data = /** @class */ (function () {
         function Data() {
         }
         /* Проверка четности и нечетности */
@@ -537,219 +544,72 @@ var Utilits;
 })(Utilits || (Utilits = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Tutorial = (function (_super) {
-        __extends(Tutorial, _super);
-        function Tutorial(game, text) {
-            _super.call(this, game, 25, 600, Images.TutorialImage);
-            this.text = text;
-            this.init();
+    var AnimationBigKen = /** @class */ (function (_super) {
+        __extends(AnimationBigKen, _super);
+        function AnimationBigKen(game) {
+            var _this = _super.call(this, game, 0, 0, Atlases.BigKen, 0) || this;
+            _this.init();
+            return _this;
         }
-        Tutorial.prototype.shutdown = function () {
-            this.tween.stop();
-            this.removeChild(this.dialog);
+        AnimationBigKen.prototype.init = function () {
+            var anim = this.animations.add(Atlases.BigKen);
+            anim.onComplete.add(this.onCompleteVideo, this);
+            anim.play(10, true, false);
         };
-        Tutorial.prototype.init = function () {
-            this.tween = this.game.add.tween(this);
-            this.tween.to({ x: this.x, y: this.y - 225 }, 750, 'Linear');
-            this.tween.onComplete.add(this.onComplete, this);
-            this.tween.start();
+        AnimationBigKen.prototype.onCompleteVideo = function () {
         };
-        Tutorial.prototype.onComplete = function () {
-            this.createDialog();
-        };
-        Tutorial.prototype.createDialog = function () {
-            this.dialog = new Phaser.Sprite(this.game, 0, 0);
-            var graphics = this.game.add.graphics(0, 0);
-            graphics.beginFill(0xFFFFFF, 1);
-            graphics.lineStyle(2, 0x000000, 1);
-            graphics.moveTo(-20, 20);
-            graphics.lineTo(5, 30);
-            graphics.lineTo(5, 47);
-            graphics.lineTo(-20, 20);
-            graphics.endFill();
-            graphics.beginFill(0xFFFFFF, 1);
-            graphics.lineStyle(0, 0x000000, 1);
-            graphics.drawRoundedRect(0, 0, 200, 50, 15);
-            graphics.endFill();
-            graphics.beginFill(0xFFFFFF, 0);
-            graphics.lineStyle(2, 0x000000, 1);
-            graphics.drawRoundedRect(0, 0, 200, 50, 15);
-            graphics.endFill();
-            graphics.beginFill(0xFFFFFF, 1);
-            graphics.lineStyle(1, 0xFFFFFF, 1);
-            graphics.drawRect(-1, 28, 4, 11);
-            graphics.endFill();
-            this.dialog.addChild(graphics);
-            var messageText = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
-            this.dialog.addChild(messageText);
-            this.dialog.x = 110;
-            this.dialog.y = 75;
-            this.addChild(this.dialog);
-            this.tweenDialogStart();
-        };
-        Tutorial.prototype.tweenDialogStart = function () {
-            this.tween = this.game.add.tween(this.dialog);
-            this.tween.to({ x: this.dialog.x + 25, y: this.dialog.y }, 1000, 'Linear');
-            this.tween.onComplete.add(this.tweenDialogEnd, this);
-            this.tween.start();
-        };
-        Tutorial.prototype.tweenDialogEnd = function () {
-            this.tween = this.game.add.tween(this.dialog);
-            this.tween.to({ x: this.dialog.x - 25, y: this.dialog.y }, 1000, 'Linear');
-            this.tween.onComplete.add(this.tweenDialogStart, this);
-            this.tween.start();
-        };
-        return Tutorial;
+        return AnimationBigKen;
     }(Phaser.Sprite));
-    Fabrique.Tutorial = Tutorial;
+    Fabrique.AnimationBigKen = AnimationBigKen;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Settings = (function (_super) {
-        __extends(Settings, _super);
-        function Settings(game, parent) {
-            _super.call(this, game, parent);
-            this.init();
+    var AnimationBigRyu = /** @class */ (function (_super) {
+        __extends(AnimationBigRyu, _super);
+        function AnimationBigRyu(game) {
+            var _this = _super.call(this, game, 0, 0, Atlases.BigRyu, 0) || this;
+            _this.init();
+            return _this;
         }
-        Settings.prototype.init = function () {
-            this.event = new Phaser.Signal();
-            var startX = (Constants.GAME_WIDTH / 2) - 150;
-            var startY = (Constants.GAME_HEIGHT / 2) - 150;
-            /* background and border */
-            var polygon = new Phaser.Polygon([
-                new Phaser.Point(startX, startY),
-                new Phaser.Point(startX + 10, startY - 10),
-                new Phaser.Point(startX + 300, startY - 10),
-                new Phaser.Point(startX + 310, startY),
-                new Phaser.Point(startX + 310, startY + 200),
-                new Phaser.Point(startX + 300, startY + 210),
-                new Phaser.Point(startX + 10, startY + 210),
-                new Phaser.Point(startX, startY + 200)
-            ]);
-            var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
-            graphicOverlay.beginFill(0x000000, 0.5);
-            graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
-            graphicOverlay.endFill();
-            graphicOverlay.beginFill(0xFFFFFF, 0.95);
-            graphicOverlay.lineStyle(2, 0x777777, 1);
-            graphicOverlay.drawPolygon(polygon);
-            graphicOverlay.endFill();
-            graphicOverlay.inputEnabled = true;
-            this.addChild(graphicOverlay);
-            /* title */
-            var title = new Phaser.Text(this.game, startX + 35, startY + 5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#222222", align: "left" });
-            this.addChild(title);
-            /* sound */
-            var buttonSound;
-            if (Config.settingSound === true)
-                buttonSound = new Phaser.Button(this.game, startX + 25, startY + 50, Images.ButtonOn, this.onButtonClick, this);
-            else
-                buttonSound = new Phaser.Button(this.game, startX + 25, startY + 50, Images.ButtonOff, this.onButtonClick, this);
-            buttonSound.name = 'sound';
-            this.addChild(buttonSound);
-            var labelSound = new Phaser.Text(this.game, startX + 90, startY + 55, "Звук", { font: "18px Georgia", fill: "#222222", align: "left" });
-            this.addChild(labelSound);
-            /* music */
-            var buttonMusic;
-            if (Config.settingMusic === true)
-                buttonMusic = new Phaser.Button(this.game, startX + 155, startY + 50, Images.ButtonOn, this.onButtonClick, this);
-            else
-                buttonMusic = new Phaser.Button(this.game, startX + 155, startY + 50, Images.ButtonOff, this.onButtonClick, this);
-            buttonMusic.name = 'music';
-            this.addChild(buttonMusic);
-            var labelMusic = new Phaser.Text(this.game, startX + 220, startY + 55, "Музыка", { font: "18px Georgia", fill: "#222222", align: "left" });
-            this.addChild(labelMusic);
-            /* tutorial */
-            var buttonTutorial;
-            if (Config.settingTutorial === true)
-                buttonTutorial = new Phaser.Button(this.game, startX + 25, startY + 100, Images.ButtonOn, this.onButtonClick, this);
-            else
-                buttonTutorial = new Phaser.Button(this.game, startX + 25, startY + 100, Images.ButtonOff, this.onButtonClick, this);
-            buttonTutorial.name = 'tutorial';
-            this.addChild(buttonTutorial);
-            var labelTutorial = new Phaser.Text(this.game, startX + 90, startY + 105, "Обучение в игре", { font: "18px Georgia", fill: "#222222", align: "left" });
-            this.addChild(labelTutorial);
-            /* button close */
-            this.buttonClose = new Fabrique.ButtonComix(this.game, this, Constants.BUTTON_SETTINGS_CLOSE, 'ЗАКРЫТЬ', 50, startX + 60, startY + 150);
-            this.buttonClose.event.add(this.onButtonCloseClick, this);
-            this.updateTransform();
+        AnimationBigRyu.prototype.init = function () {
+            var anim = this.animations.add(Atlases.BigRyu);
+            anim.onComplete.add(this.onCompleteVideo, this);
+            anim.play(10, true, false);
         };
-        Settings.prototype.onButtonCloseClick = function (event) {
-            this.buttonClose.shutdown();
-            this.removeAll();
-            this.event.dispatch(event);
+        AnimationBigRyu.prototype.onCompleteVideo = function () {
         };
-        Settings.prototype.onButtonClick = function (event) {
-            switch (event.name) {
-                case 'sound':
-                    {
-                        if (Config.settingSound === true) {
-                            Config.settingSound = false;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
-                            event.name = 'sound';
-                            this.addChild(event);
-                        }
-                        else {
-                            Config.settingSound = true;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
-                            event.name = 'sound';
-                            this.addChild(event);
-                        }
-                        break;
-                    }
-                case 'music':
-                    {
-                        if (Config.settingMusic === true) {
-                            Config.settingMusic = false;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
-                            event.name = 'music';
-                            this.addChild(event);
-                        }
-                        else {
-                            Config.settingMusic = true;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
-                            event.name = 'music';
-                            this.addChild(event);
-                        }
-                        break;
-                    }
-                case 'tutorial':
-                    {
-                        if (Config.settingTutorial === true) {
-                            Config.settingTutorial = false;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
-                            event.name = 'tutorial';
-                            this.addChild(event);
-                        }
-                        else {
-                            Config.settingTutorial = true;
-                            this.removeChild(event);
-                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
-                            event.name = 'tutorial';
-                            this.addChild(event);
-                        }
-                        break;
-                    }
-                default:
-                    break;
-            }
-        };
-        return Settings;
-    }(Phaser.Group));
-    Fabrique.Settings = Settings;
+        return AnimationBigRyu;
+    }(Phaser.Sprite));
+    Fabrique.AnimationBigRyu = AnimationBigRyu;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var ButtonOrange = (function (_super) {
+    var AnimationFighter = /** @class */ (function (_super) {
+        __extends(AnimationFighter, _super);
+        function AnimationFighter(game, personageName, personageAnim) {
+            var _this = _super.call(this, game, 0, 0, personageName, 54) || this;
+            _this.init(personageName, personageAnim);
+            return _this;
+        }
+        AnimationFighter.prototype.init = function (personageName, personageAnim) {
+            var anim = this.animations.add(personageName, personageAnim);
+            anim.onComplete.add(this.onComplete, this);
+            anim.play(10, true, false);
+        };
+        AnimationFighter.prototype.onComplete = function () {
+        };
+        return AnimationFighter;
+    }(Phaser.Sprite));
+    Fabrique.AnimationFighter = AnimationFighter;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var ButtonOrange = /** @class */ (function (_super) {
         __extends(ButtonOrange, _super);
         function ButtonOrange(game, parent, name, text, textX, x, y) {
-            _super.call(this, game, parent);
-            this.init(name, text, textX, x, y);
+            var _this = _super.call(this, game, parent) || this;
+            _this.init(name, text, textX, x, y);
+            return _this;
         }
         ButtonOrange.prototype.shutdown = function () {
             this.removeAll();
@@ -784,11 +644,12 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var ButtonComix = (function (_super) {
+    var ButtonComix = /** @class */ (function (_super) {
         __extends(ButtonComix, _super);
         function ButtonComix(game, parent, name, text, textX, x, y) {
-            _super.call(this, game, parent);
-            this.init(name, text, textX, x, y);
+            var _this = _super.call(this, game, parent) || this;
+            _this.init(name, text, textX, x, y);
+            return _this;
         }
         ButtonComix.prototype.shutdown = function () {
             this.removeAll();
@@ -823,68 +684,163 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var AnimationBigKen = (function (_super) {
-        __extends(AnimationBigKen, _super);
-        function AnimationBigKen(game) {
-            _super.call(this, game, 0, 0, Atlases.BigKen, 0);
-            this.init();
+    var Card = /** @class */ (function (_super) {
+        __extends(Card, _super);
+        function Card(game, x, y, fighterName, card) {
+            var _this = _super.call(this, game, x, y) || this;
+            _this.cardData = card;
+            _this.nameFighter = fighterName;
+            _this.headerHeight = 157;
+            _this.footerHeight = 33;
+            _this.init();
+            return _this;
         }
-        AnimationBigKen.prototype.init = function () {
-            var anim = this.animations.add(Atlases.BigKen);
-            anim.onComplete.add(this.onCompleteVideo, this);
-            anim.play(10, true, false);
+        Card.prototype.shutdown = function () {
+            this.removeChildren();
         };
-        AnimationBigKen.prototype.onCompleteVideo = function () {
+        Card.prototype.dragAndDrop = function (value) {
+            if (value === true) {
+                this.inputEnabled = true;
+                this.input.enableDrag(false, true);
+            }
+            else {
+                this.inputEnabled = false;
+            }
         };
-        return AnimationBigKen;
+        Card.prototype.reduce = function (value) {
+            if (value === true) {
+                this.tweenFooter = this.game.add.tween(this.footer);
+                this.tweenFooter.to({ y: 94 }, 250, 'Linear');
+                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
+                this.tweenFooter.start();
+            }
+            else {
+                this.tweenFooter = this.game.add.tween(this.footer);
+                this.tweenFooter.to({ y: 157 }, 250, 'Linear');
+                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
+                this.tweenFooter.start();
+            }
+        };
+        Card.prototype.headerUpdate = function (callback, callbackContext) {
+            var headerSprite;
+            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                if (this.cardData.power > 20) {
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                }
+                else {
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                }
+            }
+            else {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+            }
+            var bitmapData = this.game.make.bitmapData(126, this.footer.y + 5);
+            bitmapData.copy(headerSprite);
+            bitmapData.update(126, 126);
+            this.header.setTexture(bitmapData.texture, true);
+        };
+        Card.prototype.init = function () {
+            var energyText;
+            var powerText;
+            var headerSprite;
+            var footerSprite;
+            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                if (this.cardData.power > 20) {
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
+                }
+                else {
+                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
+                }
+                powerText = this.game.add.text(40, 5, 'Удар: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
+            else {
+                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
+                powerText = this.game.add.text(40, 5, 'Блок: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
+            // Size header 126x157
+            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
+            bitmapData.copy(headerSprite);
+            bitmapData.update(126, this.headerHeight);
+            this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
+            this.addChild(this.header);
+            // Size footer 126x33
+            bitmapData = this.game.make.bitmapData(126, this.footerHeight);
+            bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -this.headerHeight);
+            bitmapData.update(126, this.footerHeight);
+            this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
+            this.addChild(this.footer);
+            // Text
+            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.addChild(energyText);
+            this.footer.addChild(powerText);
+        };
+        return Card;
     }(Phaser.Sprite));
-    Fabrique.AnimationBigKen = AnimationBigKen;
+    Fabrique.Card = Card;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var AnimationBigRyu = (function (_super) {
-        __extends(AnimationBigRyu, _super);
-        function AnimationBigRyu(game) {
-            _super.call(this, game, 0, 0, Atlases.BigRyu, 0);
-            this.init();
+    var ButtonComix = Fabrique.ButtonComix;
+    var Comix = /** @class */ (function (_super) {
+        __extends(Comix, _super);
+        function Comix(game, parent) {
+            var _this = _super.call(this, game, parent) || this;
+            if (GameData.Data.comixIndex >= (GameData.Data.progressIndex + 2)) {
+                _this.removeAll();
+            }
+            else {
+                _this.init();
+            }
+            return _this;
         }
-        AnimationBigRyu.prototype.init = function () {
-            var anim = this.animations.add(Atlases.BigRyu);
-            anim.onComplete.add(this.onCompleteVideo, this);
-            anim.play(10, true, false);
+        Comix.prototype.shutdown = function () {
+            GameData.Data.comixIndex++;
+            this.buttonNext.shutdown();
+            this.removeAll();
         };
-        AnimationBigRyu.prototype.onCompleteVideo = function () {
+        Comix.prototype.init = function () {
+            this.index = 0;
+            this.createBackground();
+            this.createButton();
+            this.createBorder();
         };
-        return AnimationBigRyu;
-    }(Phaser.Sprite));
-    Fabrique.AnimationBigRyu = AnimationBigRyu;
+        Comix.prototype.createBackground = function () {
+            this.background = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
+            this.addChild(this.background);
+        };
+        Comix.prototype.createButton = function () {
+            this.buttonNext = new ButtonComix(this.game, this, Constants.BUTTON_NEXT, 'ДАЛЕЕ', 60, 600, 530);
+            this.buttonNext.event.add(this.onButtonClick, this);
+        };
+        Comix.prototype.createBorder = function () {
+            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
+            this.addChild(border);
+        };
+        Comix.prototype.onButtonClick = function (event) {
+            if ((GameData.Data.comixes[GameData.Data.comixIndex].length - 1) === this.index) {
+                this.shutdown();
+                this.parent.removeChild(this);
+            }
+            else {
+                this.index++;
+                this.background.loadTexture(GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
+            }
+        };
+        return Comix;
+    }(Phaser.Group));
+    Fabrique.Comix = Comix;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var AnimationFighter = (function (_super) {
-        __extends(AnimationFighter, _super);
-        function AnimationFighter(game, personageName, personageAnim) {
-            _super.call(this, game, 0, 0, personageName, 54);
-            this.init(personageName, personageAnim);
-        }
-        AnimationFighter.prototype.init = function (personageName, personageAnim) {
-            var anim = this.animations.add(personageName, personageAnim);
-            anim.onComplete.add(this.onComplete, this);
-            anim.play(10, true, false);
-        };
-        AnimationFighter.prototype.onComplete = function () {
-        };
-        return AnimationFighter;
-    }(Phaser.Sprite));
-    Fabrique.AnimationFighter = AnimationFighter;
-})(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
-    var FighterCard = (function (_super) {
+    var FighterCard = /** @class */ (function (_super) {
         __extends(FighterCard, _super);
         function FighterCard(game, x, y, frame, index) {
-            _super.call(this, game, x, y, Atlases.BigCards, frame);
-            this.init(index);
+            var _this = _super.call(this, game, x, y, Atlases.BigCards, frame) || this;
+            _this.init(index);
+            return _this;
         }
         FighterCard.prototype.init = function (index) {
             this.defenseText = this.game.add.text(13, 13, GameData.Data.personages[index].defense.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
@@ -902,11 +858,12 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var FighterProgressBar = (function (_super) {
+    var FighterProgressBar = /** @class */ (function (_super) {
         __extends(FighterProgressBar, _super);
         function FighterProgressBar(game, parent, fighterIndex, x, y, orientation) {
-            _super.call(this, game, parent);
-            this.init(fighterIndex, x, y, orientation);
+            var _this = _super.call(this, game, parent) || this;
+            _this.init(fighterIndex, x, y, orientation);
+            return _this;
         }
         FighterProgressBar.prototype.shutdown = function () {
             this.lifeBar.removeAll();
@@ -1151,95 +1108,12 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Slides = (function (_super) {
-        __extends(Slides, _super);
-        function Slides(game, parent) {
-            _super.call(this, game, parent);
-            this.init();
-            this.createSlides();
-        }
-        Slides.prototype.shutdown = function () {
-            this.slideGroup.removeAll();
-            this.removeAll();
-        };
-        Slides.prototype.init = function () {
-            GameData.Data.fighterIndex = 1;
-            this.canClick = true;
-        };
-        Slides.prototype.createSlides = function () {
-            this.slideGroup = new Phaser.Group(this.game, this);
-            var posX = 5;
-            var posY = 90;
-            for (var i = 0; i < GameData.Data.personages.length; i++) {
-                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
-                this.slideGroup.addChild(fCard);
-            }
-            this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
-            this.buttonLeft.name = Constants.BUTTON_ARROW_LEFT;
-            this.addChild(this.buttonLeft);
-            this.buttonRight = new Phaser.Button(this.game, 505, 190, Images.ArrowRight, this.onButtonClick, this);
-            this.buttonRight.name = Constants.BUTTON_ARROW_RIGHT;
-            this.addChild(this.buttonRight);
-            if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
-                this.buttonRight.visible = false;
-            }
-        };
-        Slides.prototype.onButtonClick = function (event) {
-            switch (event.name) {
-                case Constants.BUTTON_ARROW_LEFT:
-                    {
-                        if (this.canClick) {
-                            this.canClick = false;
-                            GameData.Data.fighterIndex--;
-                            var tween = this.game.add.tween(this.slideGroup);
-                            tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
-                            tween.onComplete.add(this.onTweenComplete, this);
-                            tween.start();
-                        }
-                        break;
-                    }
-                case Constants.BUTTON_ARROW_RIGHT:
-                    {
-                        if (this.canClick) {
-                            this.canClick = false;
-                            GameData.Data.fighterIndex++;
-                            var tween = this.game.add.tween(this.slideGroup);
-                            tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
-                            tween.onComplete.add(this.onTweenComplete, this);
-                            tween.start();
-                        }
-                        break;
-                    }
-                default:
-                    break;
-            }
-        };
-        Slides.prototype.onTweenComplete = function (event) {
-            if (GameData.Data.fighterIndex === 0) {
-                this.buttonLeft.visible = false;
-                this.buttonRight.visible = true;
-            }
-            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
-                this.buttonLeft.visible = true;
-                this.buttonRight.visible = false;
-            }
-            else {
-                this.buttonLeft.visible = true;
-                this.buttonRight.visible = true;
-            }
-            this.canClick = true;
-        };
-        return Slides;
-    }(Phaser.Group));
-    Fabrique.Slides = Slides;
-})(Fabrique || (Fabrique = {}));
-var Fabrique;
-(function (Fabrique) {
-    var Icon = (function (_super) {
+    var Icon = /** @class */ (function (_super) {
         __extends(Icon, _super);
         function Icon(game, parent, index, fighterIndex, x, y, orientation) {
-            _super.call(this, game, parent);
-            this.init(index, fighterIndex, x, y, orientation);
+            var _this = _super.call(this, game, parent) || this;
+            _this.init(index, fighterIndex, x, y, orientation);
+            return _this;
         }
         Icon.prototype.shutdown = function () {
             this.removeAll();
@@ -1383,160 +1257,341 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var ButtonComix = Fabrique.ButtonComix;
-    var Comix = (function (_super) {
-        __extends(Comix, _super);
-        function Comix(game, parent) {
-            _super.call(this, game, parent);
-            if (GameData.Data.comixIndex >= (GameData.Data.progressIndex + 2)) {
-                this.removeAll();
-            }
-            else {
-                this.init();
-            }
+    var Settings = /** @class */ (function (_super) {
+        __extends(Settings, _super);
+        function Settings(game, parent) {
+            var _this = _super.call(this, game, parent) || this;
+            _this.init();
+            return _this;
         }
-        Comix.prototype.shutdown = function () {
-            GameData.Data.comixIndex++;
-            this.buttonNext.shutdown();
+        Settings.prototype.init = function () {
+            this.event = new Phaser.Signal();
+            var startX = (Constants.GAME_WIDTH / 2) - 150;
+            var startY = (Constants.GAME_HEIGHT / 2) - 150;
+            /* background and border */
+            var polygon = new Phaser.Polygon([
+                new Phaser.Point(startX, startY),
+                new Phaser.Point(startX + 10, startY - 10),
+                new Phaser.Point(startX + 300, startY - 10),
+                new Phaser.Point(startX + 310, startY),
+                new Phaser.Point(startX + 310, startY + 200),
+                new Phaser.Point(startX + 300, startY + 210),
+                new Phaser.Point(startX + 10, startY + 210),
+                new Phaser.Point(startX, startY + 200)
+            ]);
+            var graphicOverlay = new Phaser.Graphics(this.game, 0, 0);
+            graphicOverlay.beginFill(0x000000, 0.5);
+            graphicOverlay.drawRect(0, 0, this.game.width, this.game.height);
+            graphicOverlay.endFill();
+            graphicOverlay.beginFill(0xFFFFFF, 0.95);
+            graphicOverlay.lineStyle(2, 0x777777, 1);
+            graphicOverlay.drawPolygon(polygon);
+            graphicOverlay.endFill();
+            graphicOverlay.inputEnabled = true;
+            this.addChild(graphicOverlay);
+            /* title */
+            var title = new Phaser.Text(this.game, startX + 35, startY + 5, "НАСТРОЙКИ ИГРЫ", { font: "24px Georgia", fill: "#222222", align: "left" });
+            this.addChild(title);
+            /* sound */
+            var buttonSound;
+            if (Config.settingSound === true)
+                buttonSound = new Phaser.Button(this.game, startX + 25, startY + 50, Images.ButtonOn, this.onButtonClick, this);
+            else
+                buttonSound = new Phaser.Button(this.game, startX + 25, startY + 50, Images.ButtonOff, this.onButtonClick, this);
+            buttonSound.name = 'sound';
+            this.addChild(buttonSound);
+            var labelSound = new Phaser.Text(this.game, startX + 90, startY + 55, "Звук", { font: "18px Georgia", fill: "#222222", align: "left" });
+            this.addChild(labelSound);
+            /* music */
+            var buttonMusic;
+            if (Config.settingMusic === true)
+                buttonMusic = new Phaser.Button(this.game, startX + 155, startY + 50, Images.ButtonOn, this.onButtonClick, this);
+            else
+                buttonMusic = new Phaser.Button(this.game, startX + 155, startY + 50, Images.ButtonOff, this.onButtonClick, this);
+            buttonMusic.name = 'music';
+            this.addChild(buttonMusic);
+            var labelMusic = new Phaser.Text(this.game, startX + 220, startY + 55, "Музыка", { font: "18px Georgia", fill: "#222222", align: "left" });
+            this.addChild(labelMusic);
+            /* tutorial */
+            var buttonTutorial;
+            if (Config.settingTutorial === true)
+                buttonTutorial = new Phaser.Button(this.game, startX + 25, startY + 100, Images.ButtonOn, this.onButtonClick, this);
+            else
+                buttonTutorial = new Phaser.Button(this.game, startX + 25, startY + 100, Images.ButtonOff, this.onButtonClick, this);
+            buttonTutorial.name = 'tutorial';
+            this.addChild(buttonTutorial);
+            var labelTutorial = new Phaser.Text(this.game, startX + 90, startY + 105, "Обучение в игре", { font: "18px Georgia", fill: "#222222", align: "left" });
+            this.addChild(labelTutorial);
+            /* button close */
+            this.buttonClose = new Fabrique.ButtonComix(this.game, this, Constants.BUTTON_SETTINGS_CLOSE, 'ЗАКРЫТЬ', 50, startX + 60, startY + 150);
+            this.buttonClose.event.add(this.onButtonCloseClick, this);
+            this.updateTransform();
+        };
+        Settings.prototype.onButtonCloseClick = function (event) {
+            this.buttonClose.shutdown();
             this.removeAll();
+            this.event.dispatch(event);
         };
-        Comix.prototype.init = function () {
-            this.index = 0;
-            this.createBackground();
-            this.createButton();
-            this.createBorder();
-        };
-        Comix.prototype.createBackground = function () {
-            this.background = new Phaser.Sprite(this.game, 0, 0, GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
-            this.addChild(this.background);
-        };
-        Comix.prototype.createButton = function () {
-            this.buttonNext = new ButtonComix(this.game, this, Constants.BUTTON_NEXT, 'ДАЛЕЕ', 60, 600, 530);
-            this.buttonNext.event.add(this.onButtonClick, this);
-        };
-        Comix.prototype.createBorder = function () {
-            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
-            this.addChild(border);
-        };
-        Comix.prototype.onButtonClick = function (event) {
-            if ((GameData.Data.comixes[GameData.Data.comixIndex].length - 1) === this.index) {
-                this.shutdown();
-                this.parent.removeChild(this);
+        Settings.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case 'sound':
+                    {
+                        if (Config.settingSound === true) {
+                            Config.settingSound = false;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
+                            event.name = 'sound';
+                            this.addChild(event);
+                        }
+                        else {
+                            Config.settingSound = true;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
+                            event.name = 'sound';
+                            this.addChild(event);
+                        }
+                        break;
+                    }
+                case 'music':
+                    {
+                        if (Config.settingMusic === true) {
+                            Config.settingMusic = false;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
+                            event.name = 'music';
+                            this.addChild(event);
+                        }
+                        else {
+                            Config.settingMusic = true;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
+                            event.name = 'music';
+                            this.addChild(event);
+                        }
+                        break;
+                    }
+                case 'tutorial':
+                    {
+                        if (Config.settingTutorial === true) {
+                            Config.settingTutorial = false;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
+                            event.name = 'tutorial';
+                            this.addChild(event);
+                        }
+                        else {
+                            Config.settingTutorial = true;
+                            this.removeChild(event);
+                            event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
+                            event.name = 'tutorial';
+                            this.addChild(event);
+                        }
+                        break;
+                    }
+                default:
+                    break;
             }
-            else {
-                this.index++;
-                this.background.loadTexture(GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
-            }
         };
-        return Comix;
+        return Settings;
     }(Phaser.Group));
-    Fabrique.Comix = Comix;
+    Fabrique.Settings = Settings;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
-    var Card = (function (_super) {
-        __extends(Card, _super);
-        function Card(game, x, y, fighterName, card) {
-            _super.call(this, game, x, y);
-            this.cardData = card;
-            this.nameFighter = fighterName;
-            this.headerHeight = 157;
-            this.footerHeight = 33;
-            this.init();
+    var Slides = /** @class */ (function (_super) {
+        __extends(Slides, _super);
+        function Slides(game, parent) {
+            var _this = _super.call(this, game, parent) || this;
+            _this.init();
+            _this.createSlides();
+            return _this;
         }
-        Card.prototype.shutdown = function () {
+        Slides.prototype.shutdown = function () {
+            this.slideGroup.removeAll();
+            this.removeAll();
+        };
+        Slides.prototype.init = function () {
+            GameData.Data.fighterIndex = 1;
+            this.canClick = true;
+        };
+        Slides.prototype.createSlides = function () {
+            this.slideGroup = new Phaser.Group(this.game, this);
+            var posX = 5;
+            var posY = 90;
+            for (var i = 0; i < GameData.Data.personages.length; i++) {
+                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
+                this.slideGroup.addChild(fCard);
+            }
+            this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
+            this.buttonLeft.name = Constants.BUTTON_ARROW_LEFT;
+            this.addChild(this.buttonLeft);
+            this.buttonRight = new Phaser.Button(this.game, 505, 190, Images.ArrowRight, this.onButtonClick, this);
+            this.buttonRight.name = Constants.BUTTON_ARROW_RIGHT;
+            this.addChild(this.buttonRight);
+            if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
+                this.buttonRight.visible = false;
+            }
+        };
+        Slides.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case Constants.BUTTON_ARROW_LEFT:
+                    {
+                        if (this.canClick) {
+                            this.canClick = false;
+                            GameData.Data.fighterIndex--;
+                            var tween = this.game.add.tween(this.slideGroup);
+                            tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
+                            tween.onComplete.add(this.onTweenComplete, this);
+                            tween.start();
+                        }
+                        break;
+                    }
+                case Constants.BUTTON_ARROW_RIGHT:
+                    {
+                        if (this.canClick) {
+                            this.canClick = false;
+                            GameData.Data.fighterIndex++;
+                            var tween = this.game.add.tween(this.slideGroup);
+                            tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
+                            tween.onComplete.add(this.onTweenComplete, this);
+                            tween.start();
+                        }
+                        break;
+                    }
+                default:
+                    break;
+            }
+        };
+        Slides.prototype.onTweenComplete = function (event) {
+            if (GameData.Data.fighterIndex === 0) {
+                this.buttonLeft.visible = false;
+                this.buttonRight.visible = true;
+            }
+            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
+                this.buttonLeft.visible = true;
+                this.buttonRight.visible = false;
+            }
+            else {
+                this.buttonLeft.visible = true;
+                this.buttonRight.visible = true;
+            }
+            this.canClick = true;
+        };
+        return Slides;
+    }(Phaser.Group));
+    Fabrique.Slides = Slides;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var Slot = /** @class */ (function (_super) {
+        __extends(Slot, _super);
+        function Slot(game, x, y) {
+            var _this = _super.call(this, game, x, y) || this;
+            _this.init();
+            return _this;
+        }
+        Slot.prototype.shutdown = function () {
             this.removeChildren();
         };
-        Card.prototype.dragAndDrop = function (value) {
-            if (value === true) {
-                this.inputEnabled = true;
-                this.input.enableDrag(false, true);
-            }
-            else {
-                this.inputEnabled = false;
-            }
+        Slot.prototype.init = function () {
+            var graphic = new Phaser.Graphics(this.game, 0, 0);
+            graphic.beginFill(0xFFFFFF, 0.5);
+            graphic.lineStyle(2, 0xFFFFFF, 0.8);
+            graphic.drawRect(0, 0, 84, 84);
+            graphic.endFill();
+            this.addChild(graphic);
+            /*
+            graphics.moveTo(210,300);
+            graphics.lineTo(450,320);
+            graphics.lineTo(570,350);
+            graphics.quadraticCurveTo(600, 0, 480,100);
+            graphics.lineTo(330,120);
+            graphics.lineTo(410,200);
+            graphics.lineTo(210,300);
+            graphics.endFill();
+            */
         };
-        Card.prototype.reduce = function (value) {
-            if (value === true) {
-                this.tweenFooter = this.game.add.tween(this.footer);
-                this.tweenFooter.to({ y: 94 }, 250, 'Linear');
-                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
-                this.tweenFooter.start();
-            }
-            else {
-                this.tweenFooter = this.game.add.tween(this.footer);
-                this.tweenFooter.to({ y: 157 }, 250, 'Linear');
-                this.tweenFooter.onUpdateCallback(this.headerUpdate, this);
-                this.tweenFooter.start();
-            }
-        };
-        Card.prototype.headerUpdate = function (callback, callbackContext) {
-            var headerSprite;
-            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if (this.cardData.power > 20) {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }
-                else {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                }
-            }
-            else {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-            }
-            var bitmapData = this.game.make.bitmapData(126, this.footer.y + 5);
-            bitmapData.copy(headerSprite);
-            bitmapData.update(126, 126);
-            this.header.setTexture(bitmapData.texture, true);
-        };
-        Card.prototype.init = function () {
-            var energyText;
-            var powerText;
-            var headerSprite;
-            var footerSprite;
-            if (this.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                if (this.cardData.power > 20) {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_leg.png");
-                }
-                else {
-                    headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                    footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_hand.png");
-                }
-                powerText = this.game.add.text(40, 5, 'Удар: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
-            }
-            else {
-                headerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-                footerSprite = new Phaser.Sprite(this.game, 0, 0, Atlases.Cards, this.nameFighter + "_block.png");
-                powerText = this.game.add.text(40, 5, 'Блок: ' + this.cardData.power.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
-            }
-            // Size header 126x157
-            var bitmapData = this.game.make.bitmapData(126, this.headerHeight);
-            bitmapData.copy(headerSprite);
-            bitmapData.update(126, this.headerHeight);
-            this.header = new Phaser.Sprite(this.game, 0, 0, bitmapData);
-            this.addChild(this.header);
-            // Size footer 126x33
-            bitmapData = this.game.make.bitmapData(126, this.footerHeight);
-            bitmapData.copy(footerSprite, 0, 0, 126, 190, 0, -this.headerHeight);
-            bitmapData.update(126, this.footerHeight);
-            this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
-            this.addChild(this.footer);
-            // Text
-            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
-            this.addChild(energyText);
-            this.footer.addChild(powerText);
-        };
-        return Card;
+        return Slot;
     }(Phaser.Sprite));
-    Fabrique.Card = Card;
+    Fabrique.Slot = Slot;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var Tutorial = /** @class */ (function (_super) {
+        __extends(Tutorial, _super);
+        function Tutorial(game, text) {
+            var _this = _super.call(this, game, 25, 600, Images.TutorialImage) || this;
+            _this.text = text;
+            _this.init();
+            return _this;
+        }
+        Tutorial.prototype.shutdown = function () {
+            this.tween.stop();
+            this.removeChild(this.dialog);
+        };
+        Tutorial.prototype.init = function () {
+            this.tween = this.game.add.tween(this);
+            this.tween.to({ x: this.x, y: this.y - 225 }, 750, 'Linear');
+            this.tween.onComplete.add(this.onComplete, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.onComplete = function () {
+            this.createDialog();
+        };
+        Tutorial.prototype.createDialog = function () {
+            this.dialog = new Phaser.Sprite(this.game, 0, 0);
+            var graphics = this.game.add.graphics(0, 0);
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.moveTo(-20, 20);
+            graphics.lineTo(5, 30);
+            graphics.lineTo(5, 47);
+            graphics.lineTo(-20, 20);
+            graphics.endFill();
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(0, 0x000000, 1);
+            graphics.drawRoundedRect(0, 0, 200, 50, 15);
+            graphics.endFill();
+            graphics.beginFill(0xFFFFFF, 0);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.drawRoundedRect(0, 0, 200, 50, 15);
+            graphics.endFill();
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(1, 0xFFFFFF, 1);
+            graphics.drawRect(-1, 28, 4, 11);
+            graphics.endFill();
+            this.dialog.addChild(graphics);
+            var messageText = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            this.dialog.addChild(messageText);
+            this.dialog.x = 110;
+            this.dialog.y = 75;
+            this.addChild(this.dialog);
+            this.tweenDialogStart();
+        };
+        Tutorial.prototype.tweenDialogStart = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x + 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogEnd, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.tweenDialogEnd = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x - 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogStart, this);
+            this.tween.start();
+        };
+        return Tutorial;
+    }(Phaser.Sprite));
+    Fabrique.Tutorial = Tutorial;
 })(Fabrique || (Fabrique = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Boot = (function (_super) {
+    var Boot = /** @class */ (function (_super) {
         __extends(Boot, _super);
         function Boot() {
-            _super.call(this);
-            this.name = Boot.Name;
+            var _this = _super.call(this) || this;
+            _this.name = Boot.Name;
+            return _this;
         }
         /*
         * Загружаем ассеты необходимые для прелоадера
@@ -1587,12 +1642,13 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var Preloader = (function (_super) {
+    var Preloader = /** @class */ (function (_super) {
         __extends(Preloader, _super);
         function Preloader() {
-            _super.call(this);
-            this.name = Preloader.Name;
-            this.loadPercent = 0;
+            var _this = _super.call(this) || this;
+            _this.name = Preloader.Name;
+            _this.loadPercent = 0;
+            return _this;
         }
         Preloader.prototype.init = function (config) {
             this.config = config;
@@ -1634,11 +1690,12 @@ var StreetFighterCards;
     var ButtonOrange = Fabrique.ButtonOrange;
     var AnimationBigKen = Fabrique.AnimationBigKen;
     var AnimationBigRyu = Fabrique.AnimationBigRyu;
-    var Menu = (function (_super) {
+    var Menu = /** @class */ (function (_super) {
         __extends(Menu, _super);
         function Menu() {
-            _super.call(this);
-            this.name = Menu.Name;
+            var _this = _super.call(this) || this;
+            _this.name = Menu.Name;
+            return _this;
         }
         Menu.prototype.create = function () {
             this.groupMenu = new Phaser.Group(this.game, this.stage);
@@ -1724,11 +1781,12 @@ var StreetFighterCards;
     var Tutorial = Fabrique.Tutorial;
     var Settings = Fabrique.Settings;
     var Comix = Fabrique.Comix;
-    var ChoiceFighter = (function (_super) {
+    var ChoiceFighter = /** @class */ (function (_super) {
         __extends(ChoiceFighter, _super);
         function ChoiceFighter() {
-            _super.call(this);
-            this.name = StreetFighterCards.Menu.Name;
+            var _this = _super.call(this) || this;
+            _this.name = StreetFighterCards.Menu.Name;
+            return _this;
         }
         ChoiceFighter.prototype.create = function () {
             this.groupWindow = new Phaser.Group(this.game, this.stage);
@@ -1820,11 +1878,12 @@ var StreetFighterCards;
     var ButtonComix = Fabrique.ButtonComix;
     var Settings = Fabrique.Settings;
     var Comix = Fabrique.Comix;
-    var Tournament = (function (_super) {
+    var Tournament = /** @class */ (function (_super) {
         __extends(Tournament, _super);
         function Tournament() {
-            _super.call(this);
-            this.name = Tournament.Name;
+            var _this = _super.call(this) || this;
+            _this.name = Tournament.Name;
+            return _this;
         }
         Tournament.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
@@ -1955,14 +2014,16 @@ var StreetFighterCards;
     var Settings = Fabrique.Settings;
     var Card = Fabrique.Card;
     var FighterProgressBar = Fabrique.FighterProgressBar;
-    var Level = (function (_super) {
+    var Slot = Fabrique.Slot;
+    var Level = /** @class */ (function (_super) {
         __extends(Level, _super);
         function Level() {
-            _super.call(this);
-            this.name = Level.Name;
-            this.handPoints = [
+            var _this = _super.call(this) || this;
+            _this.name = Level.Name;
+            _this.handPoints = [
                 [20, 390], [148, 390], [276, 390], [404, 390], [532, 390]
             ];
+            return _this;
         }
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
@@ -1981,6 +2042,7 @@ var StreetFighterCards;
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             this.createBackground();
+            this.createSlots();
             this.createButtons();
             this.createBars();
             this.createFighters();
@@ -1991,16 +2053,25 @@ var StreetFighterCards;
         Level.prototype.shutdown = function () {
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
+            this.boardGroup.removeAll();
+            this.handGroup.removeAll();
             this.group.removeAll();
+            this.slots.forEach(function (slot) {
+                slot.shutdown();
+            });
+            this.slots = null;
             this.playerDeck.forEach(function (card) {
                 card.shutdown();
             });
+            this.playerDeck = null;
             this.playerHand.forEach(function (card) {
                 card.shutdown();
             });
+            this.playerHand = null;
             this.playerSlots.forEach(function (card) {
                 card.shutdown();
             });
+            this.playerSlots = null;
             this.game.stage.removeChildren();
         };
         Level.prototype.createBackground = function () {
@@ -2008,6 +2079,19 @@ var StreetFighterCards;
             var levelTexture = GameData.Data.personages[opponentID].level;
             var background = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
+        };
+        Level.prototype.createSlots = function () {
+            var positions = [
+                [50, 100], [155, 100], [100, 205],
+                [550, 100], [655, 100], [600, 205]
+            ];
+            //let slot: Slot = new Slot(this.game, 50, 50);
+            this.slots = [];
+            for (var _i = 0, positions_1 = positions; _i < positions_1.length; _i++) {
+                var value = positions_1[_i];
+                this.slots.push(new Slot(this.game, value[0], value[1]));
+                this.group.addChild(this.slots[this.slots.length - 1]);
+            }
         };
         Level.prototype.createHand = function () {
             var background = new Phaser.Sprite(this.game, 0, 375, Images.HandBackground);
@@ -2149,19 +2233,20 @@ var StreetFighterCards;
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
 /// <reference path="Data\Utilits.ts" />
-/// <reference path="Fabrique\Objects\Tutorial.ts" />
-/// <reference path="Fabrique\Objects\Settings.ts" />
-/// <reference path="Fabrique\Objects\ButtonOrange.ts" />
-/// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
+/// <reference path="Fabrique\Objects\ButtonOrange.ts" />
+/// <reference path="Fabrique\Objects\ButtonComix.ts" />
+/// <reference path="Fabrique\Objects\Card.ts" />
+/// <reference path="Fabrique\Objects\Comix.ts" />
 /// <reference path="Fabrique\Objects\FighterCard.ts" />
 /// <reference path="Fabrique\Objects\FighterProgressBar.ts" />
-/// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Icon.ts" />
-/// <reference path="Fabrique\Objects\Comix.ts" />
-/// <reference path="Fabrique\Objects\Card.ts" />
+/// <reference path="Fabrique\Objects\Settings.ts" />
+/// <reference path="Fabrique\Objects\Slides.ts" />
+/// <reference path="Fabrique\Objects\Slot.ts" />
+/// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
 /// <reference path="States\Menu.ts" />
