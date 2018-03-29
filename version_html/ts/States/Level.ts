@@ -43,6 +43,10 @@ module StreetFighterCards {
             [20, 390], [148, 390], [276, 390], [404, 390], [532, 390]
         ];
 
+        private slotsPoints: number[][] = [
+            [50, 100], [155, 100], [100, 205], [550, 100], [655, 100], [600, 205]
+        ];
+
         constructor() {
             super();
         }
@@ -56,13 +60,13 @@ module StreetFighterCards {
             this.playerEnergy = 1;
             this.playerDeck = [];
             this.playerHand = [];
-            this.playerSlots = [];
+            this.playerSlots = [null, null, null];
 
             this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = 1;
             this.opponentDeck = [];
             this.opponentHand = [];
-            this.opponentSlots = [];
+            this.opponentSlots = [null, null, null];
 
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
@@ -110,15 +114,10 @@ module StreetFighterCards {
         }
 
         private createSlots(): void {
-            let positions: number[][] = [
-                [50, 100], [155, 100], [100, 205],
-                [550, 100], [655, 100], [600, 205]
-            ];
-            //let slot: Slot = new Slot(this.game, 50, 50);
             this.slots = [];
-            for(let value of positions){
+            for (let value of this.slotsPoints) {
                 this.slots.push(new Slot(this.game, value[0], value[1]));
-                this.group.addChild(this.slots[this.slots.length-1]);
+                this.group.addChild(this.slots[this.slots.length - 1]);
             }
         }
 
@@ -201,15 +200,36 @@ module StreetFighterCards {
 
         private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
             console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
-            this.group.addChild(sprite);
-            this.handGroup.removeChild(sprite);
 
-            if (pointer.x === 800 && pointer.y === 600) { // Положить карту в слот
-                (sprite as Card).dragAndDrop(false);
+            let pushInSlot: boolean = false;
+            for (let index in this.slotsPoints) {
+                if (index === '3') break;
+                if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
+                    && (pointer.y >= this.slotsPoints[index][1] && pointer.y <= this.slotsPoints[index][1] + 84)) {
 
-            } else {  // Вернуть карту в колоду
+
+                    if (this.playerSlots[index] === null) {
+                        pushInSlot = true;
+                        (sprite as Card).x = this.slotsPoints[index][0] + 1;
+                        (sprite as Card).y = this.slotsPoints[index][1] + 1;
+                        (sprite as Card).scale.set(0.65, 0.65);
+                        (sprite as Card).dragAndDrop(false);
+
+                        this.boardGroup.addChild(sprite);
+                        this.handGroup.removeChild(sprite);
+
+                        this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
+                        this.playerHand[(sprite as Card).indexInHand] = null;
+                        console.log(this.playerSlots, this.playerHand);
+                    }
+                    break;
+                }
+            }
+            if (pushInSlot === false) {
                 (sprite as Card).reduce(false);
                 this.returnCardToHand((sprite as Card));
+                this.group.addChild(sprite);
+                this.handGroup.removeChild(sprite);
             }
         }
 
