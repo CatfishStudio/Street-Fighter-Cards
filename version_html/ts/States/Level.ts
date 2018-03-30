@@ -192,14 +192,14 @@ module StreetFighterCards {
         }
 
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
-            console.log("START: x=" + pointer.x + " y=" + pointer.y);
+           Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
         }
 
         private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
-            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
 
             let pushInSlot: boolean = false;
             for (let index in this.slotsPoints) {
@@ -220,7 +220,8 @@ module StreetFighterCards {
 
                         this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
                         this.playerHand[(sprite as Card).indexInHand] = null;
-                        console.log(this.playerSlots, this.playerHand);
+                        
+                        Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
                     }
                     break;
                 }

@@ -1,6 +1,11 @@
 module Utilits {
     export class Data {
 
+        /* Debug отладка */
+        public static debugLog(value: any):void {
+            if(Config.buildDev) console.log(value);
+        }
+
         /* Проверка четности и нечетности */
         public static checkEvenOrOdd(n: number): boolean {
             if (n & 1) {

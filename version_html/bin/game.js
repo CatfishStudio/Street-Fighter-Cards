@@ -65,6 +65,7 @@ var Config = (function () {
     Config.settingSound = true;
     Config.settingMusic = true;
     Config.settingTutorial = true;
+    Config.buildDev = true;
     return Config;
 }());
 var Images = (function () {
@@ -373,7 +374,7 @@ var GameData;
                 _this.loadAnimation(game, personage);
                 GameData.Data.personages.push(personage);
             });
-            console.log(GameData.Data.personages);
+            Utilits.Data.debugLog(GameData.Data.personages);
         };
         Data.createDeck = function (game, value, personage) {
             var card;
@@ -396,7 +397,7 @@ var GameData;
         };
         Data.deckMix = function (index) {
             GameData.Data.personages[index].deck.sort(Utilits.Data.compareRandom);
-            console.log(GameData.Data.personages[index].deck);
+            Utilits.Data.debugLog(GameData.Data.personages[index].deck);
         };
         Data.loadAnimation = function (game, personage) {
             try {
@@ -448,7 +449,7 @@ var GameData;
             }
             GameData.Data.tournamentListIds.push(GameData.Data.fighterIndex); // player
             GameData.Data.tournamentListIds.push(5); // boss
-            console.log(GameData.Data.tournamentListIds);
+            Utilits.Data.debugLog(GameData.Data.tournamentListIds);
         };
         Data.fighterIndex = 0; // id выбранного игроком персонажа (в сохранение)
         Data.progressIndex = -1; // индекс прогресса в игре (в сохранение)
@@ -507,6 +508,11 @@ var Utilits;
     var Data = (function () {
         function Data() {
         }
+        /* Debug отладка */
+        Data.debugLog = function (value) {
+            if (Config.buildDev)
+                console.log(value);
+        };
         /* Проверка четности и нечетности */
         Data.checkEvenOrOdd = function (n) {
             if (n & 1) {
@@ -2124,13 +2130,13 @@ var StreetFighterCards;
             this.moveCardDeckToHand();
         };
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
-            console.log("START: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             sprite.reduce(true);
         };
         Level.prototype.onDragStop = function (sprite, pointer) {
-            console.log("STOP: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
             var pushInSlot = false;
             for (var index in this.slotsPoints) {
                 if (index === '3')
@@ -2147,7 +2153,7 @@ var StreetFighterCards;
                         this.handGroup.removeChild(sprite);
                         this.playerSlots[index] = this.playerHand[sprite.indexInHand];
                         this.playerHand[sprite.indexInHand] = null;
-                        console.log(this.playerSlots, this.playerHand);
+                        Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
                     }
                     break;
                 }

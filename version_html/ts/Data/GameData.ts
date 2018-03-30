@@ -105,7 +105,7 @@ module GameData {
                 GameData.Data.personages.push(personage);
             });
 
-            console.log(GameData.Data.personages);
+            Utilits.Data.debugLog(GameData.Data.personages);
         }
 
         public static createDeck(game: Phaser.Game, value: string, personage: IPersonage):void { // создание колоды
@@ -130,7 +130,7 @@ module GameData {
 
         public static deckMix(index: number):void { // перемешать колоду
             GameData.Data.personages[index].deck.sort(Utilits.Data.compareRandom);
-            console.log(GameData.Data.personages[index].deck);
+            Utilits.Data.debugLog(GameData.Data.personages[index].deck);
         }
 
         public static loadAnimation(game: Phaser.Game, personage: IPersonage):void {    // загрузка анимаций бойцов
@@ -180,7 +180,8 @@ module GameData {
             }
             GameData.Data.tournamentListIds.push(GameData.Data.fighterIndex);   // player
             GameData.Data.tournamentListIds.push(5);                            // boss
-            console.log(GameData.Data.tournamentListIds);
+            
+            Utilits.Data.debugLog(GameData.Data.tournamentListIds);
         }
     }
 
