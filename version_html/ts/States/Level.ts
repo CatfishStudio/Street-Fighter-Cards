@@ -44,7 +44,7 @@ module StreetFighterCards {
         ];
 
         private slotsPoints: number[][] = [
-            [50, 100], [155, 100], [100, 205], [550, 100], [655, 100], [600, 205]
+            [40, 100], [145, 100], [90, 205], [575, 100], [680, 100], [625, 205]
         ];
 
         constructor() {
@@ -115,9 +115,12 @@ module StreetFighterCards {
 
         private createSlots(): void {
             this.slots = [];
+            let i:number = 0;
             for (let value of this.slotsPoints) {
-                this.slots.push(new Slot(this.game, value[0], value[1]));
+                if(i < 3) this.slots.push(new Slot(this.game, value[0], value[1], true, i+1));
+                else this.slots.push(new Slot(this.game, value[0], value[1], false, i-2));
                 this.group.addChild(this.slots[this.slots.length - 1]);
+                i++;
             }
         }
 

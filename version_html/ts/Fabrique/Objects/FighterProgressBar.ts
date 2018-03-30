@@ -121,7 +121,8 @@ module Fabrique {
 
             background = new Phaser.Graphics(this.game, 0, 0);
             background.beginFill(0xFFFFFF, 0.95);
-            background.lineStyle(2, 0x006FBD, 0.95);
+            //background.lineStyle(2, 0x006FBD, 0.95);
+            background.lineStyle(2, 0xA32727, 0.95);
             background.drawPolygon(polygonRight);
             background.endFill();
             this.addChild(background);
@@ -181,8 +182,10 @@ module Fabrique {
                 new Phaser.Point(-80, 0)
             ]);
             backgroundEnergy = new Phaser.Graphics(this.game, 80, 0);
-            backgroundEnergy.beginFill(0x006FBD, 0.5);
-            backgroundEnergy.lineStyle(2, 0x006FBD, 0.95);
+            //backgroundEnergy.beginFill(0x006FBD, 0.5);
+            //backgroundEnergy.lineStyle(2, 0x006FBD, 0.95);
+            backgroundEnergy.beginFill(0xA32727, 0.5);
+            backgroundEnergy.lineStyle(2, 0xA32727, 0.95);
             backgroundEnergy.drawPolygon(polygonEnergy);
             backgroundEnergy.endFill();
             this.energyBar.addChild(backgroundEnergy);
@@ -196,7 +199,8 @@ module Fabrique {
             ]);
             backgroundLife = new Phaser.Graphics(this.game, 80, 20);
             backgroundLife.beginFill(0x000000, 0.5);
-            backgroundLife.lineStyle(2, 0x006FBD, 0.95);
+            //backgroundLife.lineStyle(2, 0x006FBD, 0.95);
+            backgroundLife.lineStyle(2, 0xA32727, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
             this.lifeBar.addChild(backgroundLife);

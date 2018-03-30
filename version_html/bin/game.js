@@ -682,6 +682,7 @@ var Fabrique;
         __extends(Card, _super);
         function Card(game, x, y, fighterName, card) {
             _super.call(this, game, x, y);
+            this.indexInHand = -1;
             this.cardData = card;
             this.nameFighter = fighterName;
             this.headerHeight = 157;
@@ -942,7 +943,8 @@ var Fabrique;
             var iconSprite;
             background = new Phaser.Graphics(this.game, 0, 0);
             background.beginFill(0xFFFFFF, 0.95);
-            background.lineStyle(2, 0x006FBD, 0.95);
+            //background.lineStyle(2, 0x006FBD, 0.95);
+            background.lineStyle(2, 0xA32727, 0.95);
             background.drawPolygon(polygonRight);
             background.endFill();
             this.addChild(background);
@@ -996,8 +998,10 @@ var Fabrique;
                 new Phaser.Point(-80, 0)
             ]);
             backgroundEnergy = new Phaser.Graphics(this.game, 80, 0);
-            backgroundEnergy.beginFill(0x006FBD, 0.5);
-            backgroundEnergy.lineStyle(2, 0x006FBD, 0.95);
+            //backgroundEnergy.beginFill(0x006FBD, 0.5);
+            //backgroundEnergy.lineStyle(2, 0x006FBD, 0.95);
+            backgroundEnergy.beginFill(0xA32727, 0.5);
+            backgroundEnergy.lineStyle(2, 0xA32727, 0.95);
             backgroundEnergy.drawPolygon(polygonEnergy);
             backgroundEnergy.endFill();
             this.energyBar.addChild(backgroundEnergy);
@@ -1010,7 +1014,8 @@ var Fabrique;
             ]);
             backgroundLife = new Phaser.Graphics(this.game, 80, 20);
             backgroundLife.beginFill(0x000000, 0.5);
-            backgroundLife.lineStyle(2, 0x006FBD, 0.95);
+            //backgroundLife.lineStyle(2, 0x006FBD, 0.95);
+            backgroundLife.lineStyle(2, 0xA32727, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
             this.lifeBar.addChild(backgroundLife);
@@ -1473,30 +1478,80 @@ var Fabrique;
 (function (Fabrique) {
     var Slot = (function (_super) {
         __extends(Slot, _super);
-        function Slot(game, x, y) {
+        function Slot(game, x, y, playerSlot, index) {
             _super.call(this, game, x, y);
-            this.init();
+            this.init(playerSlot, index);
         }
         Slot.prototype.shutdown = function () {
             this.removeChildren();
         };
-        Slot.prototype.init = function () {
+        Slot.prototype.init = function (playerSlot, index) {
+            var text;
+            if (playerSlot) {
+                this.backgroundColor = 0x266DA8; // 0xC7D9E1; //
+                this.borderColor = 0x266DA8; // 0xC7D9E1; //
+                this.createPlayerSlot();
+                text = this.game.add.text(27, 13, index.toString(), { font: "bold 52px arial", fill: "#266DA8", align: "left" });
+            }
+            else {
+                this.backgroundColor = 0xA32727; // 0xC7D9E1; //
+                this.borderColor = 0xA32727; // 0xC7D9E1; //
+                this.createOpponentSlot();
+                text = this.game.add.text(27, 13, index.toString(), { font: "bold 52px arial", fill: "#A32727", align: "left" });
+            }
+            this.addChild(text);
+        };
+        Slot.prototype.createPlayerSlot = function () {
             var graphic = new Phaser.Graphics(this.game, 0, 0);
-            graphic.beginFill(0xFFFFFF, 0.5);
-            graphic.lineStyle(2, 0xFFFFFF, 0.8);
+            graphic.beginFill(this.backgroundColor, 0.5);
+            graphic.lineStyle(5, this.borderColor, 0.8);
             graphic.drawRect(0, 0, 84, 84);
             graphic.endFill();
+            graphic.beginFill(this.backgroundColor, 0.9);
+            graphic.lineStyle(0, this.borderColor, 0.9);
+            graphic.moveTo(-2, 25);
+            graphic.lineTo(-5, 20);
+            graphic.lineTo(-5, -5);
+            graphic.lineTo(20, -5);
+            graphic.lineTo(25, -2);
+            graphic.lineTo(-2, -2);
+            graphic.endFill();
+            graphic.beginFill(this.backgroundColor, 0.9);
+            graphic.lineStyle(0, this.borderColor, 0.9);
+            graphic.moveTo(87, 25);
+            graphic.lineTo(90, 30);
+            graphic.lineTo(90, 90);
+            graphic.lineTo(69, 90);
+            graphic.lineTo(64, 87);
+            graphic.lineTo(87, 87);
+            graphic.endFill();
             this.addChild(graphic);
-            /*
-            graphics.moveTo(210,300);
-            graphics.lineTo(450,320);
-            graphics.lineTo(570,350);
-            graphics.quadraticCurveTo(600, 0, 480,100);
-            graphics.lineTo(330,120);
-            graphics.lineTo(410,200);
-            graphics.lineTo(210,300);
-            graphics.endFill();
-            */
+        };
+        Slot.prototype.createOpponentSlot = function () {
+            var graphic = new Phaser.Graphics(this.game, 0, 0);
+            graphic.beginFill(this.backgroundColor, 0.5);
+            graphic.lineStyle(5, this.borderColor, 0.8);
+            graphic.drawRect(0, 0, 84, 84);
+            graphic.endFill();
+            graphic.beginFill(this.backgroundColor, 0.9);
+            graphic.lineStyle(0, this.borderColor, 0.9);
+            graphic.moveTo(86, 25);
+            graphic.lineTo(89, 20);
+            graphic.lineTo(89, -5);
+            graphic.lineTo(64, -5);
+            graphic.lineTo(59, -2);
+            graphic.lineTo(86, -2);
+            graphic.endFill();
+            graphic.beginFill(this.backgroundColor, 0.9);
+            graphic.lineStyle(0, this.borderColor, 0.9);
+            graphic.moveTo(-2, 25);
+            graphic.lineTo(-5, 30);
+            graphic.lineTo(-5, 90);
+            graphic.lineTo(15, 90);
+            graphic.lineTo(20, 87);
+            graphic.lineTo(-2, 87);
+            graphic.endFill();
+            this.addChild(graphic);
         };
         return Slot;
     }(Phaser.Sprite));
@@ -2005,7 +2060,7 @@ var StreetFighterCards;
                 [20, 390], [148, 390], [276, 390], [404, 390], [532, 390]
             ];
             this.slotsPoints = [
-                [50, 100], [155, 100], [100, 205], [550, 100], [655, 100], [600, 205]
+                [40, 100], [145, 100], [90, 205], [575, 100], [680, 100], [625, 205]
             ];
         }
         Level.prototype.create = function () {
@@ -2069,10 +2124,15 @@ var StreetFighterCards;
         };
         Level.prototype.createSlots = function () {
             this.slots = [];
+            var i = 0;
             for (var _i = 0, _a = this.slotsPoints; _i < _a.length; _i++) {
                 var value = _a[_i];
-                this.slots.push(new Slot(this.game, value[0], value[1]));
+                if (i < 3)
+                    this.slots.push(new Slot(this.game, value[0], value[1], true, i + 1));
+                else
+                    this.slots.push(new Slot(this.game, value[0], value[1], false, i - 2));
                 this.group.addChild(this.slots[this.slots.length - 1]);
+                i++;
             }
         };
         Level.prototype.createHand = function () {

@@ -8,7 +8,7 @@ module Fabrique {
         private tweenFooter: Phaser.Tween;
         private headerHeight: number;
         private footerHeight: number;
-        public indexInHand: number;
+        public indexInHand: number = -1;
 
         constructor(game: Phaser.Game, x: number, y: number, fighterName: string, card: GameData.ICard) {
             super(game, x, y);
