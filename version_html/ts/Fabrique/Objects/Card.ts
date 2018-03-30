@@ -64,6 +64,7 @@ module Fabrique {
         }
 
         private init(): void {
+            this.indexInHand = -1;
             let energyText: Phaser.Text;
             let powerText: Phaser.Text;
             let headerSprite: Phaser.Sprite;

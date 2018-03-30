@@ -733,6 +733,7 @@ var Fabrique;
             this.header.setTexture(bitmapData.texture, true);
         };
         Card.prototype.init = function () {
+            this.indexInHand = -1;
             var energyText;
             var powerText;
             var headerSprite;
@@ -2039,19 +2040,23 @@ var StreetFighterCards;
             this.handGroup.removeAll();
             this.group.removeAll();
             this.slots.forEach(function (slot) {
-                slot.shutdown();
+                if (slot !== null && slot !== undefined)
+                    slot.shutdown();
             });
             this.slots = null;
             this.playerDeck.forEach(function (card) {
-                card.shutdown();
+                if (card !== null && card !== undefined)
+                    card.shutdown();
             });
             this.playerDeck = null;
             this.playerHand.forEach(function (card) {
-                card.shutdown();
+                if (card !== null && card !== undefined)
+                    card.shutdown();
             });
             this.playerHand = null;
             this.playerSlots.forEach(function (card) {
-                card.shutdown();
+                if (card !== null && card !== undefined)
+                    card.shutdown();
             });
             this.playerSlots = null;
             this.game.stage.removeChildren();
@@ -2129,12 +2134,14 @@ var StreetFighterCards;
             });
             this.moveCardDeckToHand();
         };
+        // Взять карту
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
             Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             sprite.reduce(true);
         };
+        // Положить карту
         Level.prototype.onDragStop = function (sprite, pointer) {
             Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
             var pushInSlot = false;
@@ -2151,8 +2158,10 @@ var StreetFighterCards;
                         sprite.dragAndDrop(false);
                         this.boardGroup.addChild(sprite);
                         this.handGroup.removeChild(sprite);
-                        this.playerSlots[index] = this.playerHand[sprite.indexInHand];
-                        this.playerHand[sprite.indexInHand] = null;
+                        //this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
+                        //this.playerHand[(sprite as Card).indexInHand] = null;
+                        this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
+                        this.moveHandCardToEmpty();
                         Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
                     }
                     break;
@@ -2203,6 +2212,17 @@ var StreetFighterCards;
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
+            }
+        };
+        Level.prototype.moveHandCardToEmpty = function () {
+            if (this.playerHand.length < 5) {
+                var tweenMoveToEmpty = void 0;
+                for (var i = 0; i < this.playerHand.length; i++) {
+                    this.playerHand[i].indexInHand = i;
+                    tweenMoveToEmpty = this.game.add.tween(this.playerHand[i]);
+                    tweenMoveToEmpty.to({ x: this.handPoints[i][0] }, 250, 'Linear');
+                    tweenMoveToEmpty.start();
+                }
             }
         };
         Level.prototype.returnCardToHand = function (card) {

@@ -88,19 +88,19 @@ module StreetFighterCards {
             this.handGroup.removeAll();
             this.group.removeAll();
             this.slots.forEach((slot: Slot) => {
-                slot.shutdown();
+                if(slot !== null && slot !== undefined) slot.shutdown();
             });
             this.slots = null;
             this.playerDeck.forEach((card: Card) => {
-                card.shutdown();
+                if(card !== null && card !== undefined) card.shutdown();
             });
             this.playerDeck = null;
             this.playerHand.forEach((card: Card) => {
-                card.shutdown();
+                if(card !== null && card !== undefined) card.shutdown();
             });
             this.playerHand = null;
             this.playerSlots.forEach((card: Card) => {
-                card.shutdown();
+                if(card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
             this.game.stage.removeChildren();
@@ -191,13 +191,15 @@ module StreetFighterCards {
             this.moveCardDeckToHand();
         }
 
+        // Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
-           Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
         }
 
+        // Положить карту
         private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
             Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
 
@@ -218,9 +220,11 @@ module StreetFighterCards {
                         this.boardGroup.addChild(sprite);
                         this.handGroup.removeChild(sprite);
 
-                        this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
-                        this.playerHand[(sprite as Card).indexInHand] = null;
-                        
+                        //this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
+                        //this.playerHand[(sprite as Card).indexInHand] = null;
+                        this.playerSlots[index] = this.playerHand.splice((sprite as Card).indexInHand, 1)[0];
+                        this.moveHandCardToEmpty();
+
                         Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
                     }
                     break;
@@ -277,6 +281,18 @@ module StreetFighterCards {
                 this.tween.onComplete.add(this.moveCardDeckToHand, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
+            }
+        }
+
+        private moveHandCardToEmpty(): void {    // Смещение карт в руке на пустые места
+            if (this.playerHand.length < 5) {
+                let tweenMoveToEmpty: Phaser.Tween;
+                for (let i: number = 0; i < this.playerHand.length; i++) {
+                    this.playerHand[i].indexInHand = i;
+                    tweenMoveToEmpty = this.game.add.tween(this.playerHand[i]);
+                    tweenMoveToEmpty.to({ x: this.handPoints[i][0] }, 250, 'Linear');
+                    tweenMoveToEmpty.start();
+                }
             }
         }
 
