@@ -88,19 +88,19 @@ module StreetFighterCards {
             this.handGroup.removeAll();
             this.group.removeAll();
             this.slots.forEach((slot: Slot) => {
-                if(slot !== null && slot !== undefined) slot.shutdown();
+                if (slot !== null && slot !== undefined) slot.shutdown();
             });
             this.slots = null;
             this.playerDeck.forEach((card: Card) => {
-                if(card !== null && card !== undefined) card.shutdown();
+                if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerDeck = null;
             this.playerHand.forEach((card: Card) => {
-                if(card !== null && card !== undefined) card.shutdown();
+                if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerHand = null;
             this.playerSlots.forEach((card: Card) => {
-                if(card !== null && card !== undefined) card.shutdown();
+                if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
             this.game.stage.removeChildren();
@@ -220,8 +220,6 @@ module StreetFighterCards {
                         this.boardGroup.addChild(sprite);
                         this.handGroup.removeChild(sprite);
 
-                        //this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
-                        //this.playerHand[(sprite as Card).indexInHand] = null;
                         this.playerSlots[index] = this.playerHand.splice((sprite as Card).indexInHand, 1)[0];
                         this.moveHandCardToEmpty();
 
@@ -233,8 +231,8 @@ module StreetFighterCards {
             if (pushInSlot === false) {
                 (sprite as Card).reduce(false);
                 this.returnCardToHand((sprite as Card));
-                this.group.addChild(sprite);
-                this.handGroup.removeChild(sprite);
+                //this.group.addChild(sprite);
+                //this.handGroup.removeChild(sprite);
             }
         }
 
@@ -302,7 +300,13 @@ module StreetFighterCards {
                 x: this.handPoints[card.indexInHand][0],
                 y: this.handPoints[card.indexInHand][1]
             }, 250, 'Linear');
+            this.tween.onComplete.add(this.onCardBackToHand, this);
             this.tween.start();
+        }
+
+        private onCardBackToHand(card: Card): void {
+            this.group.addChild(card);
+            this.handGroup.removeChild(card);
         }
 
     }

@@ -2158,8 +2158,6 @@ var StreetFighterCards;
                         sprite.dragAndDrop(false);
                         this.boardGroup.addChild(sprite);
                         this.handGroup.removeChild(sprite);
-                        //this.playerSlots[index] = this.playerHand[(sprite as Card).indexInHand];
-                        //this.playerHand[(sprite as Card).indexInHand] = null;
                         this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
                         this.moveHandCardToEmpty();
                         Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
@@ -2170,8 +2168,6 @@ var StreetFighterCards;
             if (pushInSlot === false) {
                 sprite.reduce(false);
                 this.returnCardToHand(sprite);
-                this.group.addChild(sprite);
-                this.handGroup.removeChild(sprite);
             }
         };
         Level.prototype.settingsCreate = function () {
@@ -2231,7 +2227,12 @@ var StreetFighterCards;
                 x: this.handPoints[card.indexInHand][0],
                 y: this.handPoints[card.indexInHand][1]
             }, 250, 'Linear');
+            this.tween.onComplete.add(this.onCardBackToHand, this);
             this.tween.start();
+        };
+        Level.prototype.onCardBackToHand = function (card) {
+            this.group.addChild(card);
+            this.handGroup.removeChild(card);
         };
         Level.Name = "level";
         return Level;

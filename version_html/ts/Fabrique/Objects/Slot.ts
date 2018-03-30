@@ -1,5 +1,8 @@
 module Fabrique {
     export class Slot extends Phaser.Sprite {
+        private backgroundColor:number;
+        private borderColor:number;
+
         constructor(game: Phaser.Game, x: number, y: number){
             super(game, x, y);
             this.init();
