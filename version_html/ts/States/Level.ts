@@ -149,15 +149,16 @@ module StreetFighterCards {
         private createFighters(): void {
             let playerPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
-            this.playerAnimation.x = 280;
-            this.playerAnimation.y = 185;
+            this.playerAnimation.x = 250;
+            this.playerAnimation.y = (370 - 50) -this.playerAnimation.height;
             this.group.addChild(this.playerAnimation);
+            
 
             let opponentPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
             this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
-            this.opponentAnimation.x = 480;
-            this.opponentAnimation.y = 185;
-            this.opponentAnimation.anchor.setTo(.5, .5);
+            this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation. width / 2);
+            this.opponentAnimation.y = (370 - 50) - this.opponentAnimation.height;
+            this.opponentAnimation.anchor.setTo(.0, .0);
             this.opponentAnimation.scale.x *= -1;
             this.group.addChild(this.opponentAnimation);
         }
