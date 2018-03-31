@@ -7,6 +7,12 @@ module StreetFighterCards {
     import Slot = Fabrique.Slot;
     import Timer = Fabrique.Timer;
 
+    export interface IStatus {
+        active: string;         // ход Игрока или Оппонента
+        playerHit: boolean;     // true - значит Игрок закончил выкладывать каты
+        opponentHit: boolean;   // true - значит Оппонент закончил выкладывать каты
+    }
+
     export class Level extends Phaser.State {
         public static Name: string = "level";
         public name: string = Level.Name;
@@ -22,6 +28,10 @@ module StreetFighterCards {
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
         private slots: Slot[];
+
+        private status: IStatus;
+        private static ACTIVE_PLAYER = "active_player";
+        private static ACTIVE_OPPONENT = "active_opponent";
 
         // Player
         private playerAnimation: AnimationFighter;
@@ -73,6 +83,11 @@ module StreetFighterCards {
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
+            this.status = <IStatus>{};
+            this.status.active = Level.ACTIVE_PLAYER;
+            this.status.playerHit = false;
+            this.status.opponentHit = false;
+
             this.createBackground();
             this.createTimer();
             this.createSlots();
@@ -117,18 +132,20 @@ module StreetFighterCards {
             this.group.addChild(background);
         }
 
-        private createTimer():void{
-            this.timer = new Timer(this.game, 385, 25);
+        private createTimer(): void {
+            this.timer = new Timer(this.game, 360, 25);
+            this.timer.event.add(this.onTimerEnd, this);
             this.group.addChild(this.timer);
+            this.timer.setMessage("Ваш ход");
             this.timer.runTimer();
-         }
+        }
 
         private createSlots(): void {
             this.slots = [];
-            let i:number = 0;
+            let i: number = 0;
             for (let value of this.slotsPoints) {
-                if(i < 3) this.slots.push(new Slot(this.game, value[0], value[1], true, i+1));
-                else this.slots.push(new Slot(this.game, value[0], value[1], false, i-2));
+                if (i < 3) this.slots.push(new Slot(this.game, value[0], value[1], true, i + 1));
+                else this.slots.push(new Slot(this.game, value[0], value[1], false, i - 2));
                 this.group.addChild(this.slots[this.slots.length - 1]);
                 i++;
             }
@@ -160,12 +177,12 @@ module StreetFighterCards {
             let playerPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, playerPersonage.name, playerPersonage.animStance);
             this.playerAnimation.x = 250;
-            this.playerAnimation.y = (370 - 50) -this.playerAnimation.height;
+            this.playerAnimation.y = (370 - 50) - this.playerAnimation.height;
             this.group.addChild(this.playerAnimation);
-            
+
             let opponentPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
             this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
-            this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation. width / 2);
+            this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation.width / 2);
             this.opponentAnimation.y = (370 - 50) - this.opponentAnimation.height;
             this.opponentAnimation.anchor.setTo(.0, .0);
             this.opponentAnimation.scale.x *= -1;
@@ -244,8 +261,6 @@ module StreetFighterCards {
             if (pushInSlot === false) {
                 (sprite as Card).reduce(false);
                 this.returnCardToHand((sprite as Card));
-                //this.group.addChild(sprite);
-                //this.handGroup.removeChild(sprite);
             }
         }
 
@@ -322,5 +337,58 @@ module StreetFighterCards {
             this.handGroup.removeChild(card);
         }
 
+        // ТАЙМЕР
+        private onTimerEnd(event): void {
+            if (event === Constants.TIMER_END) {
+
+                if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
+                    /**
+                     * Ход игрока.
+                     * Время выкладывать карты игрока вышло. 
+                     * Очередь выкладывать карты переходит к оппоненту
+                     */
+                    this.status.playerHit = true;
+                    this.status.opponentHit = false;
+                    this.timer.setMessage("Ход противника");
+                } else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
+                    /**
+                     * Ход игрока. 
+                     * Время выкладывать карты оппонента вышло.
+                     * Выполняются УДАРЫ выложенными картами.
+                     * Ход передается оппоненту
+                     */
+
+
+                    this.status.active = Level.ACTIVE_OPPONENT;
+                    this.status.playerHit = false;
+                    this.status.opponentHit = false;
+                    this.timer.setMessage("Ход противника");
+                } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+                    /**
+                     * Ход оппонента.
+                     * Время выкладывать карты оппонента вышло. 
+                     * Очередь выкладывать карты переходит к игроку
+                     */
+                    this.status.playerHit = false;
+                    this.status.opponentHit = true;
+                    this.timer.setMessage("Ваш ход");
+                } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+                    /**
+                     * Ход оппонента. 
+                     * Время выкладывать карты игрока вышло.
+                     * Выполняются УДАРЫ выложенными картами.
+                     * Ход передается игроку
+                     */
+
+
+                    this.status.active = Level.ACTIVE_PLAYER;
+                    this.status.playerHit = false;
+                    this.status.opponentHit = false;
+                    this.timer.setMessage("Ваш ход");
+                }
+
+                Utilits.Data.debugLog(this.status);
+            }
+        }
     }
 }
