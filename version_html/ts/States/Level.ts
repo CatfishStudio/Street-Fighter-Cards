@@ -5,6 +5,7 @@ module StreetFighterCards {
     import Card = Fabrique.Card;
     import FighterProgressBar = Fabrique.FighterProgressBar;
     import Slot = Fabrique.Slot;
+    import Timer = Fabrique.Timer;
 
     export class Level extends Phaser.State {
         public static Name: string = "level";
@@ -16,6 +17,7 @@ module StreetFighterCards {
         private handGroup: Phaser.Group;
         private shirt: Phaser.Sprite;
 
+        private timer: Timer;
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
@@ -72,6 +74,7 @@ module StreetFighterCards {
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
             this.createBackground();
+            this.createTimer();
             this.createSlots();
             this.createButtons();
             this.createBars();
@@ -103,6 +106,7 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
+            this.timer.shutdown();
             this.game.stage.removeChildren();
         }
 
@@ -112,6 +116,12 @@ module StreetFighterCards {
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, levelTexture);
             this.group.addChild(background);
         }
+
+        private createTimer():void{
+            this.timer = new Timer(this.game, 385, 25);
+            this.group.addChild(this.timer);
+            this.timer.runTimer();
+         }
 
         private createSlots(): void {
             this.slots = [];
@@ -153,7 +163,6 @@ module StreetFighterCards {
             this.playerAnimation.y = (370 - 50) -this.playerAnimation.height;
             this.group.addChild(this.playerAnimation);
             
-
             let opponentPersonage: GameData.IPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
             this.opponentAnimation = new AnimationFighter(this.game, opponentPersonage.name, opponentPersonage.animStance);
             this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation. width / 2);

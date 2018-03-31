@@ -29,61 +29,61 @@ module Fabrique {
         }
 
         private createPlayerSlot():void {
-            let graphic: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphic.beginFill(this.backgroundColor, 0.5);
-            graphic.lineStyle(5, this.borderColor, 0.8);
-            graphic.drawRect(0, 0, 84, 84);
-            graphic.endFill();
+            let graphics: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+            graphics.beginFill(this.backgroundColor, 0.5);
+            graphics.lineStyle(5, this.borderColor, 0.8);
+            graphics.drawRect(0, 0, 84, 84);
+            graphics.endFill();
 
-            graphic.beginFill(this.backgroundColor, 0.9);
-            graphic.lineStyle(0, this.borderColor, 0.9);
-            graphic.moveTo(-2,25);
-            graphic.lineTo(-5,20);
-            graphic.lineTo(-5,-5);
-            graphic.lineTo(20,-5);
-            graphic.lineTo(25,-2);
-            graphic.lineTo(-2,-2);
-            graphic.endFill();
+            graphics.beginFill(this.backgroundColor, 0.9);
+            graphics.lineStyle(0, this.borderColor, 0.9);
+            graphics.moveTo(-2,25);
+            graphics.lineTo(-5,20);
+            graphics.lineTo(-5,-5);
+            graphics.lineTo(20,-5);
+            graphics.lineTo(25,-2);
+            graphics.lineTo(-2,-2);
+            graphics.endFill();
 
-            graphic.beginFill(this.backgroundColor, 0.9);
-            graphic.lineStyle(0, this.borderColor, 0.9);
-            graphic.moveTo(87,25);
-            graphic.lineTo(90,30);
-            graphic.lineTo(90,90);
-            graphic.lineTo(69,90);
-            graphic.lineTo(64,87);
-            graphic.lineTo(87,87);
-            graphic.endFill();
-            this.addChild(graphic);
+            graphics.beginFill(this.backgroundColor, 0.9);
+            graphics.lineStyle(0, this.borderColor, 0.9);
+            graphics.moveTo(87,25);
+            graphics.lineTo(90,30);
+            graphics.lineTo(90,90);
+            graphics.lineTo(69,90);
+            graphics.lineTo(64,87);
+            graphics.lineTo(87,87);
+            graphics.endFill();
+            this.addChild(graphics);
         }
 
         private createOpponentSlot():void {
-            let graphic: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphic.beginFill(this.backgroundColor, 0.5);
-            graphic.lineStyle(5, this.borderColor, 0.8);
-            graphic.drawRect(0, 0, 84, 84);
-            graphic.endFill();
+            let graphics: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
+            graphics.beginFill(this.backgroundColor, 0.5);
+            graphics.lineStyle(5, this.borderColor, 0.8);
+            graphics.drawRect(0, 0, 84, 84);
+            graphics.endFill();
 
-            graphic.beginFill(this.backgroundColor, 0.9);
-            graphic.lineStyle(0, this.borderColor, 0.9);
-            graphic.moveTo(86,25);
-            graphic.lineTo(89,20);
-            graphic.lineTo(89,-5);
-            graphic.lineTo(64,-5);
-            graphic.lineTo(59,-2);
-            graphic.lineTo(86,-2);
-            graphic.endFill();
+            graphics.beginFill(this.backgroundColor, 0.9);
+            graphics.lineStyle(0, this.borderColor, 0.9);
+            graphics.moveTo(86,25);
+            graphics.lineTo(89,20);
+            graphics.lineTo(89,-5);
+            graphics.lineTo(64,-5);
+            graphics.lineTo(59,-2);
+            graphics.lineTo(86,-2);
+            graphics.endFill();
 
-            graphic.beginFill(this.backgroundColor, 0.9);
-            graphic.lineStyle(0, this.borderColor, 0.9);
-            graphic.moveTo(-2,25);
-            graphic.lineTo(-5,30);
-            graphic.lineTo(-5,90);
-            graphic.lineTo(15,90);
-            graphic.lineTo(20,87);
-            graphic.lineTo(-2,87);
-            graphic.endFill();
-            this.addChild(graphic);
+            graphics.beginFill(this.backgroundColor, 0.9);
+            graphics.lineStyle(0, this.borderColor, 0.9);
+            graphics.moveTo(-2,25);
+            graphics.lineTo(-5,30);
+            graphics.lineTo(-5,90);
+            graphics.lineTo(15,90);
+            graphics.lineTo(20,87);
+            graphics.lineTo(-2,87);
+            graphics.endFill();
+            this.addChild(graphics);
         }
     }
 }

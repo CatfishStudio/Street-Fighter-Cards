@@ -22,6 +22,7 @@
 /// <reference path="Fabrique\Objects\Settings.ts" />
 /// <reference path="Fabrique\Objects\Slides.ts" />
 /// <reference path="Fabrique\Objects\Slot.ts" />
+/// <reference path="Fabrique\Objects\Timer.ts" />
 /// <reference path="Fabrique\Objects\Tutorial.ts" />
 /// <reference path="States\Boot.ts" />
 /// <reference path="States\Preloader.ts" />
