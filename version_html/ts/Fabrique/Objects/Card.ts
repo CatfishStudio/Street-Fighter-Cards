@@ -1,14 +1,15 @@
 module Fabrique {
     export class Card extends Phaser.Sprite {
 
+        public cardData: GameData.ICard;
+        public indexInHand: number = -1;
+
         private nameFighter: string;
-        private cardData: GameData.ICard;
         private header: Phaser.Sprite;
         private footer: Phaser.Sprite;
         private tweenFooter: Phaser.Tween;
         private headerHeight: number;
         private footerHeight: number;
-        public indexInHand: number = -1;
 
         constructor(game: Phaser.Game, x: number, y: number, fighterName: string, card: GameData.ICard) {
             super(game, x, y);

@@ -2304,24 +2304,34 @@ var StreetFighterCards;
         Level.prototype.onDragStop = function (sprite, pointer) {
             Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
             var pushInSlot = false;
-            for (var index in this.slotsPoints) {
-                if (index === '3')
-                    break;
-                if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
-                    && (pointer.y >= this.slotsPoints[index][1] && pointer.y <= this.slotsPoints[index][1] + 84)) {
-                    if (this.playerSlots[index] === null) {
-                        pushInSlot = true;
-                        sprite.x = this.slotsPoints[index][0] + 1;
-                        sprite.y = this.slotsPoints[index][1] + 1;
-                        sprite.scale.set(0.65, 0.65);
-                        sprite.dragAndDrop(false);
-                        this.boardGroup.addChild(sprite);
-                        this.handGroup.removeChild(sprite);
-                        this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
-                        this.moveHandCardToEmpty();
-                        Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
+            if (sprite.cardData.energy <= this.playerEnergy) {
+                for (var index in this.slotsPoints) {
+                    if (index === '3')
+                        break; // доступны только слоты игрока
+                    // проверяем координаты
+                    if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
+                        && (pointer.y >= this.slotsPoints[index][1] && pointer.y <= this.slotsPoints[index][1] + 84)) {
+                        if (this.playerSlots[index] === null) {
+                            pushInSlot = true;
+                            // уменьшение энергии
+                            this.playerEnergy -= sprite.cardData.energy;
+                            this.playerProgressBar.setEnergy(this.playerEnergy);
+                            // помещаем карту в слот
+                            sprite.x = this.slotsPoints[index][0] + 1;
+                            sprite.y = this.slotsPoints[index][1] + 1;
+                            sprite.scale.set(0.65, 0.65);
+                            sprite.dragAndDrop(false);
+                            // меняем группу
+                            this.boardGroup.addChild(sprite);
+                            this.handGroup.removeChild(sprite);
+                            // меняем стэк
+                            this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
+                            // передвигаем карты в руке
+                            this.moveHandCardToEmpty();
+                            Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
+                        }
+                        break;
                     }
-                    break;
                 }
             }
             if (pushInSlot === false) {
@@ -2393,6 +2403,16 @@ var StreetFighterCards;
             this.group.addChild(card);
             this.handGroup.removeChild(card);
         };
+        Level.prototype.cardsDragAndDrop = function (value) {
+            var _this = this;
+            this.playerHand.forEach(function (card) {
+                card.dragAndDrop(value);
+                if (value === false) {
+                    card.reduce(false);
+                    _this.returnCardToHand(card);
+                }
+            });
+        };
         // ТАЙМЕР
         Level.prototype.onTimerEnd = function (event) {
             if (event === Constants.TIMER_END) {
@@ -2404,6 +2424,7 @@ var StreetFighterCards;
                      */
                     this.status.playerHit = true;
                     this.status.opponentHit = false;
+                    this.cardsDragAndDrop(false);
                     this.timer.setMessage("Ход противника");
                 }
                 else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
@@ -2416,6 +2437,7 @@ var StreetFighterCards;
                     this.status.active = Level.ACTIVE_OPPONENT;
                     this.status.playerHit = false;
                     this.status.opponentHit = false;
+                    this.cardsDragAndDrop(false);
                     this.timer.setMessage("Ход противника");
                 }
                 else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
@@ -2426,6 +2448,7 @@ var StreetFighterCards;
                      */
                     this.status.playerHit = false;
                     this.status.opponentHit = true;
+                    this.cardsDragAndDrop(true);
                     this.timer.setMessage("Ваш ход");
                 }
                 else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
@@ -2438,6 +2461,7 @@ var StreetFighterCards;
                     this.status.active = Level.ACTIVE_PLAYER;
                     this.status.playerHit = false;
                     this.status.opponentHit = false;
+                    this.cardsDragAndDrop(true);
                     this.timer.setMessage("Ваш ход");
                 }
                 Utilits.Data.debugLog(this.status);
