@@ -542,6 +542,21 @@ var Utilits;
     }());
     Utilits.Data = Data;
 })(Utilits || (Utilits = {}));
+var AI;
+(function (AI) {
+    var Ai = (function () {
+        function Ai() {
+        }
+        Ai.setData = function (data) {
+            AI.Ai.data = data;
+        };
+        Ai.getHits = function () {
+            return [0, 1, 2];
+        };
+        return Ai;
+    }());
+    AI.Ai = Ai;
+})(AI || (AI = {}));
 var Fabrique;
 (function (Fabrique) {
     var AnimationBigKen = (function (_super) {
@@ -2139,12 +2154,12 @@ var StreetFighterCards;
             this.boardGroup = new Phaser.Group(this.game, this.stage);
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
-            this.playerEnergy = 1;
+            this.playerEnergy = 5;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
             this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
-            this.opponentEnergy = 1;
+            this.opponentEnergy = 5;
             this.opponentDeck = [];
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
@@ -2445,6 +2460,7 @@ var StreetFighterCards;
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
 /// <reference path="Data\Utilits.ts" />
+/// <reference path="Data\AI.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />

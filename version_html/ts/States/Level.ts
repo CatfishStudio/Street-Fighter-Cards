@@ -69,13 +69,13 @@ module StreetFighterCards {
             this.handGroup = new Phaser.Group(this.game, this.stage);
 
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
-            this.playerEnergy = 1;
+            this.playerEnergy = 5;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
 
             this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
-            this.opponentEnergy = 1;
+            this.opponentEnergy = 5;
             this.opponentDeck = [];
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
