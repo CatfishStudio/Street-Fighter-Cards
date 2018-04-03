@@ -13,7 +13,7 @@ class Images {
     public static vsTournament: string = 'tournament/vs.png';
     public static BackgroundIcon: string = 'icons/background_icon.png';
     public static HandBackground: string = 'levels/hand_bg.jpg';
-    public static HandGradient: string = 'levels/hand_gr.png';
+    public static TabloLevel: string = 'levels/tablo.png';
     public static BorderLevel: string = 'levels/border_level.png';
 
     public static preloadList:Array<string> = [
@@ -29,7 +29,7 @@ class Images {
         Images.vsTournament,
         Images.BackgroundIcon,
         Images.HandBackground,
-        Images.HandGradient,
+        Images.TabloLevel,
         Images.BorderLevel,
 
         'tournament/akuma.png',

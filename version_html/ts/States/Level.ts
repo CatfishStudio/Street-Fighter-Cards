@@ -133,7 +133,7 @@ module StreetFighterCards {
         }
 
         private createTimer(): void {
-            this.timer = new Timer(this.game, 360, 25);
+            this.timer = new Timer(this.game, 340, 12);
             this.timer.event.add(this.onTimerEnd, this);
             this.group.addChild(this.timer);
             this.timer.setMessage("Ваш ход");

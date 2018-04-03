@@ -11,7 +11,7 @@ module Fabrique {
         
 
         constructor(game: Phaser.Game, x: number, y: number) {
-            super(game, x, y);
+            super(game, x, y, Images.TabloLevel);
             this.init();
         }
 
@@ -27,17 +27,10 @@ module Fabrique {
             this.pause = false;
             this.stop = false;
 
-            let graphics: Phaser.Graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphics.beginFill(0xFFFFFF, 0.5);
-            graphics.lineStyle(2, 0x000000, 0.8);
-            graphics.drawRoundedRect(0, 0, 100, 50, 15);
-            graphics.endFill();
-            this.addChild(graphics);
-
-            this.timerText = this.game.add.text(35, 5, "0:" + this.count.toString(), { font: "bold 18px arial", fill: "#000000", align: "left" })
+            this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" })
             this.addChild(this.timerText);
 
-            this.messageText = this.game.add.text(2, 25, "...", { font: "bold 12px arial", fill: "#000000", align: "left" })
+            this.messageText = this.game.add.text(40, 40, "...", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" })
             this.addChild(this.messageText);
         }
 
@@ -75,8 +68,8 @@ module Fabrique {
         public setMessage(value:string):void {
             if (this.messageText !== undefined && this.messageText !== null) {
                 this.messageText.text = value;
-                if(value.length < 10) this.messageText.x = 25;
-                else this.messageText.x = 2;
+                if(value.length < 10) this.messageText.x = 42;
+                else this.messageText.x = 20;
             }
         }
     }

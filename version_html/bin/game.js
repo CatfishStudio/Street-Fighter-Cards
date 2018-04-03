@@ -85,7 +85,7 @@ var Images = (function () {
     Images.vsTournament = 'tournament/vs.png';
     Images.BackgroundIcon = 'icons/background_icon.png';
     Images.HandBackground = 'levels/hand_bg.jpg';
-    Images.HandGradient = 'levels/hand_gr.png';
+    Images.TabloLevel = 'levels/tablo.png';
     Images.BorderLevel = 'levels/border_level.png';
     Images.preloadList = [
         Images.MenuImage,
@@ -100,7 +100,7 @@ var Images = (function () {
         Images.vsTournament,
         Images.BackgroundIcon,
         Images.HandBackground,
-        Images.HandGradient,
+        Images.TabloLevel,
         Images.BorderLevel,
         'tournament/akuma.png',
         'tournament/alex.png',
@@ -1578,7 +1578,7 @@ var Fabrique;
     var Timer = (function (_super) {
         __extends(Timer, _super);
         function Timer(game, x, y) {
-            _super.call(this, game, x, y);
+            _super.call(this, game, x, y, Images.TabloLevel);
             this.init();
         }
         Timer.prototype.shutdown = function () {
@@ -1590,15 +1590,9 @@ var Fabrique;
             this.count = 30;
             this.pause = false;
             this.stop = false;
-            var graphics = new Phaser.Graphics(this.game, 0, 0);
-            graphics.beginFill(0xFFFFFF, 0.5);
-            graphics.lineStyle(2, 0x000000, 0.8);
-            graphics.drawRoundedRect(0, 0, 100, 50, 15);
-            graphics.endFill();
-            this.addChild(graphics);
-            this.timerText = this.game.add.text(35, 5, "0:" + this.count.toString(), { font: "bold 18px arial", fill: "#000000", align: "left" });
+            this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.timerText);
-            this.messageText = this.game.add.text(2, 25, "...", { font: "bold 12px arial", fill: "#000000", align: "left" });
+            this.messageText = this.game.add.text(40, 40, "...", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.messageText);
         };
         Timer.prototype.runTimer = function () {
@@ -1633,9 +1627,9 @@ var Fabrique;
             if (this.messageText !== undefined && this.messageText !== null) {
                 this.messageText.text = value;
                 if (value.length < 10)
-                    this.messageText.x = 25;
+                    this.messageText.x = 42;
                 else
-                    this.messageText.x = 2;
+                    this.messageText.x = 20;
             }
         };
         return Timer;
@@ -2215,7 +2209,7 @@ var StreetFighterCards;
             this.group.addChild(background);
         };
         Level.prototype.createTimer = function () {
-            this.timer = new Timer(this.game, 360, 25);
+            this.timer = new Timer(this.game, 340, 12);
             this.timer.event.add(this.onTimerEnd, this);
             this.group.addChild(this.timer);
             this.timer.setMessage("Ваш ход");
