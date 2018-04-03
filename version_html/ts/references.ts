@@ -15,6 +15,7 @@
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
+/// <reference path="Fabrique\Objects\ButtonTablo.ts" />
 /// <reference path="Fabrique\Objects\Card.ts" />
 /// <reference path="Fabrique\Objects\Comix.ts" />
 /// <reference path="Fabrique\Objects\FighterCard.ts" />

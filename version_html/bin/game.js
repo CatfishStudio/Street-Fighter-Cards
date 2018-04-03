@@ -58,6 +58,7 @@ var Constants = (function () {
     Constants.BUTTON_START_BATTLE = 'button_start_battle';
     Constants.BUTTON_EXIT_BATTLE = 'button_exit_battle';
     Constants.TIMER_END = "timer_end";
+    Constants.BUTTON_TABLO = 'button_tablo';
     return Constants;
 }());
 var Config = (function () {
@@ -297,9 +298,11 @@ var Sheet = (function () {
     }
     Sheet.ButtonStyle1 = 'button_style_1_sheet.png';
     Sheet.ButtonStyle2 = 'button_style_2_sheet.png';
+    Sheet.ButtonStyle3 = 'button_style_3_sheet.png';
     Sheet.preloadList = [
         Sheet.ButtonStyle1,
         Sheet.ButtonStyle2,
+        Sheet.ButtonStyle3,
     ];
     return Sheet;
 }());
@@ -691,6 +694,45 @@ var Fabrique;
         return ButtonComix;
     }(Phaser.Group));
     Fabrique.ButtonComix = ButtonComix;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var ButtonTablo = (function (_super) {
+        __extends(ButtonTablo, _super);
+        function ButtonTablo(game, parent, name, text, textX, x, y) {
+            _super.call(this, game, parent);
+            this.init(name, text, textX, x, y);
+        }
+        ButtonTablo.prototype.shutdown = function () {
+            this.removeAll();
+        };
+        ButtonTablo.prototype.init = function (name, text, textX, x, y) {
+            this.x = x;
+            this.y = y;
+            this.event = new Phaser.Signal();
+            var button = new Phaser.Button(this.game, 0, 0, Sheet.ButtonStyle3, this.onButtonClick, this, 1, 2);
+            button.name = name;
+            button.events.onInputOut.add(this.onButtonInputOut, this);
+            button.events.onInputOver.add(this.onButtonInputOver, this);
+            this.addChild(button);
+            this.textButton = new Phaser.Text(this.game, textX, 5, text, { font: "bold 16px Arial", fill: "#000000" });
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+            this.addChild(this.textButton);
+        };
+        ButtonTablo.prototype.onButtonClick = function (event) {
+            this.event.dispatch(event);
+        };
+        ButtonTablo.prototype.onButtonInputOut = function (event) {
+            this.textButton.fill = "#000000";
+            this.textButton.setShadow(-1, -1, 'rgba(255,255,255,1)', 0);
+        };
+        ButtonTablo.prototype.onButtonInputOver = function (event) {
+            this.textButton.fill = "#FFFFFF";
+            this.textButton.setShadow(-1, -1, 'rgba(0,0,0,1)', 0);
+        };
+        return ButtonTablo;
+    }(Phaser.Group));
+    Fabrique.ButtonTablo = ButtonTablo;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
@@ -1745,6 +1787,7 @@ var StreetFighterCards;
                     */
                     _this.game.load.spritesheet(Sheet.preloadList[0], 'assets/images/' + Sheet.preloadList[0], 186, 46);
                     _this.game.load.spritesheet(Sheet.preloadList[1], 'assets/images/' + Sheet.preloadList[1], 187, 56);
+                    _this.game.load.spritesheet(Sheet.preloadList[2], 'assets/images/' + Sheet.preloadList[2], 108, 31);
                     Decks.preloadList.forEach(function (assetName) {
                         _this.game.load.json(assetName, 'assets/data/' + assetName);
                     });
@@ -2126,6 +2169,7 @@ var StreetFighterCards;
 (function (StreetFighterCards) {
     var AnimationFighter = Fabrique.AnimationFighter;
     var ButtonComix = Fabrique.ButtonComix;
+    var ButtonTablo = Fabrique.ButtonTablo;
     var Settings = Fabrique.Settings;
     var Card = Fabrique.Card;
     var FighterProgressBar = Fabrique.FighterProgressBar;
@@ -2214,6 +2258,7 @@ var StreetFighterCards;
             this.group.addChild(this.timer);
             this.timer.setMessage("Ваш ход");
             this.timer.runTimer();
+            this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
         };
         Level.prototype.createSlots = function () {
             this.slots = [];
@@ -2484,6 +2529,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
+/// <reference path="Fabrique\Objects\ButtonTablo.ts" />
 /// <reference path="Fabrique\Objects\Card.ts" />
 /// <reference path="Fabrique\Objects\Comix.ts" />
 /// <reference path="Fabrique\Objects\FighterCard.ts" />

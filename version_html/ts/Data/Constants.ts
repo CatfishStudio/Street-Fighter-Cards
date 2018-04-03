@@ -18,4 +18,5 @@ class Constants {
     public static BUTTON_EXIT_BATTLE    = 'button_exit_battle';
 
     public static TIMER_END             = "timer_end";
+    public static BUTTON_TABLO          = 'button_tablo';
 }

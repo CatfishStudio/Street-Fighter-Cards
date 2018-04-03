@@ -1,6 +1,7 @@
 module StreetFighterCards {
     import AnimationFighter = Fabrique.AnimationFighter;
     import ButtonComix = Fabrique.ButtonComix;
+    import ButtonTablo = Fabrique.ButtonTablo;
     import Settings = Fabrique.Settings;
     import Card = Fabrique.Card;
     import FighterProgressBar = Fabrique.FighterProgressBar;
@@ -24,6 +25,7 @@ module StreetFighterCards {
         private shirt: Phaser.Sprite;
 
         private timer: Timer;
+        private buttonTablo: ButtonTablo;
         private settings: Settings;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
@@ -104,7 +106,9 @@ module StreetFighterCards {
             this.buttonSettings.shutdown();
             this.boardGroup.removeAll();
             this.handGroup.removeAll();
-            this.group.removeAll();
+            this.timer.shutdown();
+            this.buttonTablo.shutdown();
+
             this.slots.forEach((slot: Slot) => {
                 if (slot !== null && slot !== undefined) slot.shutdown();
             });
@@ -121,7 +125,8 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
-            this.timer.shutdown();
+            
+            this.group.removeAll();
             this.game.stage.removeChildren();
         }
 
@@ -138,6 +143,9 @@ module StreetFighterCards {
             this.group.addChild(this.timer);
             this.timer.setMessage("Ваш ход");
             this.timer.runTimer();
+
+            this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
+
         }
 
         private createSlots(): void {
