@@ -145,7 +145,7 @@ module StreetFighterCards {
             this.timer.runTimer();
 
             this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
-
+            this.buttonTablo.event.add(this.onButtonClick, this);
         }
 
         private createSlots(): void {
@@ -309,6 +309,12 @@ module StreetFighterCards {
                         this.settingsClose();
                         break;
                     }
+                case Constants.BUTTON_TABLO:
+                    {
+                        this.timer.resetTimer();
+                        this.endTurn();
+                        break;
+                    }
                 default:
                     break;
             }
@@ -368,61 +374,71 @@ module StreetFighterCards {
         // ТАЙМЕР
         private onTimerEnd(event): void {
             if (event === Constants.TIMER_END) {
-
-                if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
-                    /**
-                     * Ход игрока.
-                     * Время выкладывать карты игрока вышло. 
-                     * Очередь выкладывать карты переходит к оппоненту
-                     */
-                    this.status.playerHit = true;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(false);
-                    this.timer.setMessage("Ход противника");
-                } else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
-                    /**
-                     * Ход игрока. 
-                     * Время выкладывать карты оппонента вышло.
-                     * Выполняются УДАРЫ выложенными картами.
-                     * Ход передается оппоненту
-                     */
-
-
-                    this.status.active = Level.ACTIVE_OPPONENT;
-                    this.status.playerHit = false;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(false);
-                    this.timer.setMessage("Ход противника");
-                } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
-                    /**
-                     * Ход оппонента.
-                     * Время выкладывать карты оппонента вышло. 
-                     * Очередь выкладывать карты переходит к игроку
-                     */
-                    this.status.playerHit = false;
-                    this.status.opponentHit = true;
-                    this.cardsDragAndDrop(true);
-                    this.timer.setMessage("Ваш ход");
-                } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
-                    /**
-                     * Ход оппонента. 
-                     * Время выкладывать карты игрока вышло.
-                     * Выполняются УДАРЫ выложенными картами.
-                     * Ход передается игроку
-                     */
-
-
-                    this.status.active = Level.ACTIVE_PLAYER;
-                    this.status.playerHit = false;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(true);
-                    this.timer.setMessage("Ваш ход");
-                }
-
-                Utilits.Data.debugLog(this.status);
+                this.endTurn();                
             }
         }
 
+        private endTurn():void {
+            if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
+                /**
+                 * Ход игрока.
+                 * Время выкладывать карты игрока вышло. 
+                 * Очередь выкладывать карты переходит к оппоненту
+                 */
+                this.buttonTablo.visible = false;
+                this.status.playerHit = true;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(false);
+                this.timer.setMessage("Ход противника");
+            } else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
+                /**
+                 * Ход игрока. 
+                 * Время выкладывать карты оппонента вышло.
+                 * Выполняются УДАРЫ выложенными картами.
+                 * Ход передается оппоненту
+                 */
 
+
+
+                this.buttonTablo.visible = false;
+                this.status.active = Level.ACTIVE_OPPONENT;
+                this.status.playerHit = false;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(false);
+                this.timer.setMessage("Ход противника");
+                this.timer.stopTimer();
+                
+            } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+                /**
+                 * Ход оппонента.
+                 * Время выкладывать карты оппонента вышло. 
+                 * Очередь выкладывать карты переходит к игроку
+                 */
+                this.buttonTablo.visible = true;
+                this.status.playerHit = false;
+                this.status.opponentHit = true;
+                this.cardsDragAndDrop(true);
+                this.timer.setMessage("Ваш ход");
+            } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+                /**
+                 * Ход оппонента. 
+                 * Время выкладывать карты игрока вышло.
+                 * Выполняются УДАРЫ выложенными картами.
+                 * Ход передается игроку
+                 */
+
+
+
+                this.buttonTablo.visible = true;
+                this.status.active = Level.ACTIVE_PLAYER;
+                this.status.playerHit = false;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(true);
+                this.timer.setMessage("Ваш ход");
+                this.timer.stopTimer();
+            }
+
+            Utilits.Data.debugLog(this.status);
+        }
     }
 }

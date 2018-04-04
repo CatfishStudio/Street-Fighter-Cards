@@ -16,7 +16,7 @@ module Fabrique {
         }
 
         public shutdown(): void {
-            this.stopTimer(true);
+            this.stopTimer();
             this.removeChildren();
         }
 
@@ -30,21 +30,35 @@ module Fabrique {
             this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" })
             this.addChild(this.timerText);
 
-            this.messageText = this.game.add.text(40, 40, "...", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" })
+            this.messageText = this.game.add.text(40, 40, "............................", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" })
             this.addChild(this.messageText);
         }
 
-        public runTimer(): void {
+        private run():void {
             setTimeout(this.onTimerComplete.bind(this), 1000);
         }
 
-        public pauseTimer(value:boolean):void {
-            this.pause = value;
-            if(this.pause === false) this.runTimer();
+        public runTimer(): void {
+            this.resetTimer();
+            this.run();
         }
 
-        public stopTimer(value:boolean):void {
-            this.stop = value;
+        public pauseTimer(value:boolean = true):void {
+            this.pause = value;
+            if(this.pause === false) this.runTimer();
+            Utilits.Data.debugLog("TIMER PAUSE: " + this.pause);
+        }
+
+        public stopTimer():void {
+            this.stop = true;
+            this.count = 30;
+            this.setMessage("............................");
+            Utilits.Data.debugLog("TIMER STOP: " + this.stop);
+        }
+
+        public resetTimer():void {
+            this.stop = false;
+            this.pause = false;
             this.count = 30;
         }
 
@@ -61,8 +75,8 @@ module Fabrique {
                 this.count = 30;
                 this.event.dispatch(Constants.TIMER_END);
             }
-                        
-            this.runTimer();
+            
+            if(this.pause === false || this.stop === false) this.run();
         }
 
         public setMessage(value:string):void {

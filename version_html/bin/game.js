@@ -1624,7 +1624,7 @@ var Fabrique;
             this.init();
         }
         Timer.prototype.shutdown = function () {
-            this.stopTimer(true);
+            this.stopTimer();
             this.removeChildren();
         };
         Timer.prototype.init = function () {
@@ -1634,19 +1634,32 @@ var Fabrique;
             this.stop = false;
             this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.timerText);
-            this.messageText = this.game.add.text(40, 40, "...", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" });
+            this.messageText = this.game.add.text(40, 40, "............................", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.messageText);
         };
-        Timer.prototype.runTimer = function () {
+        Timer.prototype.run = function () {
             setTimeout(this.onTimerComplete.bind(this), 1000);
         };
+        Timer.prototype.runTimer = function () {
+            this.resetTimer();
+            this.run();
+        };
         Timer.prototype.pauseTimer = function (value) {
+            if (value === void 0) { value = true; }
             this.pause = value;
             if (this.pause === false)
                 this.runTimer();
+            Utilits.Data.debugLog("TIMER PAUSE: " + this.pause);
         };
-        Timer.prototype.stopTimer = function (value) {
-            this.stop = value;
+        Timer.prototype.stopTimer = function () {
+            this.stop = true;
+            this.count = 30;
+            this.setMessage("............................");
+            Utilits.Data.debugLog("TIMER STOP: " + this.stop);
+        };
+        Timer.prototype.resetTimer = function () {
+            this.stop = false;
+            this.pause = false;
             this.count = 30;
         };
         Timer.prototype.onTimerComplete = function () {
@@ -1663,7 +1676,8 @@ var Fabrique;
                 this.count = 30;
                 this.event.dispatch(Constants.TIMER_END);
             }
-            this.runTimer();
+            if (this.pause === false || this.stop === false)
+                this.run();
         };
         Timer.prototype.setMessage = function (value) {
             if (this.messageText !== undefined && this.messageText !== null) {
@@ -2222,7 +2236,8 @@ var StreetFighterCards;
             this.buttonSettings.shutdown();
             this.boardGroup.removeAll();
             this.handGroup.removeAll();
-            this.group.removeAll();
+            this.timer.shutdown();
+            this.buttonTablo.shutdown();
             this.slots.forEach(function (slot) {
                 if (slot !== null && slot !== undefined)
                     slot.shutdown();
@@ -2243,7 +2258,7 @@ var StreetFighterCards;
                     card.shutdown();
             });
             this.playerSlots = null;
-            this.timer.shutdown();
+            this.group.removeAll();
             this.game.stage.removeChildren();
         };
         Level.prototype.createBackground = function () {
@@ -2259,6 +2274,7 @@ var StreetFighterCards;
             this.timer.setMessage("Ваш ход");
             this.timer.runTimer();
             this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
+            this.buttonTablo.event.add(this.onButtonClick, this);
         };
         Level.prototype.createSlots = function () {
             this.slots = [];
@@ -2403,6 +2419,12 @@ var StreetFighterCards;
                         this.settingsClose();
                         break;
                     }
+                case Constants.BUTTON_TABLO:
+                    {
+                        this.timer.resetTimer();
+                        this.endTurn();
+                        break;
+                    }
                 default:
                     break;
             }
@@ -2455,56 +2477,65 @@ var StreetFighterCards;
         // ТАЙМЕР
         Level.prototype.onTimerEnd = function (event) {
             if (event === Constants.TIMER_END) {
-                if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
-                    /**
-                     * Ход игрока.
-                     * Время выкладывать карты игрока вышло.
-                     * Очередь выкладывать карты переходит к оппоненту
-                     */
-                    this.status.playerHit = true;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(false);
-                    this.timer.setMessage("Ход противника");
-                }
-                else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
-                    /**
-                     * Ход игрока.
-                     * Время выкладывать карты оппонента вышло.
-                     * Выполняются УДАРЫ выложенными картами.
-                     * Ход передается оппоненту
-                     */
-                    this.status.active = Level.ACTIVE_OPPONENT;
-                    this.status.playerHit = false;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(false);
-                    this.timer.setMessage("Ход противника");
-                }
-                else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
-                    /**
-                     * Ход оппонента.
-                     * Время выкладывать карты оппонента вышло.
-                     * Очередь выкладывать карты переходит к игроку
-                     */
-                    this.status.playerHit = false;
-                    this.status.opponentHit = true;
-                    this.cardsDragAndDrop(true);
-                    this.timer.setMessage("Ваш ход");
-                }
-                else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
-                    /**
-                     * Ход оппонента.
-                     * Время выкладывать карты игрока вышло.
-                     * Выполняются УДАРЫ выложенными картами.
-                     * Ход передается игроку
-                     */
-                    this.status.active = Level.ACTIVE_PLAYER;
-                    this.status.playerHit = false;
-                    this.status.opponentHit = false;
-                    this.cardsDragAndDrop(true);
-                    this.timer.setMessage("Ваш ход");
-                }
-                Utilits.Data.debugLog(this.status);
+                this.endTurn();
             }
+        };
+        Level.prototype.endTurn = function () {
+            if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
+                /**
+                 * Ход игрока.
+                 * Время выкладывать карты игрока вышло.
+                 * Очередь выкладывать карты переходит к оппоненту
+                 */
+                this.buttonTablo.visible = false;
+                this.status.playerHit = true;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(false);
+                this.timer.setMessage("Ход противника");
+            }
+            else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
+                /**
+                 * Ход игрока.
+                 * Время выкладывать карты оппонента вышло.
+                 * Выполняются УДАРЫ выложенными картами.
+                 * Ход передается оппоненту
+                 */
+                this.buttonTablo.visible = false;
+                this.status.active = Level.ACTIVE_OPPONENT;
+                this.status.playerHit = false;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(false);
+                this.timer.setMessage("Ход противника");
+                this.timer.stopTimer();
+            }
+            else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+                /**
+                 * Ход оппонента.
+                 * Время выкладывать карты оппонента вышло.
+                 * Очередь выкладывать карты переходит к игроку
+                 */
+                this.buttonTablo.visible = true;
+                this.status.playerHit = false;
+                this.status.opponentHit = true;
+                this.cardsDragAndDrop(true);
+                this.timer.setMessage("Ваш ход");
+            }
+            else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+                /**
+                 * Ход оппонента.
+                 * Время выкладывать карты игрока вышло.
+                 * Выполняются УДАРЫ выложенными картами.
+                 * Ход передается игроку
+                 */
+                this.buttonTablo.visible = true;
+                this.status.active = Level.ACTIVE_PLAYER;
+                this.status.playerHit = false;
+                this.status.opponentHit = false;
+                this.cardsDragAndDrop(true);
+                this.timer.setMessage("Ваш ход");
+                this.timer.stopTimer();
+            }
+            Utilits.Data.debugLog(this.status);
         };
         Level.Name = "level";
         Level.ACTIVE_PLAYER = "active_player";
