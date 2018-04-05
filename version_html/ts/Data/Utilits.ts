@@ -2,8 +2,8 @@ module Utilits {
     export class Data {
 
         /* Debug отладка */
-        public static debugLog(value: any):void {
-            if(Config.buildDev) console.log(value);
+        public static debugLog(title:string, value: any):void {
+            if(Config.buildDev) console.log(title, value);
         }
 
         /* Проверка четности и нечетности */

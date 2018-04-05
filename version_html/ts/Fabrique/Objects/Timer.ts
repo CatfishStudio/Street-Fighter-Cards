@@ -46,14 +46,14 @@ module Fabrique {
         public pauseTimer(value:boolean = true):void {
             this.pause = value;
             if(this.pause === false) this.runTimer();
-            Utilits.Data.debugLog("TIMER PAUSE: " + this.pause);
+            Utilits.Data.debugLog("TIMER PAUSE:", this.pause);
         }
 
         public stopTimer():void {
             this.stop = true;
             this.count = 30;
             this.setMessage("............................");
-            Utilits.Data.debugLog("TIMER STOP: " + this.stop);
+            Utilits.Data.debugLog("TIMER STOP:", this.stop);
         }
 
         public resetTimer():void {

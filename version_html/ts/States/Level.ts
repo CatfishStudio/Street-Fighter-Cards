@@ -10,8 +10,8 @@ module StreetFighterCards {
 
     export interface IStatus {
         active: string;         // ход Игрока или Оппонента
-        playerHit: boolean;     // true - значит Игрок закончил выкладывать каты
-        opponentHit: boolean;   // true - значит Оппонент закончил выкладывать каты
+        playerHit: boolean;     // true - значит Игрок закончил выкладывать карты
+        opponentHit: boolean;   // true - значит Оппонент закончил выкладывать карты
     }
 
     export class Level extends Phaser.State {
@@ -52,6 +52,8 @@ module StreetFighterCards {
         private opponentDeck: Card[];
         private opponentHand: Card[];
         private opponentSlots: Card[];
+        private opponentDataAI: AI.IDataPlayers;
+        private opponentHitsAI: number[];
 
         private handPoints: number[][] = [
             [20, 390], [148, 390], [276, 390], [404, 390], [532, 390]
@@ -125,9 +127,47 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
-            
+
             this.group.removeAll();
             this.game.stage.removeChildren();
+        }
+
+        private settingsCreate() {
+            this.settings = new Settings(this.game, this.group);
+            this.settings.event.add(this.onButtonClick, this);
+        }
+
+        private settingsClose() {
+            this.settings.removeAll();
+            this.group.removeChild(this.settings);
+        }
+
+        private onButtonClick(event) {
+            switch (event.name) {
+                case Constants.BUTTON_EXIT_BATTLE:
+                    {
+                        this.game.state.start(Menu.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
+                        break;
+                    }
+                case Constants.BUTTON_TABLO:
+                    {
+                        this.timer.resetTimer();
+                        this.endTurn();
+                        break;
+                    }
+                default:
+                    break;
+            }
         }
 
         private createBackground(): void {
@@ -146,6 +186,12 @@ module StreetFighterCards {
 
             this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
             this.buttonTablo.event.add(this.onButtonClick, this);
+        }
+
+        private onTimerEnd(event): void {
+            if (event === Constants.TIMER_END) {
+                this.endTurn();
+            }
         }
 
         private createSlots(): void {
@@ -219,30 +265,34 @@ module StreetFighterCards {
             this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
 
+            this.moveCardDeckToHandPlayer();
+
             // OPPONENT
             let opponentName: string = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach((cardData: GameData.ICard) => {
                 card = new Card(this.game, 825, 0, opponentName, cardData);
+                card.dragAndDrop(false);
+                this.opponentDeck.push(card);
                 this.group.addChild(card);
             });
 
-            this.moveCardDeckToHand();
+            this.moveCardDeckToHandOpponent();
         }
 
-        // Взять карту
+        // ДЕЙСТВИЕ: Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
-            Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("START: x=", pointer.x + " y= " + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
         }
 
-        // Положить карту
+        // ДЕЙСТВИЕ: Положить карту
         private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
-            Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("STOP: x=", pointer.x + " y= " + pointer.y);
 
             let pushInSlot: boolean = false;
-            
+
             if ((sprite as Card).cardData.energy <= this.playerEnergy) {
                 for (let index in this.slotsPoints) {
                     if (index === '3') break;   // доступны только слоты игрока
@@ -267,9 +317,9 @@ module StreetFighterCards {
                             // меняем стэк
                             this.playerSlots[index] = this.playerHand.splice((sprite as Card).indexInHand, 1)[0];
                             // передвигаем карты в руке
-                            this.moveHandCardToEmpty();
+                            this.moveHandCardToEmptyPlayer();
 
-                            Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
+                            Utilits.Data.debugLog("Slots/Hand:", [this.playerSlots, this.playerHand]);
                         }
                         break;
                     }
@@ -282,45 +332,8 @@ module StreetFighterCards {
             }
         }
 
-        private settingsCreate() {
-            this.settings = new Settings(this.game, this.group);
-            this.settings.event.add(this.onButtonClick, this);
-        }
-
-        private settingsClose() {
-            this.settings.removeAll();
-            this.group.removeChild(this.settings);
-        }
-
-        private onButtonClick(event) {
-            switch (event.name) {
-                case Constants.BUTTON_EXIT_BATTLE:
-                    {
-                        this.game.state.start(Menu.Name, true, false);
-                        break;
-                    }
-                case Constants.BUTTON_SETTINGS:
-                    {
-                        this.settingsCreate();
-                        break;
-                    }
-                case Constants.BUTTON_SETTINGS_CLOSE:
-                    {
-                        this.settingsClose();
-                        break;
-                    }
-                case Constants.BUTTON_TABLO:
-                    {
-                        this.timer.resetTimer();
-                        this.endTurn();
-                        break;
-                    }
-                default:
-                    break;
-            }
-        }
-
-        private moveCardDeckToHand(): void { // раздача карт из колоды
+        // АНИМАЦИЯ
+        private moveCardDeckToHandPlayer(): void { // Раздача карт из колоды игрок
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
 
@@ -328,13 +341,24 @@ module StreetFighterCards {
                 this.playerHand[this.playerHand.length - 1].indexInHand = this.playerHand.length - 1;
 
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
-                this.tween.onComplete.add(this.moveCardDeckToHand, this);
+                this.tween.onComplete.add(this.moveCardDeckToHandPlayer, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
+            }else{
+                Utilits.Data.debugLog("Player Hand:", this.playerHand);
             }
         }
 
-        private moveHandCardToEmpty(): void {    // Смещение карт в руке на пустые места
+        private moveCardDeckToHandOpponent(): void { // Раздача карт из колоды AI
+            while(this.opponentHand.length < 5){
+                this.opponentHand.push(this.opponentDeck.shift());
+                this.opponentHand[this.opponentHand.length - 1].indexInHand = this.opponentHand.length - 1;
+            }
+            Utilits.Data.debugLog("Opponent Hand:", this.opponentHand);
+        }
+
+        // АНИМАЦИЯ
+        private moveHandCardToEmptyPlayer(): void {    // Смещение карт в руке на пустые места
             if (this.playerHand.length < 5) {
                 let tweenMoveToEmpty: Phaser.Tween;
                 for (let i: number = 0; i < this.playerHand.length; i++) {
@@ -346,6 +370,15 @@ module StreetFighterCards {
             }
         }
 
+        private moveHandCardToEmptyOpponent(): void {
+            if(this.opponentHand.length < 5){
+                for(let i: number = 0; i < this.opponentHand.length; i++){
+                    this.opponentHand[i].indexInHand = i;
+                }
+            }
+        }
+
+        // АНИМАЦИЯ
         private returnCardToHand(card: Card): void {   // Вернуть карту в руку
             this.tween = this.game.add.tween(card);
             this.tween.to({
@@ -364,21 +397,15 @@ module StreetFighterCards {
         private cardsDragAndDrop(value: boolean): void { // блокировать или разблокировать все карты в руке
             this.playerHand.forEach((card: Card) => {
                 card.dragAndDrop(value);
-                if(value === false){
+                if (value === false) {
                     card.reduce(false);
                     this.returnCardToHand(card);
                 }
             })
         }
 
-        // ТАЙМЕР
-        private onTimerEnd(event): void {
-            if (event === Constants.TIMER_END) {
-                this.endTurn();                
-            }
-        }
-
-        private endTurn():void {
+        // ХОД
+        private endTurn(): void {
             if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
                 /**
                  * Ход игрока.
@@ -390,6 +417,16 @@ module StreetFighterCards {
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(false);
                 this.timer.setMessage("Ход противника");
+
+                this.opponentDataAI = <AI.IDataPlayers>{};
+                this.opponentDataAI.aiEnergy = this.opponentEnergy;
+                this.opponentDataAI.aiHand = this.opponentHand;
+                this.opponentDataAI.aiLife = this.opponentLife;
+                this.opponentDataAI.playerEnergy = this.playerEnergy;
+                this.opponentDataAI.playerLife = this.playerLife;
+                this.opponentDataAI.playerSlots = this.playerSlots;
+                AI.Ai.setData(this.opponentDataAI);
+                this.opponentHitsAI = AI.Ai.getHits(this.status.active);
             } else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
                 /**
                  * Ход игрока. 
@@ -398,6 +435,7 @@ module StreetFighterCards {
                  * Ход передается оппоненту
                  */
 
+                
 
 
                 this.buttonTablo.visible = false;
@@ -407,7 +445,6 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                
             } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
                 /**
                  * Ход оппонента.
@@ -438,7 +475,7 @@ module StreetFighterCards {
                 this.timer.stopTimer();
             }
 
-            Utilits.Data.debugLog(this.status);
+            Utilits.Data.debugLog("Status", this.status);
         }
     }
 }

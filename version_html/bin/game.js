@@ -378,7 +378,7 @@ var GameData;
                 _this.loadAnimation(game, personage);
                 GameData.Data.personages.push(personage);
             });
-            Utilits.Data.debugLog(GameData.Data.personages);
+            Utilits.Data.debugLog("Personages:", GameData.Data.personages);
         };
         Data.createDeck = function (game, value, personage) {
             var card;
@@ -401,7 +401,7 @@ var GameData;
         };
         Data.deckMix = function (index) {
             GameData.Data.personages[index].deck.sort(Utilits.Data.compareRandom);
-            Utilits.Data.debugLog(GameData.Data.personages[index].deck);
+            Utilits.Data.debugLog("Deck:", GameData.Data.personages[index].deck);
         };
         Data.loadAnimation = function (game, personage) {
             try {
@@ -453,7 +453,7 @@ var GameData;
             }
             GameData.Data.tournamentListIds.push(GameData.Data.fighterIndex); // player
             GameData.Data.tournamentListIds.push(5); // boss
-            Utilits.Data.debugLog(GameData.Data.tournamentListIds);
+            Utilits.Data.debugLog("Tournament List:", GameData.Data.tournamentListIds);
         };
         Data.fighterIndex = 0; // id выбранного игроком персонажа (в сохранение)
         Data.progressIndex = -1; // индекс прогресса в игре (в сохранение)
@@ -513,9 +513,9 @@ var Utilits;
         function Data() {
         }
         /* Debug отладка */
-        Data.debugLog = function (value) {
+        Data.debugLog = function (title, value) {
             if (Config.buildDev)
-                console.log(value);
+                console.log(title, value);
         };
         /* Проверка четности и нечетности */
         Data.checkEvenOrOdd = function (n) {
@@ -553,9 +553,103 @@ var AI;
         Ai.setData = function (data) {
             AI.Ai.data = data;
         };
-        Ai.getHits = function () {
-            return [0, 1, 2];
+        Ai.getHits = function (statusAction) {
+            var result;
+            if (statusAction === Ai.ACTIVE_PLAYER) {
+                result = Ai.playerAttack();
+            }
+            else {
+                result = Ai.aiAttack();
+            }
+            Utilits.Data.debugLog("AI: hits:", result);
+            return result;
         };
+        /* фактический урон который нанесет игрок*/
+        Ai.getTotalPlayerDamage = function () {
+            var damage = 0;
+            Ai.data.playerSlots.forEach(function (card) {
+                if (card === null)
+                    return;
+                if (card.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                    damage += Number(card.cardData.power);
+                }
+            });
+            Utilits.Data.debugLog("AI: player damage:", damage);
+            return damage;
+        };
+        Ai.getCardsAI = function (attackCards, defenseCards) {
+            attackCards = [];
+            defenseCards = [];
+            Ai.data.aiHand.forEach(function (card) {
+                if (card.cardData.energy <= Ai.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                    attackCards.push(card);
+                }
+                if (card.cardData.energy <= Ai.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_DEFENSE) {
+                    defenseCards.push(card);
+                }
+            });
+            attackCards.sort(function (a, b) {
+                return a.cardData.power - b.cardData.power;
+            });
+            defenseCards.sort(function (a, b) {
+                return a.cardData.power - b.cardData.power;
+            });
+            Utilits.Data.debugLog("AI: attack cards:", attackCards);
+            Utilits.Data.debugLog("AI: defense cards:", defenseCards);
+        };
+        /* ==============================
+        * атакует игрок (AI контратакует)
+        ================================= */
+        Ai.playerAttack = function () {
+            var result;
+            var damage = Ai.getTotalPlayerDamage(); // фактический урон который нанесет игрок
+            if (damage >= Ai.data.aiLife) {
+                result = Ai.tacticsDefense(); // AI под угрозой уничтожения (тактика защиты)
+            }
+            else {
+                result = Ai.tacticsContrAttack(); // AI в не опасности (тактика нападения)
+            }
+            return result;
+        };
+        /* ==============================
+        * атакует AI (Игрок контратакует)
+        ================================= */
+        Ai.aiAttack = function () {
+            var result;
+            result = Ai.tacticsAttack(); // AI атакует
+            return [];
+        };
+        /** ==============================
+         * ТАКТИКА
+         ================================= */
+        /* тактика - контратака */
+        Ai.tacticsContrAttack = function () {
+            var result = [];
+            var energy = Ai.data.aiEnergy;
+            var attackCards;
+            var defenseCards;
+            Ai.getCardsAI(attackCards, defenseCards);
+            Ai.data.playerSlots.forEach(function (card) {
+                if (card === null)
+                    return;
+                // Блокировка карт наносящих максимальный урон
+                if (card.cardData.type === Constants.CARD_TYPE_ATTACK && card.cardData.power > 25) {
+                }
+            });
+            return [];
+        };
+        /* тактика - атака */
+        Ai.tacticsAttack = function () {
+            var result = [];
+            return [];
+        };
+        /* тактика - защита */
+        Ai.tacticsDefense = function () {
+            var result = [];
+            return [];
+        };
+        Ai.ACTIVE_PLAYER = "active_player";
+        Ai.ACTIVE_OPPONENT = "active_opponent";
         return Ai;
     }());
     AI.Ai = Ai;
@@ -1649,13 +1743,13 @@ var Fabrique;
             this.pause = value;
             if (this.pause === false)
                 this.runTimer();
-            Utilits.Data.debugLog("TIMER PAUSE: " + this.pause);
+            Utilits.Data.debugLog("TIMER PAUSE:", this.pause);
         };
         Timer.prototype.stopTimer = function () {
             this.stop = true;
             this.count = 30;
             this.setMessage("............................");
-            Utilits.Data.debugLog("TIMER STOP: " + this.stop);
+            Utilits.Data.debugLog("TIMER STOP:", this.stop);
         };
         Timer.prototype.resetTimer = function () {
             this.stop = false;
@@ -2261,6 +2355,41 @@ var StreetFighterCards;
             this.group.removeAll();
             this.game.stage.removeChildren();
         };
+        Level.prototype.settingsCreate = function () {
+            this.settings = new Settings(this.game, this.group);
+            this.settings.event.add(this.onButtonClick, this);
+        };
+        Level.prototype.settingsClose = function () {
+            this.settings.removeAll();
+            this.group.removeChild(this.settings);
+        };
+        Level.prototype.onButtonClick = function (event) {
+            switch (event.name) {
+                case Constants.BUTTON_EXIT_BATTLE:
+                    {
+                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS:
+                    {
+                        this.settingsCreate();
+                        break;
+                    }
+                case Constants.BUTTON_SETTINGS_CLOSE:
+                    {
+                        this.settingsClose();
+                        break;
+                    }
+                case Constants.BUTTON_TABLO:
+                    {
+                        this.timer.resetTimer();
+                        this.endTurn();
+                        break;
+                    }
+                default:
+                    break;
+            }
+        };
         Level.prototype.createBackground = function () {
             var opponentID = GameData.Data.tournamentListIds[GameData.Data.progressIndex];
             var levelTexture = GameData.Data.personages[opponentID].level;
@@ -2275,6 +2404,11 @@ var StreetFighterCards;
             this.timer.runTimer();
             this.buttonTablo = new ButtonTablo(this.game, this.group, Constants.BUTTON_TABLO, "Ход", 40, 353, 80);
             this.buttonTablo.event.add(this.onButtonClick, this);
+        };
+        Level.prototype.onTimerEnd = function (event) {
+            if (event === Constants.TIMER_END) {
+                this.endTurn();
+            }
         };
         Level.prototype.createSlots = function () {
             this.slots = [];
@@ -2340,24 +2474,27 @@ var StreetFighterCards;
             });
             this.shirt = new Phaser.Sprite(this.game, 660, 390, Atlases.Cards, "card_back.png");
             this.group.addChild(this.shirt);
+            this.moveCardDeckToHandPlayer();
             // OPPONENT
             var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
             GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].deck.forEach(function (cardData) {
                 card = new Card(_this.game, 825, 0, opponentName, cardData);
+                card.dragAndDrop(false);
+                _this.opponentDeck.push(card);
                 _this.group.addChild(card);
             });
-            this.moveCardDeckToHand();
+            this.moveCardDeckToHandOpponent();
         };
-        // Взять карту
+        // ДЕЙСТВИЕ: Взять карту
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
-            Utilits.Data.debugLog("START: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("START: x=", pointer.x + " y= " + pointer.y);
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             sprite.reduce(true);
         };
-        // Положить карту
+        // ДЕЙСТВИЕ: Положить карту
         Level.prototype.onDragStop = function (sprite, pointer) {
-            Utilits.Data.debugLog("STOP: x=" + pointer.x + " y=" + pointer.y);
+            Utilits.Data.debugLog("STOP: x=", pointer.x + " y= " + pointer.y);
             var pushInSlot = false;
             if (sprite.cardData.energy <= this.playerEnergy) {
                 for (var index in this.slotsPoints) {
@@ -2383,7 +2520,7 @@ var StreetFighterCards;
                             this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
                             // передвигаем карты в руке
                             this.moveHandCardToEmpty();
-                            Utilits.Data.debugLog([this.playerSlots, this.playerHand]);
+                            Utilits.Data.debugLog("Slots/Hand:", [this.playerSlots, this.playerHand]);
                         }
                         break;
                     }
@@ -2394,52 +2531,29 @@ var StreetFighterCards;
                 this.returnCardToHand(sprite);
             }
         };
-        Level.prototype.settingsCreate = function () {
-            this.settings = new Settings(this.game, this.group);
-            this.settings.event.add(this.onButtonClick, this);
-        };
-        Level.prototype.settingsClose = function () {
-            this.settings.removeAll();
-            this.group.removeChild(this.settings);
-        };
-        Level.prototype.onButtonClick = function (event) {
-            switch (event.name) {
-                case Constants.BUTTON_EXIT_BATTLE:
-                    {
-                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
-                        break;
-                    }
-                case Constants.BUTTON_SETTINGS:
-                    {
-                        this.settingsCreate();
-                        break;
-                    }
-                case Constants.BUTTON_SETTINGS_CLOSE:
-                    {
-                        this.settingsClose();
-                        break;
-                    }
-                case Constants.BUTTON_TABLO:
-                    {
-                        this.timer.resetTimer();
-                        this.endTurn();
-                        break;
-                    }
-                default:
-                    break;
-            }
-        };
-        Level.prototype.moveCardDeckToHand = function () {
+        // АНИМАЦИЯ
+        Level.prototype.moveCardDeckToHandPlayer = function () {
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
                 this.playerHand[this.playerHand.length - 1].dragAndDrop(true);
                 this.playerHand[this.playerHand.length - 1].indexInHand = this.playerHand.length - 1;
                 this.tween = this.game.add.tween(this.playerHand[this.playerHand.length - 1]);
-                this.tween.onComplete.add(this.moveCardDeckToHand, this);
+                this.tween.onComplete.add(this.moveCardDeckToHandPlayer, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
             }
+            else {
+                Utilits.Data.debugLog("Player Hand:", this.playerHand);
+            }
         };
+        Level.prototype.moveCardDeckToHandOpponent = function () {
+            while (this.opponentHand.length < 5) {
+                this.opponentHand.push(this.opponentDeck.shift());
+                this.opponentHand[this.opponentHand.length - 1].indexInHand = this.opponentHand.length - 1;
+            }
+            Utilits.Data.debugLog("Opponent Hand:", this.opponentHand);
+        };
+        // АНИМАЦИЯ
         Level.prototype.moveHandCardToEmpty = function () {
             if (this.playerHand.length < 5) {
                 var tweenMoveToEmpty = void 0;
@@ -2451,6 +2565,7 @@ var StreetFighterCards;
                 }
             }
         };
+        // АНИМАЦИЯ
         Level.prototype.returnCardToHand = function (card) {
             this.tween = this.game.add.tween(card);
             this.tween.to({
@@ -2474,12 +2589,7 @@ var StreetFighterCards;
                 }
             });
         };
-        // ТАЙМЕР
-        Level.prototype.onTimerEnd = function (event) {
-            if (event === Constants.TIMER_END) {
-                this.endTurn();
-            }
-        };
+        // ХОД
         Level.prototype.endTurn = function () {
             if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
                 /**
@@ -2492,6 +2602,15 @@ var StreetFighterCards;
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(false);
                 this.timer.setMessage("Ход противника");
+                this.opponentDataAI = {};
+                this.opponentDataAI.aiEnergy = this.opponentEnergy;
+                this.opponentDataAI.aiHand = this.opponentHand;
+                this.opponentDataAI.aiLife = this.opponentLife;
+                this.opponentDataAI.playerEnergy = this.playerEnergy;
+                this.opponentDataAI.playerLife = this.playerLife;
+                this.opponentDataAI.playerSlots = this.playerSlots;
+                AI.Ai.setData(this.opponentDataAI);
+                this.opponentHitsAI = AI.Ai.getHits(this.status.active);
             }
             else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
                 /**
@@ -2535,7 +2654,7 @@ var StreetFighterCards;
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer();
             }
-            Utilits.Data.debugLog(this.status);
+            Utilits.Data.debugLog("Status", this.status);
         };
         Level.Name = "level";
         Level.ACTIVE_PLAYER = "active_player";
