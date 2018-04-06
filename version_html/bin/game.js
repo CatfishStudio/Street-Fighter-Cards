@@ -39,6 +39,215 @@ var StreetFighterCards;
     }(Phaser.Game));
     StreetFighterCards.Game = Game;
 })(StreetFighterCards || (StreetFighterCards = {}));
+var AI;
+(function (AI) {
+    var ATTACK = "attack";
+    var DEFENSE = "defense";
+    var Ai = (function () {
+        function Ai() {
+            this.data = null;
+            this.attackCards = [];
+            this.defenseCards = [];
+            this.energy = 0;
+        }
+        Ai.prototype.setData = function (data) {
+            this.data = data;
+            this.energy = data.aiEnergy;
+            this.initCardsAI();
+        };
+        Ai.prototype.getHits = function (statusAction) {
+            var result;
+            if (this.attackCards.length === 0 && this.attackCards.length === 0) {
+                return [null, null, null];
+            }
+            if (statusAction === Constants.ACTIVE_PLAYER) {
+                result = this.playerAttack();
+            }
+            else {
+                result = this.aiAttack();
+            }
+            Utilits.Data.debugLog("AI: hits:", result);
+            return result;
+        };
+        /* фактический урон который нанесет игрок*/
+        Ai.prototype.getTotalPlayerDamage = function () {
+            var damage = 0;
+            this.data.playerSlots.forEach(function (card) {
+                if (card === null)
+                    return;
+                if (card.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                    damage += Number(card.cardData.power);
+                }
+            });
+            Utilits.Data.debugLog("AI: player damage:", damage);
+            return damage;
+        };
+        Ai.prototype.initCardsAI = function () {
+            var _this = this;
+            this.attackCards = [];
+            this.defenseCards = [];
+            this.data.aiHand.forEach(function (card) {
+                if (card.cardData.energy <= _this.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                    _this.attackCards.push(card);
+                }
+                if (card.cardData.energy <= _this.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_DEFENSE) {
+                    _this.defenseCards.push(card);
+                }
+            });
+            this.attackCards.sort(function (a, b) {
+                return a.cardData.power - b.cardData.power;
+            });
+            this.defenseCards.sort(function (a, b) {
+                return a.cardData.power - b.cardData.power;
+            });
+            Utilits.Data.debugLog("AI: attack cards:", this.attackCards);
+            Utilits.Data.debugLog("AI: defense cards:", this.defenseCards);
+        };
+        Ai.prototype.getIndexCardAi = function (priority) {
+            var result = -1;
+            var aiCard;
+            if (this.attackCards.length <= 0 && this.defenseCards.length <= 0)
+                return result;
+            // поиск приоритетной карты
+            if (priority === ATTACK && this.attackCards.length > 0) {
+                for (var i = this.attackCards.length - 1; i > 0; i--) {
+                    aiCard = this.attackCards[i];
+                    if (aiCard.cardData.energy <= this.energy) {
+                        result = aiCard.indexInHand;
+                        this.energy -= aiCard.cardData.energy;
+                        this.attackCards.splice(i, 1);
+                        return result;
+                    }
+                }
+            }
+            else if (priority === DEFENSE && this.defenseCards.length > 0) {
+                for (var i = this.defenseCards.length - 1; i > 0; i--) {
+                    aiCard = this.defenseCards[i];
+                    if (aiCard.cardData.energy <= this.energy) {
+                        result = aiCard.indexInHand;
+                        this.energy -= aiCard.cardData.energy;
+                        this.defenseCards.splice(i, 1);
+                        return result;
+                    }
+                }
+            }
+            // поиск любой подходящей карты
+            if (result < 0) {
+                for (var i = this.attackCards.length - 1; i > 0; i--) {
+                    aiCard = this.attackCards[i];
+                    if (aiCard.cardData.energy <= this.energy) {
+                        result = aiCard.indexInHand;
+                        this.energy -= aiCard.cardData.energy;
+                        this.attackCards.splice(i, 1);
+                        return result;
+                    }
+                }
+                for (var i = this.defenseCards.length - 1; i > 0; i--) {
+                    aiCard = this.defenseCards[i];
+                    if (aiCard.cardData.energy <= this.energy) {
+                        result = aiCard.indexInHand;
+                        this.energy -= aiCard.cardData.energy;
+                        this.defenseCards.splice(i, 1);
+                        return result;
+                    }
+                }
+            }
+            return result;
+        };
+        /* ==============================
+        * атакует игрок (AI контратакует)
+        ================================= */
+        Ai.prototype.playerAttack = function () {
+            var result;
+            var damage = this.getTotalPlayerDamage(); // фактический урон который нанесет игрок
+            if (damage >= this.data.aiLife) {
+                result = this.tacticsDefense(); // AI под угрозой уничтожения (тактика защиты)
+            }
+            else {
+                result = this.tacticsContrAttack(); // AI в не опасности (тактика нападения)
+            }
+            return result;
+        };
+        /* ==============================
+        * атакует AI (Игрок контратакует)
+        ================================= */
+        Ai.prototype.aiAttack = function () {
+            var result;
+            result = this.tacticsAttack(); // AI атакует
+            return [];
+        };
+        /** ==============================
+         * ТАКТИКА
+         ================================= */
+        /* тактика - контратака */
+        Ai.prototype.tacticsContrAttack = function () {
+            var result = [null, null, null];
+            // Обработка атакующих карт игрока
+            var playerCard;
+            var aiCard;
+            var cardIndex = -1;
+            for (var i = 0; i < this.data.playerSlots.length; i++) {
+                playerCard = this.data.playerSlots[i];
+                if (playerCard === null)
+                    continue;
+                if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power > 30) {
+                    cardIndex = this.getIndexCardAi(DEFENSE); // карта атаки сильная - приоритет защита
+                }
+                else if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power < 30) {
+                    if (Math.random() > 0.5)
+                        cardIndex = this.getIndexCardAi(ATTACK); // случайный выбор атака
+                    else
+                        cardIndex = this.getIndexCardAi(DEFENSE); // случайный выбор защита
+                }
+                if (cardIndex > 0) {
+                    result[i] = cardIndex; // записываем выбранную карту
+                }
+                if (this.energy <= 0)
+                    break;
+            }
+            if (this.energy <= 0)
+                return result;
+            // Обработка пустых слотов игрока
+            for (var i = 0; i < this.data.playerSlots.length; i++) {
+                playerCard = this.data.playerSlots[i];
+                if (playerCard === null) {
+                    cardIndex = this.getIndexCardAi(ATTACK); // слот игрока пуст - приоритет атакующая карта
+                    if (cardIndex > 0) {
+                        result[i] = cardIndex; // записываем выбранную карту
+                    }
+                }
+                if (this.energy <= 0)
+                    break;
+            }
+            if (this.energy <= 0)
+                return result;
+            // Проверка заполненности слотов AI
+            for (var i = 0; i < result.length; i++) {
+                if (result[i] === null) {
+                    cardIndex = this.getIndexCardAi(ATTACK); // слот AI пуст - приоритет атакующая карта
+                    if (cardIndex > 0) {
+                        result[i] = cardIndex; // записываем выбранную карту
+                    }
+                }
+                if (this.energy <= 0)
+                    break;
+            }
+            return result;
+        };
+        /* тактика - атака */
+        Ai.prototype.tacticsAttack = function () {
+            var result = [null, null, null];
+            return [];
+        };
+        /* тактика - защита */
+        Ai.prototype.tacticsDefense = function () {
+            var result = [null, null, null];
+            return [];
+        };
+        return Ai;
+    }());
+    AI.Ai = Ai;
+})(AI || (AI = {}));
 var Constants = (function () {
     function Constants() {
     }
@@ -46,6 +255,8 @@ var Constants = (function () {
     Constants.GAME_HEIGHT = 600;
     Constants.CARD_TYPE_ATTACK = 'card_type_attack';
     Constants.CARD_TYPE_DEFENSE = 'card_type_defense';
+    Constants.ACTIVE_PLAYER = "active_player";
+    Constants.ACTIVE_OPPONENT = "active_opponent";
     Constants.BUTTON_PLAY = 'button_play';
     Constants.BUTTON_SETTINGS = 'button_settings';
     Constants.BUTTON_SETTINGS_CLOSE = 'button_settings_close';
@@ -545,115 +756,6 @@ var Utilits;
     }());
     Utilits.Data = Data;
 })(Utilits || (Utilits = {}));
-var AI;
-(function (AI) {
-    var Ai = (function () {
-        function Ai() {
-        }
-        Ai.setData = function (data) {
-            AI.Ai.data = data;
-        };
-        Ai.getHits = function (statusAction) {
-            var result;
-            if (statusAction === Ai.ACTIVE_PLAYER) {
-                result = Ai.playerAttack();
-            }
-            else {
-                result = Ai.aiAttack();
-            }
-            Utilits.Data.debugLog("AI: hits:", result);
-            return result;
-        };
-        /* фактический урон который нанесет игрок*/
-        Ai.getTotalPlayerDamage = function () {
-            var damage = 0;
-            Ai.data.playerSlots.forEach(function (card) {
-                if (card === null)
-                    return;
-                if (card.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                    damage += Number(card.cardData.power);
-                }
-            });
-            Utilits.Data.debugLog("AI: player damage:", damage);
-            return damage;
-        };
-        Ai.getCardsAI = function (attackCards, defenseCards) {
-            attackCards = [];
-            defenseCards = [];
-            Ai.data.aiHand.forEach(function (card) {
-                if (card.cardData.energy <= Ai.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                    attackCards.push(card);
-                }
-                if (card.cardData.energy <= Ai.data.aiEnergy && card.cardData.type === Constants.CARD_TYPE_DEFENSE) {
-                    defenseCards.push(card);
-                }
-            });
-            attackCards.sort(function (a, b) {
-                return a.cardData.power - b.cardData.power;
-            });
-            defenseCards.sort(function (a, b) {
-                return a.cardData.power - b.cardData.power;
-            });
-            Utilits.Data.debugLog("AI: attack cards:", attackCards);
-            Utilits.Data.debugLog("AI: defense cards:", defenseCards);
-        };
-        /* ==============================
-        * атакует игрок (AI контратакует)
-        ================================= */
-        Ai.playerAttack = function () {
-            var result;
-            var damage = Ai.getTotalPlayerDamage(); // фактический урон который нанесет игрок
-            if (damage >= Ai.data.aiLife) {
-                result = Ai.tacticsDefense(); // AI под угрозой уничтожения (тактика защиты)
-            }
-            else {
-                result = Ai.tacticsContrAttack(); // AI в не опасности (тактика нападения)
-            }
-            return result;
-        };
-        /* ==============================
-        * атакует AI (Игрок контратакует)
-        ================================= */
-        Ai.aiAttack = function () {
-            var result;
-            result = Ai.tacticsAttack(); // AI атакует
-            return [];
-        };
-        /** ==============================
-         * ТАКТИКА
-         ================================= */
-        /* тактика - контратака */
-        Ai.tacticsContrAttack = function () {
-            var result = [];
-            var energy = Ai.data.aiEnergy;
-            var attackCards;
-            var defenseCards;
-            Ai.getCardsAI(attackCards, defenseCards);
-            Ai.data.playerSlots.forEach(function (card) {
-                if (card === null)
-                    return;
-                // Блокировка карт наносящих максимальный урон
-                if (card.cardData.type === Constants.CARD_TYPE_ATTACK && card.cardData.power > 25) {
-                }
-            });
-            return [];
-        };
-        /* тактика - атака */
-        Ai.tacticsAttack = function () {
-            var result = [];
-            return [];
-        };
-        /* тактика - защита */
-        Ai.tacticsDefense = function () {
-            var result = [];
-            return [];
-        };
-        Ai.ACTIVE_PLAYER = "active_player";
-        Ai.ACTIVE_OPPONENT = "active_opponent";
-        return Ai;
-    }());
-    AI.Ai = Ai;
-})(AI || (AI = {}));
 var Fabrique;
 (function (Fabrique) {
     var AnimationBigKen = (function (_super) {
@@ -2283,6 +2385,7 @@ var StreetFighterCards;
     var FighterProgressBar = Fabrique.FighterProgressBar;
     var Slot = Fabrique.Slot;
     var Timer = Fabrique.Timer;
+    var Ai = AI.Ai;
     var Level = (function (_super) {
         __extends(Level, _super);
         function Level() {
@@ -2312,9 +2415,10 @@ var StreetFighterCards;
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
             this.status = {};
-            this.status.active = Level.ACTIVE_PLAYER;
+            this.status.active = Constants.ACTIVE_PLAYER;
             this.status.playerHit = false;
             this.status.opponentHit = false;
+            this.opponentAi = new Ai();
             this.createBackground();
             this.createTimer();
             this.createSlots();
@@ -2326,6 +2430,7 @@ var StreetFighterCards;
             this.createBorder();
         };
         Level.prototype.shutdown = function () {
+            this.opponentAi = null;
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
             this.boardGroup.removeAll();
@@ -2519,7 +2624,7 @@ var StreetFighterCards;
                             // меняем стэк
                             this.playerSlots[index] = this.playerHand.splice(sprite.indexInHand, 1)[0];
                             // передвигаем карты в руке
-                            this.moveHandCardToEmpty();
+                            this.moveHandCardToEmptyPlayer();
                             Utilits.Data.debugLog("Slots/Hand:", [this.playerSlots, this.playerHand]);
                         }
                         break;
@@ -2554,7 +2659,7 @@ var StreetFighterCards;
             Utilits.Data.debugLog("Opponent Hand:", this.opponentHand);
         };
         // АНИМАЦИЯ
-        Level.prototype.moveHandCardToEmpty = function () {
+        Level.prototype.moveHandCardToEmptyPlayer = function () {
             if (this.playerHand.length < 5) {
                 var tweenMoveToEmpty = void 0;
                 for (var i = 0; i < this.playerHand.length; i++) {
@@ -2562,6 +2667,13 @@ var StreetFighterCards;
                     tweenMoveToEmpty = this.game.add.tween(this.playerHand[i]);
                     tweenMoveToEmpty.to({ x: this.handPoints[i][0] }, 250, 'Linear');
                     tweenMoveToEmpty.start();
+                }
+            }
+        };
+        Level.prototype.moveHandCardToEmptyOpponent = function () {
+            if (this.opponentHand.length < 5) {
+                for (var i = 0; i < this.opponentHand.length; i++) {
+                    this.opponentHand[i].indexInHand = i;
                 }
             }
         };
@@ -2591,7 +2703,7 @@ var StreetFighterCards;
         };
         // ХОД
         Level.prototype.endTurn = function () {
-            if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
+            if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === false) {
                 /**
                  * Ход игрока.
                  * Время выкладывать карты игрока вышло.
@@ -2609,10 +2721,10 @@ var StreetFighterCards;
                 this.opponentDataAI.playerEnergy = this.playerEnergy;
                 this.opponentDataAI.playerLife = this.playerLife;
                 this.opponentDataAI.playerSlots = this.playerSlots;
-                AI.Ai.setData(this.opponentDataAI);
-                this.opponentHitsAI = AI.Ai.getHits(this.status.active);
+                this.opponentAi.setData(this.opponentDataAI);
+                this.opponentHitsAI = this.opponentAi.getHits(this.status.active);
             }
-            else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
+            else if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
                 /**
                  * Ход игрока.
                  * Время выкладывать карты оппонента вышло.
@@ -2620,14 +2732,14 @@ var StreetFighterCards;
                  * Ход передается оппоненту
                  */
                 this.buttonTablo.visible = false;
-                this.status.active = Level.ACTIVE_OPPONENT;
+                this.status.active = Constants.ACTIVE_OPPONENT;
                 this.status.playerHit = false;
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(false);
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
             }
-            else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+            else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
                 /**
                  * Ход оппонента.
                  * Время выкладывать карты оппонента вышло.
@@ -2639,7 +2751,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(true);
                 this.timer.setMessage("Ваш ход");
             }
-            else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+            else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === true) {
                 /**
                  * Ход оппонента.
                  * Время выкладывать карты игрока вышло.
@@ -2647,7 +2759,7 @@ var StreetFighterCards;
                  * Ход передается игроку
                  */
                 this.buttonTablo.visible = true;
-                this.status.active = Level.ACTIVE_PLAYER;
+                this.status.active = Constants.ACTIVE_PLAYER;
                 this.status.playerHit = false;
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(true);
@@ -2657,13 +2769,12 @@ var StreetFighterCards;
             Utilits.Data.debugLog("Status", this.status);
         };
         Level.Name = "level";
-        Level.ACTIVE_PLAYER = "active_player";
-        Level.ACTIVE_OPPONENT = "active_opponent";
         return Level;
     }(Phaser.State));
     StreetFighterCards.Level = Level;
 })(StreetFighterCards || (StreetFighterCards = {}));
 /// <reference path="..\node_modules\phaser-ce\typescript\phaser.d.ts" />
+/// <reference path="AI\AI.ts" />
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
 /// <reference path="Data\Images.ts" />
@@ -2673,7 +2784,6 @@ var StreetFighterCards;
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
 /// <reference path="Data\Utilits.ts" />
-/// <reference path="Data\AI.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />

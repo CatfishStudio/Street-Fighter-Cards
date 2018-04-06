@@ -7,6 +7,7 @@ module StreetFighterCards {
     import FighterProgressBar = Fabrique.FighterProgressBar;
     import Slot = Fabrique.Slot;
     import Timer = Fabrique.Timer;
+    import Ai = AI.Ai;
 
     export interface IStatus {
         active: string;         // ход Игрока или Оппонента
@@ -32,9 +33,7 @@ module StreetFighterCards {
         private slots: Slot[];
 
         private status: IStatus;
-        private static ACTIVE_PLAYER = "active_player";
-        private static ACTIVE_OPPONENT = "active_opponent";
-
+        
         // Player
         private playerAnimation: AnimationFighter;
         private playerProgressBar: FighterProgressBar;
@@ -45,6 +44,7 @@ module StreetFighterCards {
         private playerSlots: Card[];
 
         // Opponent
+        private opponentAi: Ai;
         private opponentAnimation: AnimationFighter;
         private opponentProgressBar: FighterProgressBar;
         private opponentLife: number;
@@ -88,9 +88,11 @@ module StreetFighterCards {
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
             this.status = <IStatus>{};
-            this.status.active = Level.ACTIVE_PLAYER;
+            this.status.active = Constants.ACTIVE_PLAYER;
             this.status.playerHit = false;
             this.status.opponentHit = false;
+
+            this.opponentAi = new Ai();
 
             this.createBackground();
             this.createTimer();
@@ -104,6 +106,7 @@ module StreetFighterCards {
         }
 
         public shutdown(): void {
+            this.opponentAi = null;
             this.buttonExit.shutdown();
             this.buttonSettings.shutdown();
             this.boardGroup.removeAll();
@@ -406,7 +409,7 @@ module StreetFighterCards {
 
         // ХОД
         private endTurn(): void {
-            if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === false) {
+            if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === false) {
                 /**
                  * Ход игрока.
                  * Время выкладывать карты игрока вышло. 
@@ -425,9 +428,9 @@ module StreetFighterCards {
                 this.opponentDataAI.playerEnergy = this.playerEnergy;
                 this.opponentDataAI.playerLife = this.playerLife;
                 this.opponentDataAI.playerSlots = this.playerSlots;
-                AI.Ai.setData(this.opponentDataAI);
-                this.opponentHitsAI = AI.Ai.getHits(this.status.active);
-            } else if (this.status.active === Level.ACTIVE_PLAYER && this.status.playerHit === true) {
+                this.opponentAi.setData(this.opponentDataAI);
+                this.opponentHitsAI = this.opponentAi.getHits(this.status.active);
+            } else if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
                 /**
                  * Ход игрока. 
                  * Время выкладывать карты оппонента вышло.
@@ -439,13 +442,13 @@ module StreetFighterCards {
 
 
                 this.buttonTablo.visible = false;
-                this.status.active = Level.ACTIVE_OPPONENT;
+                this.status.active = Constants.ACTIVE_OPPONENT;
                 this.status.playerHit = false;
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(false);
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-            } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+            } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
                 /**
                  * Ход оппонента.
                  * Время выкладывать карты оппонента вышло. 
@@ -456,7 +459,7 @@ module StreetFighterCards {
                 this.status.opponentHit = true;
                 this.cardsDragAndDrop(true);
                 this.timer.setMessage("Ваш ход");
-            } else if (this.status.active === Level.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+            } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === true) {
                 /**
                  * Ход оппонента. 
                  * Время выкладывать карты игрока вышло.
@@ -467,7 +470,7 @@ module StreetFighterCards {
 
 
                 this.buttonTablo.visible = true;
-                this.status.active = Level.ACTIVE_PLAYER;
+                this.status.active = Constants.ACTIVE_PLAYER;
                 this.status.playerHit = false;
                 this.status.opponentHit = false;
                 this.cardsDragAndDrop(true);

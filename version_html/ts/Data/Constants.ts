@@ -5,6 +5,9 @@ class Constants {
     public static CARD_TYPE_ATTACK      = 'card_type_attack';
     public static CARD_TYPE_DEFENSE     = 'card_type_defense';
 
+    public static ACTIVE_PLAYER         = "active_player";
+    public static ACTIVE_OPPONENT       = "active_opponent";
+
     public static BUTTON_PLAY           = 'button_play';
     public static BUTTON_SETTINGS       = 'button_settings';
     public static BUTTON_SETTINGS_CLOSE = 'button_settings_close';
