@@ -88,6 +88,7 @@ var AI;
                 result = this.aiAttack();
             }
             Utilits.Data.debugLog("AI: hits:", result);
+            Utilits.Data.debugLog("AI: energy:", this.energy);
             return result;
         };
         /* фактический урон который нанесет игрок*/
@@ -104,14 +105,14 @@ var AI;
             return damage;
         };
         /* основная логика расчета карты для хода */
-        Ai.prototype.getHitCardAI = function (priority) {
+        Ai.prototype.getHitCardAI = function (priority, exception) {
             var hit = {};
             var aiCard;
             if (this.attackCards.length <= 0 && this.defenseCards.length <= 0)
                 return hit;
             // поиск приоритетной карты
             if (priority === ATTACK && this.attackCards.length > 0) {
-                for (var i = this.attackCards.length - 1; i > 0; i--) {
+                for (var i = this.attackCards.length - 1; i >= 0; i--) {
                     aiCard = this.attackCards[i];
                     if (aiCard.cardData.energy <= this.energy) {
                         hit.index = aiCard.indexInHand;
@@ -122,7 +123,7 @@ var AI;
                 }
             }
             else if (priority === DEFENSE && this.defenseCards.length > 0) {
-                for (var i = this.defenseCards.length - 1; i > 0; i--) {
+                for (var i = this.defenseCards.length - 1; i >= 0; i--) {
                     aiCard = this.defenseCards[i];
                     if (aiCard.cardData.energy <= this.energy) {
                         hit.index = aiCard.indexInHand;
@@ -132,24 +133,28 @@ var AI;
                     }
                 }
             }
-            // поиск любой подходящей карты
+            // поиск любой подходящей карты с учетом исключения
             if (hit.index === undefined || hit.index === null) {
-                for (var i = this.attackCards.length - 1; i > 0; i--) {
-                    aiCard = this.attackCards[i];
-                    if (aiCard.cardData.energy <= this.energy) {
-                        hit.index = aiCard.indexInHand;
-                        hit.energy = aiCard.cardData.energy;
-                        this.attackCards.splice(i, 1);
-                        return hit;
+                if (exception === DEFENSE || exception === null) {
+                    for (var i = this.attackCards.length - 1; i >= 0; i--) {
+                        aiCard = this.attackCards[i];
+                        if (aiCard.cardData.energy <= this.energy) {
+                            hit.index = aiCard.indexInHand;
+                            hit.energy = aiCard.cardData.energy;
+                            this.attackCards.splice(i, 1);
+                            return hit;
+                        }
                     }
                 }
-                for (var i = this.defenseCards.length - 1; i > 0; i--) {
-                    aiCard = this.defenseCards[i];
-                    if (aiCard.cardData.energy <= this.energy) {
-                        hit.index = aiCard.indexInHand;
-                        hit.energy = aiCard.cardData.energy;
-                        this.defenseCards.splice(i, 1);
-                        return hit;
+                if (exception === ATTACK || exception === null) {
+                    for (var i = this.defenseCards.length - 1; i >= 0; i--) {
+                        aiCard = this.defenseCards[i];
+                        if (aiCard.cardData.energy <= this.energy) {
+                            hit.index = aiCard.indexInHand;
+                            hit.energy = aiCard.cardData.energy;
+                            this.defenseCards.splice(i, 1);
+                            return hit;
+                        }
                     }
                 }
             }
@@ -162,10 +167,10 @@ var AI;
             var result;
             var damage = this.getTotalPlayerDamage(); // фактический урон который нанесет игрок
             if (damage >= this.data.aiLife) {
-                result = this.tacticsDefense(); // AI под угрозой уничтожения (тактика защиты)
+                result = this.tactics(true, true); // AI под угрозой уничтожения (тактика защиты)
             }
             else {
-                result = this.tacticsContrAttack(); // AI в не опасности (тактика нападения)
+                result = this.tactics(true, false); // AI в не опасности (тактика нападения)
             }
             return result;
         };
@@ -174,72 +179,86 @@ var AI;
         ================================= */
         Ai.prototype.aiAttack = function () {
             var result;
-            result = this.tacticsAttack(); // AI атакует
-            return [];
+            result = this.tactics(false, false); // AI атакует (тактика нападения)
+            return result;
         };
         /** ==============================
          * ТАКТИКА
          ================================= */
-        /* тактика - контратака */
-        Ai.prototype.tacticsContrAttack = function () {
+        /* тактика - атака / контратака */
+        Ai.prototype.tactics = function (contrAttack, tacticsDefense) {
             var result = [null, null, null];
-            // Обработка атакующих карт игрока
             var playerCard;
             var aiCard;
-            var hit = {};
-            for (var i = 0; i < this.data.playerSlots.length; i++) {
-                playerCard = this.data.playerSlots[i];
-                if (playerCard === null)
-                    continue;
-                if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power > 30) {
-                    hit = this.getHitCardAI(DEFENSE); // карта атаки сильная - приоритет защита
-                }
-                else if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power < 30) {
-                    if (Math.random() > 0.5)
-                        hit = this.getHitCardAI(ATTACK); // случайный выбор атака
-                    else
-                        hit = this.getHitCardAI(DEFENSE); // случайный выбор защита
-                }
-                if (hit.index !== undefined && hit.index !== null && result[i] === null) {
-                    result[i] = hit.index; // записываем выбранную карту AI
-                    this.energy -= hit.energy; // уменьшаем кол-во энергии AI
-                }
-                hit = {};
-                if (this.energy <= 0)
-                    break;
-            }
-            if (this.energy <= 0)
-                return result;
-            // Обработка пустых слотов игрока
+            var hit;
+            // Обработка атакующих карт игрока (при контратаке)
             hit = {};
-            for (var i = 0; i < this.data.playerSlots.length; i++) {
-                playerCard = this.data.playerSlots[i];
-                if (playerCard === null) {
-                    hit = this.getHitCardAI(ATTACK); // слот игрока пуст - приоритет атакующая карта
+            if (contrAttack === true) {
+                for (var i = 0; i < this.data.playerSlots.length; i++) {
+                    playerCard = this.data.playerSlots[i];
+                    if (playerCard === null)
+                        continue;
+                    if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power > 30) {
+                        hit = this.getHitCardAI(DEFENSE, ATTACK); // карта атаки сильная - приоритет защита
+                    }
+                    else if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK && playerCard.cardData.power < 30) {
+                        if (tacticsDefense === true) {
+                            hit = this.getHitCardAI(DEFENSE, ATTACK);
+                        }
+                        else {
+                            //if (Math.random() > 0.5) hit = this.getHitCardAI(ATTACK, DEFENSE);   // случайный выбор атака
+                            //else hit = this.getHitCardAI(DEFENSE, ATTACK);                      // случайный выбор защита
+                            hit = this.getHitCardAI(DEFENSE, null);
+                        }
+                    }
                     if (hit.index !== undefined && hit.index !== null && result[i] === null) {
                         result[i] = hit.index; // записываем выбранную карту AI
                         this.energy -= hit.energy; // уменьшаем кол-во энергии AI
                     }
+                    hit = {};
+                    if (this.energy <= 0)
+                        break;
                 }
-                hit = {};
                 if (this.energy <= 0)
-                    break;
+                    return result;
             }
-            if (this.energy <= 0)
-                return result;
-            // Проверка заполненности слотов AI
+            // Обработка пустых слотов игрока (при атаке)
             hit = {};
-            for (var i = 0; i < result.length; i++) {
-                if (result[i] === null) {
-                    hit = this.getHitCardAI(ATTACK); // слот AI пуст - приоритет атакующая карта
-                    if (hit.index !== undefined && hit.index !== null && result[i] === null) {
-                        result[i] = hit.index; // записываем выбранную карту AI
-                        this.energy -= hit.energy; // уменьшаем кол-во энергии AI
+            if (contrAttack === false) {
+                for (var i = 0; i < this.data.playerSlots.length; i++) {
+                    playerCard = this.data.playerSlots[i];
+                    if (playerCard === null) {
+                        hit = this.getHitCardAI(ATTACK, DEFENSE); // слот игрока пуст - приоритет атакующая карта
+                        if (hit.index !== undefined && hit.index !== null && result[i] === null) {
+                            result[i] = hit.index; // записываем выбранную карту AI
+                            this.energy -= hit.energy; // уменьшаем кол-во энергии AI
+                        }
                     }
+                    hit = {};
+                    if (this.energy <= 0)
+                        break;
                 }
-                hit = {};
                 if (this.energy <= 0)
-                    break;
+                    return result;
+            }
+            // Проверка заполненности слотов AI если еще осталась энергия
+            hit = {};
+            if (this.energy > 0) {
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i] === null) {
+                        hit = this.getHitCardAI(ATTACK, DEFENSE); // слот AI пуст - приоритет атакующая карта
+                        if (hit.index !== undefined && hit.index !== null && result[i] === null) {
+                            result[i] = hit.index; // записываем выбранную карту AI
+                            this.energy -= hit.energy; // уменьшаем кол-во энергии AI
+                        }
+                        var ix = hit.index;
+                        var ey = hit.energy;
+                        console.error(ix, ey);
+                    }
+                    hit = {};
+                    if (this.energy <= 0)
+                        break;
+                }
             }
             return result;
         };
