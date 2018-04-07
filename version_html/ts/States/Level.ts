@@ -335,7 +335,7 @@ module StreetFighterCards {
             }
         }
 
-        // АНИМАЦИЯ
+        // АНИМАЦИЯ - Игрок
         private moveCardDeckToHandPlayer(): void { // Раздача карт из колоды игрок
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
@@ -352,15 +352,7 @@ module StreetFighterCards {
             }
         }
 
-        private moveCardDeckToHandOpponent(): void { // Раздача карт из колоды AI
-            while(this.opponentHand.length < 5){
-                this.opponentHand.push(this.opponentDeck.shift());
-                this.opponentHand[this.opponentHand.length - 1].indexInHand = this.opponentHand.length - 1;
-            }
-            Utilits.Data.debugLog("Opponent Hand:", this.opponentHand);
-        }
-
-        // АНИМАЦИЯ
+        // АНИМАЦИЯ - Игрок
         private moveHandCardToEmptyPlayer(): void {    // Смещение карт в руке на пустые места
             if (this.playerHand.length < 5) {
                 let tweenMoveToEmpty: Phaser.Tween;
@@ -381,7 +373,7 @@ module StreetFighterCards {
             }
         }
 
-        // АНИМАЦИЯ
+        // АНИМАЦИЯ - Игрок
         private returnCardToHand(card: Card): void {   // Вернуть карту в руку
             this.tween = this.game.add.tween(card);
             this.tween.to({
@@ -397,7 +389,8 @@ module StreetFighterCards {
             this.handGroup.removeChild(card);
         }
 
-        private cardsDragAndDrop(value: boolean): void { // блокировать или разблокировать все карты в руке
+        // блокировать или разблокировать все карты в руке
+        private cardsDragAndDrop(value: boolean): void { 
             this.playerHand.forEach((card: Card) => {
                 card.dragAndDrop(value);
                 if (value === false) {
@@ -406,6 +399,51 @@ module StreetFighterCards {
                 }
             })
         }
+
+        // АНИМАЦИЯ - AI
+        private moveCardDeckToHandOpponent(): void {    // Раздача карт из колоды AI
+            while(this.opponentHand.length < 5){
+                this.opponentHand.push(this.opponentDeck.shift());
+                this.opponentHand[this.opponentHand.length - 1].indexInHand = this.opponentHand.length - 1;
+            }
+            Utilits.Data.debugLog("Opponent Hand:", this.opponentHand);
+        }
+
+        private moveCardHandToBoardOpponent(): void {   // AI кладет карты в слоты
+            if (this.opponentHitsAI.length > 0) {
+                let tweenMoveToSlot: Phaser.Tween;
+                let tweenScale: Phaser.Tween;
+                let card:Card;
+                let indexInHand:number;
+                for (let i: number = 0; i < this.opponentHitsAI.length; i++) {
+                    indexInHand = this.opponentHitsAI[i];
+                    card = this.opponentHand[indexInHand];
+                    if(card === undefined || card === null) continue;
+                    // уменьшение энергии
+                    this.opponentEnergy -= card.cardData.energy;
+                    this.opponentProgressBar.setEnergy(this.opponentEnergy);
+                    // меняем группу
+                    this.boardGroup.addChild(card);
+                    this.group.removeChild(card);
+                    // меняем стэк
+                    /////////////this.opponentSlots[i] = this.opponentHand.splice(card.indexInHand, 1)[0];
+                    // передвигаем карты в руке
+                    /////////////////this.moveHandCardToEmptyPlayer();
+
+                    // помещаем карту в слот
+                    card.reduce(true);
+                    tweenMoveToSlot = this.game.add.tween(card);
+                    tweenMoveToSlot.to({ x: this.slotsPoints[i+3][0]+1, y: this.slotsPoints[i+3][1]+1}, 250, 'Linear');
+                    tweenMoveToSlot.start();
+
+                    tweenScale = this.game.add.tween(card.scale);
+                    tweenScale.to({ x: 0.65, y: 0.65 }, 250, 'Linear');
+                    tweenScale.start();
+
+                    Utilits.Data.debugLog("AI: Slots/Hand:", [this.playerSlots, this.playerHand]);
+                }
+            }
+        }        
 
         // ХОД
         private endTurn(): void {
@@ -430,6 +468,7 @@ module StreetFighterCards {
                 this.opponentDataAI.playerSlots = this.playerSlots;
                 this.opponentAi.setData(this.opponentDataAI);
                 this.opponentHitsAI = this.opponentAi.getHits(this.status.active);
+                this.moveCardHandToBoardOpponent();
             } else if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
                 /**
                  * Ход игрока. 

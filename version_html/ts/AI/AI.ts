@@ -239,9 +239,7 @@ module AI {
                             result[i] = hit.index;              // записываем выбранную карту AI
                             this.energy -= hit.energy;          // уменьшаем кол-во энергии AI
                         }
-                        let ix = hit.index;
-                        let ey = hit.energy;
-                        console.error(ix, ey);
+                        Utilits.Data.debugLog("AI: empty slot: ", hit.index)
                     }
                     hit = <IHit>{};
                     if (this.energy <= 0) break;
