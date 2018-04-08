@@ -2427,6 +2427,7 @@ var StreetFighterCards;
         Level.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
+            this.borderGroup = new Phaser.Group(this.game, this.stage);
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = 5;
@@ -2461,6 +2462,7 @@ var StreetFighterCards;
             this.buttonSettings.shutdown();
             this.boardGroup.removeAll();
             this.handGroup.removeAll();
+            this.borderGroup.removeAll();
             this.timer.shutdown();
             this.buttonTablo.shutdown();
             this.slots.forEach(function (slot) {
@@ -2588,7 +2590,7 @@ var StreetFighterCards;
         };
         Level.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
-            this.group.addChild(border);
+            this.borderGroup.addChild(border);
         };
         Level.prototype.createDeck = function () {
             var _this = this;
@@ -2737,9 +2739,9 @@ var StreetFighterCards;
                 var indexInHand = void 0;
                 for (var i = 0; i < this.opponentHitsAI.length; i++) {
                     indexInHand = this.opponentHitsAI[i];
-                    card = this.opponentHand[indexInHand];
-                    if (card === undefined || card === null)
+                    if (indexInHand === undefined || indexInHand === null)
                         continue;
+                    card = this.opponentHand[indexInHand];
                     // уменьшение энергии
                     this.opponentEnergy -= card.cardData.energy;
                     this.opponentProgressBar.setEnergy(this.opponentEnergy);
@@ -2747,10 +2749,9 @@ var StreetFighterCards;
                     this.boardGroup.addChild(card);
                     this.group.removeChild(card);
                     // меняем стэк
-                    /////////////this.opponentSlots[i] = this.opponentHand.splice(card.indexInHand, 1)[0];
-                    // передвигаем карты в руке
-                    /////////////////this.moveHandCardToEmptyPlayer();
-                    // помещаем карту в слот
+                    this.opponentSlots[i] = card;
+                    this.opponentHand[card.indexInHand] = null;
+                    // анимация: помещаем карту в слот
                     card.reduce(true);
                     tweenMoveToSlot = this.game.add.tween(card);
                     tweenMoveToSlot.to({ x: this.slotsPoints[i + 3][0] + 1, y: this.slotsPoints[i + 3][1] + 1 }, 250, 'Linear');
@@ -2758,8 +2759,20 @@ var StreetFighterCards;
                     tweenScale = this.game.add.tween(card.scale);
                     tweenScale.to({ x: 0.65, y: 0.65 }, 250, 'Linear');
                     tweenScale.start();
-                    Utilits.Data.debugLog("AI: Slots/Hand:", [this.playerSlots, this.playerHand]);
                 }
+                // коррекция данных в руке (передвигаем карты в руке)
+                var indexCorrect = 0;
+                for (var i = 0; i < this.opponentHand.length; i++) {
+                    if (this.opponentHand[i] === null) {
+                        this.opponentHand.splice(i, 1);
+                        i--;
+                    }
+                    else {
+                        this.opponentHand[i].indexInHand = indexCorrect;
+                        indexCorrect++;
+                    }
+                }
+                Utilits.Data.debugLog("AI: Slots/Hand:", [this.opponentSlots, this.opponentHand]);
             }
         };
         // ХОД
