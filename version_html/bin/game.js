@@ -224,23 +224,21 @@ var AI;
             }
             // Обработка пустых слотов игрока (при атаке)
             hit = {};
-            if (contrAttack === false) {
-                for (var i = 0; i < this.data.playerSlots.length; i++) {
-                    playerCard = this.data.playerSlots[i];
-                    if (playerCard === null) {
-                        hit = this.getHitCardAI(ATTACK, DEFENSE); // слот игрока пуст - приоритет атакующая карта
-                        if (hit.index !== undefined && hit.index !== null && result[i] === null) {
-                            result[i] = hit.index; // записываем выбранную карту AI
-                            this.energy -= hit.energy; // уменьшаем кол-во энергии AI
-                        }
+            for (var i = 0; i < this.data.playerSlots.length; i++) {
+                playerCard = this.data.playerSlots[i];
+                if (playerCard === null) {
+                    hit = this.getHitCardAI(ATTACK, DEFENSE); // слот игрока пуст - приоритет атакующая карта
+                    if (hit.index !== undefined && hit.index !== null && result[i] === null) {
+                        result[i] = hit.index; // записываем выбранную карту AI
+                        this.energy -= hit.energy; // уменьшаем кол-во энергии AI
                     }
-                    hit = {};
-                    if (this.energy <= 0)
-                        break;
                 }
+                hit = {};
                 if (this.energy <= 0)
-                    return result;
+                    break;
             }
+            if (this.energy <= 0)
+                return result;
             // Проверка заполненности слотов AI если еще осталась энергия
             hit = {};
             if (this.energy > 0) {

@@ -132,7 +132,7 @@ module AI {
                             return hit;
                         }
                     }
-                } 
+                }
                 if (exception === ATTACK || exception === null) {           // поиск только карт защиты
                     for (let i = this.defenseCards.length - 1; i >= 0; i--) {
                         aiCard = this.defenseCards[i];
@@ -213,21 +213,19 @@ module AI {
 
             // Обработка пустых слотов игрока (при атаке)
             hit = <IHit>{};
-            if (contrAttack === false) {
-                for (let i = 0; i < this.data.playerSlots.length; i++) {
-                    playerCard = this.data.playerSlots[i];
-                    if (playerCard === null) {
-                        hit = this.getHitCardAI(ATTACK, DEFENSE); // слот игрока пуст - приоритет атакующая карта
-                        if (hit.index !== undefined && hit.index !== null && result[i] === null) {
-                            result[i] = hit.index;              // записываем выбранную карту AI
-                            this.energy -= hit.energy;          // уменьшаем кол-во энергии AI
-                        }
+            for (let i = 0; i < this.data.playerSlots.length; i++) {
+                playerCard = this.data.playerSlots[i];
+                if (playerCard === null) {
+                    hit = this.getHitCardAI(ATTACK, DEFENSE); // слот игрока пуст - приоритет атакующая карта
+                    if (hit.index !== undefined && hit.index !== null && result[i] === null) {
+                        result[i] = hit.index;              // записываем выбранную карту AI
+                        this.energy -= hit.energy;          // уменьшаем кол-во энергии AI
                     }
-                    hit = <IHit>{};
-                    if (this.energy <= 0) break;
                 }
-                if (this.energy <= 0) return result;
+                hit = <IHit>{};
+                if (this.energy <= 0) break;
             }
+            if (this.energy <= 0) return result;
 
             // Проверка заполненности слотов AI если еще осталась энергия
             hit = <IHit>{};
