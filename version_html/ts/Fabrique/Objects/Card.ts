@@ -104,6 +104,5 @@ module Fabrique {
             this.addChild(energyText);
             this.footer.addChild(powerText);
         }
-
     }
 }

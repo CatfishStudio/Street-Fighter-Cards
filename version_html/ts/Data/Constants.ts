@@ -8,6 +8,13 @@ class Constants {
     public static ACTIVE_PLAYER         = "active_player";
     public static ACTIVE_OPPONENT       = "active_opponent";
 
+    public static ANIMATION_TYPE_STANCE = "animation_type_stance";
+    public static ANIMATION_TYPE_BLOCK  = "animation_type_block";
+    public static ANIMATION_TYPE_HIT    = "animation_type_hit";
+    public static ANIMATION_TYPE_DAMAGE = "animation_type_damage";
+    public static ANIMATION_PLAYER_COMPLETE     = "animation_player_complete";
+    public static ANIMATION_OPPONENT_COMPLETE   = "animation_opponent_complete";
+
     public static BUTTON_PLAY           = 'button_play';
     public static BUTTON_SETTINGS       = 'button_settings';
     public static BUTTON_SETTINGS_CLOSE = 'button_settings_close';
