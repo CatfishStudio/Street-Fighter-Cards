@@ -2890,88 +2890,85 @@ var StreetFighterCards;
                  * Выполняются УДАРЫ выложенными картами.
                  * Ход передается игроку
                  */
-                Utilits.Data.debugLog("[Ход оппонента]", "Выполняются УДАРЫ картами");
-                this.status.active = Constants.ACTIVE_PLAYER; // первым ходит Игрок
-                this.buttonTablo.visible = true; // показываем кнопку Ход
-                this.status.playerHit = false; // Игрок получает очередь выкладывать карты
-                this.status.opponentHit = false; // ИИ ожидает своей очереди выкладывать карты
                 this.cardsDragAndDrop(true); // разрешаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer(); // останачливаем таймер
+                Utilits.Data.debugLog("[Ход оппонента]", "Выполняются УДАРЫ картами");
+                this.implementHits();
             }
             Utilits.Data.debugLog("Status", this.status);
         };
         // ВЫПОЛНЕНИЕ УДАРОВ
         Level.prototype.implementHits = function () {
-            if (this.totalHits > 3) {
+            Utilits.Data.debugLog("Выполнение карты [слот/шаг]:", this.totalHits + " / " + this.steepHits);
+            if (this.totalHits > 2) {
                 this.totalHits = 0;
                 this.steepHits = 0;
-                this.status.active = Constants.ACTIVE_OPPONENT; // первым ходит ИИ
-                this.buttonTablo.visible = false; // скрываем кнопку Ход
-                this.status.playerHit = false; // Игрок ожидает своей очереди выкладывать карты
-                this.status.opponentHit = false; // ИИ получает очередь выкладывать карты
-                this.timer.setMessage("???");
+                this.playerAnimation.stanceAnimation();
+                this.opponentAnimation.stanceAnimation();
+                if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
+                    this.status.active = Constants.ACTIVE_OPPONENT; // первым ходит ИИ
+                    this.buttonTablo.visible = false; // скрываем кнопку Ход
+                    this.status.playerHit = false; // Игрок ожидает своей очереди выкладывать карты
+                    this.status.opponentHit = false; // ИИ получает очередь выкладывать карты
+                    this.timer.setMessage("Ход противника");
+                }
+                else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+                    this.status.active = Constants.ACTIVE_PLAYER; // первым ходит Игрок
+                    this.buttonTablo.visible = true; // показываем кнопку Ход
+                    this.status.playerHit = false; // Игрок получает очередь выкладывать карты
+                    this.status.opponentHit = false; // ИИ ожидает своей очереди выкладывать карты
+                    this.timer.setMessage("Ваш ход");
+                }
                 this.timer.runTimer();
                 return;
             }
-            var playerCard = this.playerSlots[this.totalHits];
-            var opponentCard = this.opponentSlots[this.totalHits];
-            console.log("TEST", opponentCard);
+            var playerCard = this.playerSlots[this.totalHits] === undefined ? null : this.playerSlots[this.totalHits];
+            var opponentCard = this.opponentSlots[this.totalHits] === undefined ? null : this.opponentSlots[this.totalHits];
             // ИГРОК: первым удары наносит 
             if (this.status.active === Constants.ACTIVE_PLAYER) {
-                // #1: слот оппонета пустой
-                if (opponentCard === null) {
-                    if (playerCard === null) {
-                        this.totalHits++;
-                        this.steepHits = 0;
-                        this.implementHits();
+                // #1: оба слота пустые
+                if (playerCard === null && opponentCard === null) {
+                    this.totalHits++;
+                    this.steepHits = 0;
+                    this.playerAnimation.stanceAnimation();
+                    this.opponentAnimation.stanceAnimation();
+                    this.implementHits();
+                }
+                // #2: оппонента пустой, слот игрока не пустой
+                if (opponentCard === null && playerCard !== null) {
+                    this.playerAnimation.hitAnimation(playerCard.cardData);
+                    if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                        this.opponentAnimation.damageAnimation(); // оппонент получает удары
                     }
                     else {
-                        this.playerAnimation.hitAnimation(playerCard.cardData);
-                        if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                            this.opponentAnimation.damageAnimation(); // оппонент получает удары
-                        }
-                        else {
-                            this.steepHits++; // оппонент ничего не делает
-                        }
+                        this.steepHits++; // оппонент ничего не делает
+                        this.opponentAnimation.stanceAnimation();
                     }
                 }
-                else if (opponentCard.cardData.type === Constants.CARD_TYPE_DEFENSE) {
-                    this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет блок
-                    if (playerCard === null) {
+                // #3: слот игрока пустой, стол оппонента не пустой
+                if (playerCard === null && opponentCard !== null) {
+                    this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет атаку
+                    if (opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                        this.playerAnimation.damageAnimation(); // игрок получает удары
+                    }
+                    else {
                         this.steepHits++; // игрок ничего не делает
-                    }
-                    else {
-                        this.playerAnimation.hitAnimation(playerCard.cardData);
+                        this.playerAnimation.stanceAnimation();
                     }
                 }
-                else {
-                    if (playerCard === null) {
-                        if (opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                            this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет атаку
-                            this.playerAnimation.damageAnimation(); // игрок получает удары
-                        }
-                        else {
-                            this.steepHits++; // игрок ничего не делает
-                            this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет блок
-                        }
+                // #4: оба слоты не пустые
+                if (playerCard !== null && opponentCard !== null) {
+                    if (opponentCard.cardData.type === Constants.CARD_TYPE_DEFENSE) {
+                        this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет блок
+                        this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                     }
                     else {
+                        this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
+                        this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
                     }
                 }
             }
-            // ИИ: первым удары наносит 
-            /*
-            if (this.status.active === Constants.ACTIVE_OPPONENT) {
-                if (this.playerSlots[0] === null) {             // слот игрока пуст (оппонент наносим удар)
-
-                } else if (this.playerSlots[0].cardData.type === Constants.CARD_TYPE_DEFENSE) {  // игрок в блоке
-
-                } else { // Оппонент наносит удар первым, игрок контратакует
-
-                }
-            }
-            */
         };
         // АНИМАЦИЯ ИГРОКОВ ВЫПОЛНЕНА
         Level.prototype.onAnimationComplete = function (target, hit) {
@@ -2984,8 +2981,7 @@ var StreetFighterCards;
             if (target === Constants.ANIMATION_TYPE_DAMAGE) {
                 this.steepHits++;
             }
-            Utilits.Data.debugLog('Анимация шага завершена [цель/тип]:', target + " " + hit);
-            Utilits.Data.debugLog("Выполнение карты [слот/шаг]:", this.totalHits + " / " + this.steepHits);
+            Utilits.Data.debugLog('Анимация шага завершена [цель/тип]:', target + "  " + hit);
             if (this.steepHits >= 2) {
                 this.steepHits = 0;
                 this.totalHits++;

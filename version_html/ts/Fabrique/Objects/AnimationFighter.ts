@@ -49,6 +49,7 @@ module Fabrique {
             
             if(cardData.type === Constants.CARD_TYPE_ATTACK){
                 this.animationType = Constants.ANIMATION_TYPE_HIT;
+
                 if (cardData.power > 20) {
                     this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animHitLeg);
                 } else {
@@ -56,6 +57,7 @@ module Fabrique {
                 }
             }else{
                 this.animationType = Constants.ANIMATION_TYPE_BLOCK;
+                
                 this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animBlock);
             }
             
