@@ -24,6 +24,9 @@ module Fabrique {
 
         private onComplete(sprite, animation): void {
             //console.log( (sprite as AnimationFighter).animation);
+            
+            if(this.animationType === Constants.ANIMATION_TYPE_STANCE) return;
+
             if(this.fighterType === Constants.ACTIVE_PLAYER){
                 this.event.dispatch(Constants.ANIMATION_PLAYER_COMPLETE, this.animationType);
             }else{
@@ -66,8 +69,8 @@ module Fabrique {
         }
 
         public damageAnimation():void {
-            this.animation.stop();
             this.animationType = Constants.ANIMATION_TYPE_DAMAGE;
+            this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animDamage);
             this.animation.onComplete.add(this.onComplete, this);
             this.animation.play(10, false, false);

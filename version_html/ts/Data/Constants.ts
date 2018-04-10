@@ -2,6 +2,10 @@ class Constants {
     public static GAME_WIDTH            = 800;
     public static GAME_HEIGHT           = 600;
 
+    public static PLAYER                = 'player';
+    public static OPPONENT              = 'opponent';
+    public static PLAYER_AND_OPPONENT   = 'player_and_opponent';
+
     public static CARD_TYPE_ATTACK      = 'card_type_attack';
     public static CARD_TYPE_DEFENSE     = 'card_type_defense';
 
