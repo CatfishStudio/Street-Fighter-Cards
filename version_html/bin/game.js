@@ -2873,7 +2873,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                Utilits.Data.debugLog("[Ход игрока]", "Выполняются УДАРЫ картами");
+                Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             }
             else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
@@ -2899,14 +2899,14 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(true); // разрешаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer(); // останачливаем таймер
-                Utilits.Data.debugLog("[Ход оппонента]", "Выполняются УДАРЫ картами");
+                Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
             //Utilits.Data.debugLog("Status", this.status);
         };
         // ВЫПОЛНЕНИЕ УДАРОВ
         Level.prototype.implementHits = function () {
-            Utilits.Data.debugLog("Выполнение карты [слот/шаг]:", this.totalHits + " / " + this.steepHits);
+            Utilits.Data.debugLog("IMPLEMENTATION: cards [slot/steep]:", [this.totalHits, this.steepHits]);
             this.targetDamage = null;
             if (this.totalHits > 2) {
                 this.totalHits = 0;
@@ -2980,6 +2980,7 @@ var StreetFighterCards;
                 if (opponentCard === null && playerCard !== null) {
                     if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
                         this.targetDamage = Constants.OPPONENT; // оппонент получает удары
+                        this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
                     }
                     else {
                         this.steepHits++; // оппонент ничего не делает
@@ -2991,6 +2992,7 @@ var StreetFighterCards;
                     if (playerCard === null && opponentCard !== null) {
                         if (opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
                             this.targetDamage = Constants.PLAYER; // игрок получает удары
+                            this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
                         }
                         else {
                             this.steepHits++; // игрок ничего не делает
@@ -3015,6 +3017,8 @@ var StreetFighterCards;
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
                             }
+                            this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
+                            this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
                         }
                     }
                 }
@@ -3024,7 +3028,7 @@ var StreetFighterCards;
         };
         // АНИМАЦИЯ УДАРОВ/БЛОКОВ/ПОВРЕЖДЕНИЙ - ВЫПОЛНЕНА
         Level.prototype.onAnimationComplete = function (target, hit) {
-            Utilits.Data.debugLog('Анимация шага завершена [цель/тип]:', target + "  " + hit);
+            Utilits.Data.debugLog('ANIMATION steep complete [target/type]:', [target, hit]);
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
                 this.steepHits++;
             }
@@ -3049,6 +3053,43 @@ var StreetFighterCards;
                 this.opponentAnimation.stanceAnimation();
                 this.implementHits();
             }
+        };
+        // Начисление урона
+        Level.prototype.damageCalculation = function (target, cardAttack, cardBlock) {
+            var attack = 0;
+            var block = 0;
+            var totalDamage = 0;
+            if (cardAttack === null) {
+                attack = 0;
+            }
+            else if (cardAttack.cardData.type === Constants.CARD_TYPE_DEFENSE) {
+                attack = 0;
+            }
+            else if (cardAttack.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                attack = cardAttack.cardData.power;
+            }
+            if (cardBlock === null) {
+                block = 0;
+            }
+            else if (cardBlock.cardData.type === Constants.CARD_TYPE_ATTACK) {
+                block = 0;
+            }
+            else if (cardBlock.cardData.type === Constants.CARD_TYPE_DEFENSE) {
+                block = cardBlock.cardData.power;
+            }
+            // Игроку начисляется урон
+            if (target === Constants.PLAYER) {
+                totalDamage = (attack - block) > 0 ? (attack - block) : 0;
+                this.playerLife -= totalDamage;
+                this.playerProgressBar.setLife(this.playerLife);
+            }
+            // Оппоненту начисляется урон
+            if (target === Constants.OPPONENT) {
+                totalDamage = (attack - block) > 0 ? (attack - block) : 0;
+                this.opponentLife -= totalDamage;
+                this.opponentProgressBar.setLife(this.opponentLife);
+            }
+            Utilits.Data.debugLog('DAMAGE:', [target, attack, block, totalDamage]);
         };
         Level.Name = "level";
         return Level;

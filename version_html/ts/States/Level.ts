@@ -508,7 +508,7 @@ module StreetFighterCards {
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
 
-                Utilits.Data.debugLog("[Ход игрока]", "Выполняются УДАРЫ картами");
+                Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
                 /**
@@ -533,7 +533,7 @@ module StreetFighterCards {
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer();                         // останачливаем таймер
 
-                Utilits.Data.debugLog("[Ход оппонента]", "Выполняются УДАРЫ картами");
+                Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
 
@@ -542,7 +542,7 @@ module StreetFighterCards {
 
         // ВЫПОЛНЕНИЕ УДАРОВ
         private implementHits() {
-            Utilits.Data.debugLog("Выполнение карты [слот/шаг]:", this.totalHits + " / " + this.steepHits);
+            Utilits.Data.debugLog("IMPLEMENTATION: cards [slot/steep]:", [this.totalHits, this.steepHits]);
 
             this.targetDamage = null;
 
@@ -622,7 +622,8 @@ module StreetFighterCards {
                 if (opponentCard === null && playerCard !== null) {
                     if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK) { // карта игрока атакующая
                         this.targetDamage = Constants.OPPONENT; // оппонент получает удары
-                    } else {
+                        this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
+                    } else { // игрок в блоке
                         this.steepHits++; // оппонент ничего не делает
                     }
                     this.playerAnimation.hitAnimation(playerCard.cardData);
@@ -632,6 +633,7 @@ module StreetFighterCards {
                     if (playerCard === null && opponentCard !== null) {
                         if (opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) { // оппонент наносит удар
                             this.targetDamage = Constants.PLAYER; // игрок получает удары
+                            this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
                         } else { // оппонент в блоке
                             this.steepHits++; // игрок ничего не делает
                         }
@@ -655,6 +657,8 @@ module StreetFighterCards {
                                 this.playerAnimation.hitAnimation(playerCard.cardData);         // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData);     // выполняется карта оппонента
                             }
+                            this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
+                            this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
                         }
                     }
                 }
@@ -667,7 +671,7 @@ module StreetFighterCards {
 
         // АНИМАЦИЯ УДАРОВ/БЛОКОВ/ПОВРЕЖДЕНИЙ - ВЫПОЛНЕНА
         private onAnimationComplete(target, hit): void {
-            Utilits.Data.debugLog('Анимация шага завершена [цель/тип]:', target + "  " + hit);
+            Utilits.Data.debugLog('ANIMATION steep complete [target/type]:', [target, hit]);
 
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
                 this.steepHits++;
@@ -695,7 +699,43 @@ module StreetFighterCards {
 
         }
 
+        // Начисление урона
+        private damageCalculation(target:string, cardAttack: Card, cardBlock: Card):void {
+            let attack:number = 0;
+            let block:number = 0;
+            let totalDamage:number = 0;
 
+            if(cardAttack === null){
+                attack = 0;
+            }else if(cardAttack.cardData.type === Constants.CARD_TYPE_DEFENSE){
+                attack = 0;
+            }else if(cardAttack.cardData.type === Constants.CARD_TYPE_ATTACK){
+                attack = cardAttack.cardData.power;
+            }
+
+            if(cardBlock === null){
+                block = 0;
+            } else if(cardBlock.cardData.type === Constants.CARD_TYPE_ATTACK){
+                block = 0;
+            } else if(cardBlock.cardData.type === Constants.CARD_TYPE_DEFENSE){
+                block = cardBlock.cardData.power;
+            }
+
+            // Игроку начисляется урон
+            if(target === Constants.PLAYER) { 
+                totalDamage = (attack - block) > 0 ? (attack - block) : 0;
+                this.playerLife -= totalDamage;
+                this.playerProgressBar.setLife(this.playerLife);
+            }
+            // Оппоненту начисляется урон
+            if(target === Constants.OPPONENT) { 
+                totalDamage = (attack - block) > 0 ? (attack - block) : 0;
+                this.opponentLife -= totalDamage;
+                this.opponentProgressBar.setLife(this.opponentLife);
+            }
+
+            Utilits.Data.debugLog('DAMAGE:', [target, attack, block, totalDamage]);
+        }
 
 
     }
