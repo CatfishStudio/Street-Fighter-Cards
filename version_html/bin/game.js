@@ -2487,13 +2487,14 @@ var StreetFighterCards;
             this.borderGroup = new Phaser.Group(this.game, this.stage);
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.opponentAi = new Ai();
+            this.energyCount = 5;
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
-            this.playerEnergy = 5;
+            this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
             this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
-            this.opponentEnergy = 5;
+            this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
@@ -2928,6 +2929,10 @@ var StreetFighterCards;
                     this.status.opponentHit = false; // ИИ ожидает своей очереди выкладывать карты
                     this.timer.setMessage("Ваш ход");
                 }
+                this.moveCardDeckToHandPlayer();
+                this.cardsDragAndDrop(false);
+                this.moveCardDeckToHandOpponent();
+                this.energyRecovery();
                 this.timer.runTimer();
                 return;
             }
@@ -3090,6 +3095,15 @@ var StreetFighterCards;
                 this.opponentProgressBar.setLife(this.opponentLife);
             }
             Utilits.Data.debugLog('DAMAGE:', [target, attack, block, totalDamage]);
+        };
+        // Восстановление энергии
+        Level.prototype.energyRecovery = function () {
+            if (this.energyCount < 10)
+                this.energyCount++;
+            this.playerEnergy = this.energyCount;
+            this.playerProgressBar.setEnergy(this.playerEnergy);
+            this.opponentEnergy = this.energyCount;
+            this.opponentProgressBar.setEnergy(this.opponentEnergy);
         };
         Level.Name = "level";
         return Level;

@@ -34,6 +34,7 @@ module StreetFighterCards {
         private slots: Slot[];
 
         private status: IStatus;
+        private energyCount: number;
 
         // Player
         private playerAnimation: AnimationFighter;
@@ -81,14 +82,16 @@ module StreetFighterCards {
 
             this.opponentAi = new Ai();
 
+            this.energyCount = 5;
+
             this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
-            this.playerEnergy = 5;
+            this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
 
             this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
-            this.opponentEnergy = 5;
+            this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
@@ -507,7 +510,6 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
@@ -567,6 +569,10 @@ module StreetFighterCards {
                     this.timer.setMessage("Ваш ход");
                 }
 
+                this.moveCardDeckToHandPlayer();
+                this.cardsDragAndDrop(false);
+                this.moveCardDeckToHandOpponent();
+                this.energyRecovery();
                 this.timer.runTimer();
                 return; 
             }
@@ -737,6 +743,13 @@ module StreetFighterCards {
             Utilits.Data.debugLog('DAMAGE:', [target, attack, block, totalDamage]);
         }
 
-
+        // Восстановление энергии
+        private energyRecovery():void {
+            if(this.energyCount < 10) this.energyCount++;
+            this.playerEnergy = this.energyCount;
+            this.playerProgressBar.setEnergy(this.playerEnergy);
+            this.opponentEnergy = this.energyCount;
+            this.opponentProgressBar.setEnergy(this.opponentEnergy);
+        }
     }
 }
