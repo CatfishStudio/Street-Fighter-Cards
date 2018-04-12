@@ -32,7 +32,42 @@ var StreetFighterCards;
             return Game.instance;
         };
         Game.prototype.start = function () {
+            Game.instance.onBlur.add(this.onGameBlur, this);
+            Game.instance.onFocus.add(this.onGameFocus, this);
+            Game.instance.onPause.add(this.onGamePause, this);
+            Game.instance.onResume.add(this.onGameResume, this);
             this.state.start(StreetFighterCards.Boot.Name);
+        };
+        Game.prototype.onGameBlur = function () {
+            var values = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                values[_i - 0] = arguments[_i];
+            }
+            console.log('-- Blur --', values);
+        };
+        Game.prototype.onGameFocus = function () {
+            var values = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                values[_i - 0] = arguments[_i];
+            }
+            console.log('-- Focus --', values);
+            //this.stage.disableVisibilityChange = false;
+        };
+        Game.prototype.onGamePause = function () {
+            var values = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                values[_i - 0] = arguments[_i];
+            }
+            console.log('-- Pause --', values);
+            //this.stage.disableVisibilityChange = true;
+            this.stage.disableVisibilityChange = false;
+        };
+        Game.prototype.onGameResume = function () {
+            var values = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                values[_i - 0] = arguments[_i];
+            }
+            console.log('-- Resume --', values);
         };
         Game.instance = null;
         return Game;
