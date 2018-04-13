@@ -37,22 +37,22 @@ module StreetFighterCards{
                         this.state.start(Boot.Name);
                 }
                 
-                private onGameBlur(...values):void {
-                        console.log('-- Blur --', values);
+                private onGameBlur(...events):void {
+                        console.log('-- Blur --', events);
                 }
 
-                private onGameFocus(...values):void {
-                        console.log('-- Focus --', values);
+                private onGameFocus(...events):void {
+                        console.log('-- Focus --', events);
                         //this.stage.disableVisibilityChange = false;
                 }
 
-                private onGamePause(...values):void {
-                        console.log('-- Pause --', values);
+                private onGamePause(...events):void {
+                        console.log('-- Pause --', events);
                         //this.stage.disableVisibilityChange = true;
                    }
 
-                private onGameResume(...values):void {
-                        console.log('-- Resume --', values);
+                private onGameResume(...events):void {
+                        console.log('-- Resume --', events);
                 }
         }
 }

@@ -19,6 +19,8 @@ module StreetFighterCards {
         public static Name: string = "level";
         public name: string = Level.Name;
 
+        private battleEnd: boolean;
+
         private tween: Phaser.Tween;
         private group: Phaser.Group;
         private boardGroup: Phaser.Group;
@@ -75,6 +77,8 @@ module StreetFighterCards {
         }
 
         public create(): void {
+            this.battleEnd = false;
+
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
             this.borderGroup = new Phaser.Group(this.game, this.stage);
@@ -84,7 +88,7 @@ module StreetFighterCards {
 
             this.energyCount = 5;
 
-            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = 10;//GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
@@ -164,7 +168,8 @@ module StreetFighterCards {
             switch (event.name) {
                 case Constants.BUTTON_EXIT_BATTLE:
                     {
-                        this.game.state.start(Menu.Name, true, false);
+                        //this.game.state.start(Menu.Name, true, false);
+                        this.game.state.start(Tournament.Name, true, false);
                         break;
                     }
                 case Constants.BUTTON_SETTINGS:
@@ -357,16 +362,16 @@ module StreetFighterCards {
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
 
-                if(this.status.active === Constants.ACTIVE_PLAYER){
+                if (this.status.active === Constants.ACTIVE_PLAYER) {
                     if (this.status.playerHit === false) {
                         this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт
-                    }else{
+                    } else {
                         this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
                     }
-                }else if(this.status.active === Constants.ACTIVE_OPPONENT){
-                    if(this.status.opponentHit === true && this.status.playerHit === false) {
+                } else if (this.status.active === Constants.ACTIVE_OPPONENT) {
+                    if (this.status.opponentHit === true && this.status.playerHit === false) {
                         this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт
-                    }else{
+                    } else {
                         this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
                     }
                 }
@@ -558,7 +563,6 @@ module StreetFighterCards {
             Utilits.Data.debugLog("IMPLEMENTATION: cards [slot/steep]:", [this.totalHits, this.steepHits]);
 
             this.targetDamage = null;
-
             if (this.totalHits > 2) { // выполнение всех карт в слотах завершено
                 this.totalHits = 0;
                 this.steepHits = 0;
@@ -585,11 +589,11 @@ module StreetFighterCards {
                     this.cardsDragAndDrop(true);                    // разрешаем игроку перетаскивание карт
                     this.timer.setMessage("Ваш ход");
                 }
-                
+
                 this.energyRecovery();
                 this.timer.runTimer();
 
-                return; 
+                return;
             }
 
             // Получаем карты из слотов
@@ -609,7 +613,7 @@ module StreetFighterCards {
                 this.group.addChild(playerCard);
                 this.boardGroup.removeChild(playerCard);
             }
-            if(opponentCard !== null) {
+            if (opponentCard !== null) {
                 opponentCard.x = 800;
                 opponentCard.y = 100;
                 opponentCard.scale.set(1.0, 1.0);
@@ -688,62 +692,92 @@ module StreetFighterCards {
 
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
                 this.steepHits++;
+                if(hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.playerAnimation.stanceAnimation();
             } else if (target === Constants.ANIMATION_OPPONENT_COMPLETE) {
                 this.steepHits++;
+                if(hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.opponentAnimation.stanceAnimation();
             }
 
             if (this.targetDamage === Constants.PLAYER) {
+                this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
             } else if (this.targetDamage === Constants.OPPONENT) {
+                this.targetDamage = null;
                 this.opponentAnimation.damageAnimation();
             } else if (this.targetDamage === Constants.PLAYER_AND_OPPONENT) {
+                this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
                 this.opponentAnimation.damageAnimation();
             }
 
             if (this.steepHits >= 2) {
-                this.steepHits = 0;
-                this.totalHits++;
-                this.targetDamage = null;
-                this.playerAnimation.stanceAnimation();
-                this.opponentAnimation.stanceAnimation();
-                this.implementHits();
+                if (this.battleEnd === false) {   // битва еще не завершена
+                    this.steepHits = 0;
+                    this.totalHits++;
+                    this.targetDamage = null;
+                    this.playerAnimation.stanceAnimation();
+                    this.opponentAnimation.stanceAnimation();
+                    this.implementHits();
+                } else {  // битва завершена (последняя анимация победа/поражение)
+                    
+                    if(this.steepHits <= 2){
+                        this.timer.stopTimer();
+                        this.timer.setMessage("Конец боя");
+                        if(this.playerLife > 0 && this.opponentLife <= 0){ // победа игрока
+                            this.playerAnimation.winAnimation();
+                            this.opponentAnimation.loseAnimation();
+                        }else{  // игрок проиграл
+                            this.playerAnimation.loseAnimation();
+                            this.opponentAnimation.winAnimation();
+                        }
+                    }
+                    if(this.steepHits >= 4){
+                        this.endBattle();
+                    }
+                }
             }
-
         }
 
         // Начисление урона
-        private damageCalculation(target:string, cardAttack: Card, cardBlock: Card):void {
-            let attack:number = 0;
-            let block:number = 0;
-            let totalDamage:number = 0;
+        private damageCalculation(target: string, cardAttack: Card, cardBlock: Card): void {
+            let attack: number = 0;
+            let block: number = 0;
+            let totalDamage: number = 0;
 
-            if(cardAttack === null){
+            if (cardAttack === null) {
                 attack = 0;
-            }else if(cardAttack.cardData.type === Constants.CARD_TYPE_DEFENSE){
+            } else if (cardAttack.cardData.type === Constants.CARD_TYPE_DEFENSE) {
                 attack = 0;
-            }else if(cardAttack.cardData.type === Constants.CARD_TYPE_ATTACK){
+            } else if (cardAttack.cardData.type === Constants.CARD_TYPE_ATTACK) {
                 attack = cardAttack.cardData.power;
             }
 
-            if(cardBlock === null){
+            if (cardBlock === null) {
                 block = 0;
-            } else if(cardBlock.cardData.type === Constants.CARD_TYPE_ATTACK){
+            } else if (cardBlock.cardData.type === Constants.CARD_TYPE_ATTACK) {
                 block = 0;
-            } else if(cardBlock.cardData.type === Constants.CARD_TYPE_DEFENSE){
+            } else if (cardBlock.cardData.type === Constants.CARD_TYPE_DEFENSE) {
                 block = cardBlock.cardData.power;
             }
 
             // Игроку начисляется урон
-            if(target === Constants.PLAYER) { 
+            if (target === Constants.PLAYER) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.playerLife -= totalDamage;
+                if (this.playerLife <= 0) {
+                    this.playerLife = 0;
+                    this.battleEnd = true;
+                }
                 this.playerProgressBar.setLife(this.playerLife);
             }
             // Оппоненту начисляется урон
-            if(target === Constants.OPPONENT) { 
+            if (target === Constants.OPPONENT) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.opponentLife -= totalDamage;
+                if (this.opponentLife <= 0) {
+                    this.opponentLife = 0;
+                    this.battleEnd = true;
+                }
                 this.opponentProgressBar.setLife(this.opponentLife);
             }
 
@@ -751,12 +785,24 @@ module StreetFighterCards {
         }
 
         // Восстановление энергии
-        private energyRecovery():void {
-            if(this.energyCount < 10) this.energyCount++;
+        private energyRecovery(): void {
+            if (this.energyCount < 10) this.energyCount++;
             this.playerEnergy = this.energyCount;
             this.playerProgressBar.setEnergy(this.playerEnergy);
             this.opponentEnergy = this.energyCount;
             this.opponentProgressBar.setEnergy(this.opponentEnergy);
+        }
+
+        // Завершение битвы
+        private endBattle(): void {
+            if (this.playerLife > 0 && this.opponentLife <= 0) {
+                GameData.Data.progressIndex++;
+            }
+
+            setTimeout(function () {
+                this.game.state.start(Tournament.Name, true, false);
+                Utilits.Data.debugLog("BATTLE", "END!");
+            }.bind(this), 5000);
         }
     }
 }

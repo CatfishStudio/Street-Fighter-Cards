@@ -39,35 +39,34 @@ var StreetFighterCards;
             this.state.start(StreetFighterCards.Boot.Name);
         };
         Game.prototype.onGameBlur = function () {
-            var values = [];
+            var events = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                values[_i - 0] = arguments[_i];
+                events[_i - 0] = arguments[_i];
             }
-            console.log('-- Blur --', values);
+            console.log('-- Blur --', events);
         };
         Game.prototype.onGameFocus = function () {
-            var values = [];
+            var events = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                values[_i - 0] = arguments[_i];
+                events[_i - 0] = arguments[_i];
             }
-            console.log('-- Focus --', values);
+            console.log('-- Focus --', events);
             //this.stage.disableVisibilityChange = false;
         };
         Game.prototype.onGamePause = function () {
-            var values = [];
+            var events = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                values[_i - 0] = arguments[_i];
+                events[_i - 0] = arguments[_i];
             }
-            console.log('-- Pause --', values);
+            console.log('-- Pause --', events);
             //this.stage.disableVisibilityChange = true;
-            this.stage.disableVisibilityChange = false;
         };
         Game.prototype.onGameResume = function () {
-            var values = [];
+            var events = [];
             for (var _i = 0; _i < arguments.length; _i++) {
-                values[_i - 0] = arguments[_i];
+                events[_i - 0] = arguments[_i];
             }
-            console.log('-- Resume --', values);
+            console.log('-- Resume --', events);
         };
         Game.instance = null;
         return Game;
@@ -323,6 +322,8 @@ var Constants = (function () {
     Constants.ANIMATION_TYPE_BLOCK = "animation_type_block";
     Constants.ANIMATION_TYPE_HIT = "animation_type_hit";
     Constants.ANIMATION_TYPE_DAMAGE = "animation_type_damage";
+    Constants.ANIMATION_TYPE_LOSE = "animation_type_lose";
+    Constants.ANIMATION_TYPE_WIN = "animation_type_win";
     Constants.ANIMATION_PLAYER_COMPLETE = "animation_player_complete";
     Constants.ANIMATION_OPPONENT_COMPLETE = "animation_opponent_complete";
     Constants.BUTTON_PLAY = 'button_play';
@@ -890,9 +891,11 @@ var Fabrique;
                 this.event.dispatch(Constants.ANIMATION_OPPONENT_COMPLETE, this.animationType);
             }
             // Возврат к стойке после анимации урона
-            if (this.animationType === Constants.ANIMATION_TYPE_DAMAGE) {
+            /*
+            if(this.animationType === Constants.ANIMATION_TYPE_DAMAGE){
                 this.stanceAnimation();
             }
+            */
         };
         AnimationFighter.prototype.stanceAnimation = function () {
             this.animation.stop();
@@ -923,6 +926,20 @@ var Fabrique;
             this.animationType = Constants.ANIMATION_TYPE_DAMAGE;
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animDamage);
+            this.animation.onComplete.add(this.onComplete, this);
+            this.animation.play(10, false, false);
+        };
+        AnimationFighter.prototype.loseAnimation = function () {
+            this.animationType = Constants.ANIMATION_TYPE_LOSE;
+            this.animation.stop();
+            this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animLose);
+            this.animation.onComplete.add(this.onComplete, this);
+            this.animation.play(10, false, false);
+        };
+        AnimationFighter.prototype.winAnimation = function () {
+            this.animationType = Constants.ANIMATION_TYPE_WIN;
+            this.animation.stop();
+            this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animWin);
             this.animation.onComplete.add(this.onComplete, this);
             this.animation.play(10, false, false);
         };
@@ -2517,13 +2534,14 @@ var StreetFighterCards;
             ];
         }
         Level.prototype.create = function () {
+            this.battleEnd = false;
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
             this.borderGroup = new Phaser.Group(this.game, this.stage);
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.opponentAi = new Ai();
             this.energyCount = 5;
-            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = 10; //GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
@@ -2596,7 +2614,8 @@ var StreetFighterCards;
             switch (event.name) {
                 case Constants.BUTTON_EXIT_BATTLE:
                     {
-                        this.game.state.start(StreetFighterCards.Menu.Name, true, false);
+                        //this.game.state.start(Menu.Name, true, false);
+                        this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
                         break;
                     }
                 case Constants.BUTTON_SETTINGS:
@@ -3079,27 +3098,53 @@ var StreetFighterCards;
             Utilits.Data.debugLog('ANIMATION steep complete [target/type]:', [target, hit]);
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
                 this.steepHits++;
+                if (hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false)
+                    this.playerAnimation.stanceAnimation();
             }
             else if (target === Constants.ANIMATION_OPPONENT_COMPLETE) {
                 this.steepHits++;
+                if (hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false)
+                    this.opponentAnimation.stanceAnimation();
             }
             if (this.targetDamage === Constants.PLAYER) {
+                this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
             }
             else if (this.targetDamage === Constants.OPPONENT) {
+                this.targetDamage = null;
                 this.opponentAnimation.damageAnimation();
             }
             else if (this.targetDamage === Constants.PLAYER_AND_OPPONENT) {
+                this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
                 this.opponentAnimation.damageAnimation();
             }
             if (this.steepHits >= 2) {
-                this.steepHits = 0;
-                this.totalHits++;
-                this.targetDamage = null;
-                this.playerAnimation.stanceAnimation();
-                this.opponentAnimation.stanceAnimation();
-                this.implementHits();
+                if (this.battleEnd === false) {
+                    this.steepHits = 0;
+                    this.totalHits++;
+                    this.targetDamage = null;
+                    this.playerAnimation.stanceAnimation();
+                    this.opponentAnimation.stanceAnimation();
+                    this.implementHits();
+                }
+                else {
+                    if (this.steepHits <= 2) {
+                        this.timer.stopTimer();
+                        this.timer.setMessage("Конец боя");
+                        if (this.playerLife > 0 && this.opponentLife <= 0) {
+                            this.playerAnimation.winAnimation();
+                            this.opponentAnimation.loseAnimation();
+                        }
+                        else {
+                            this.playerAnimation.loseAnimation();
+                            this.opponentAnimation.winAnimation();
+                        }
+                    }
+                    if (this.steepHits >= 4) {
+                        this.endBattle();
+                    }
+                }
             }
         };
         // Начисление урона
@@ -3129,12 +3174,20 @@ var StreetFighterCards;
             if (target === Constants.PLAYER) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.playerLife -= totalDamage;
+                if (this.playerLife < 0) {
+                    this.playerLife = 0;
+                    this.battleEnd = true;
+                }
                 this.playerProgressBar.setLife(this.playerLife);
             }
             // Оппоненту начисляется урон
             if (target === Constants.OPPONENT) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.opponentLife -= totalDamage;
+                if (this.opponentLife < 0) {
+                    this.opponentLife = 0;
+                    this.battleEnd = true;
+                }
                 this.opponentProgressBar.setLife(this.opponentLife);
             }
             Utilits.Data.debugLog('DAMAGE:', [target, attack, block, totalDamage]);
@@ -3147,6 +3200,16 @@ var StreetFighterCards;
             this.playerProgressBar.setEnergy(this.playerEnergy);
             this.opponentEnergy = this.energyCount;
             this.opponentProgressBar.setEnergy(this.opponentEnergy);
+        };
+        // Завершение битвы
+        Level.prototype.endBattle = function () {
+            if (this.playerLife > 0 && this.opponentLife <= 0) {
+                GameData.Data.progressIndex++;
+            }
+            setTimeout(function () {
+                this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
+                Utilits.Data.debugLog("BATTLE", "END!");
+            }.bind(this), 5000);
         };
         Level.Name = "level";
         return Level;

@@ -34,9 +34,11 @@ module Fabrique {
             }
 
             // Возврат к стойке после анимации урона
+            /*
             if(this.animationType === Constants.ANIMATION_TYPE_DAMAGE){
                 this.stanceAnimation();
             }
+            */
         }
 
         public stanceAnimation():void{
@@ -72,6 +74,22 @@ module Fabrique {
             this.animationType = Constants.ANIMATION_TYPE_DAMAGE;
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animDamage);
+            this.animation.onComplete.add(this.onComplete, this);
+            this.animation.play(10, false, false);
+        }
+
+        public loseAnimation():void {
+            this.animationType = Constants.ANIMATION_TYPE_LOSE;
+            this.animation.stop();
+            this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animLose);
+            this.animation.onComplete.add(this.onComplete, this);
+            this.animation.play(10, false, false);
+        }
+
+        public winAnimation():void {
+            this.animationType = Constants.ANIMATION_TYPE_WIN;
+            this.animation.stop();
+            this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animWin);
             this.animation.onComplete.add(this.onComplete, this);
             this.animation.play(10, false, false);
         }

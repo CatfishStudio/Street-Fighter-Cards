@@ -16,6 +16,8 @@ class Constants {
     public static ANIMATION_TYPE_BLOCK  = "animation_type_block";
     public static ANIMATION_TYPE_HIT    = "animation_type_hit";
     public static ANIMATION_TYPE_DAMAGE = "animation_type_damage";
+    public static ANIMATION_TYPE_LOSE   = "animation_type_lose";
+    public static ANIMATION_TYPE_WIN    = "animation_type_win";
     public static ANIMATION_PLAYER_COMPLETE     = "animation_player_complete";
     public static ANIMATION_OPPONENT_COMPLETE   = "animation_opponent_complete";
 
