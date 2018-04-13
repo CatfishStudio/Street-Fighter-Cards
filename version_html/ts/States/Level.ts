@@ -88,7 +88,7 @@ module StreetFighterCards {
 
             this.energyCount = 5;
 
-            this.playerLife = 10;//GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];

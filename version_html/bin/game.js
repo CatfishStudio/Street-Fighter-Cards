@@ -890,12 +890,6 @@ var Fabrique;
             else {
                 this.event.dispatch(Constants.ANIMATION_OPPONENT_COMPLETE, this.animationType);
             }
-            // Возврат к стойке после анимации урона
-            /*
-            if(this.animationType === Constants.ANIMATION_TYPE_DAMAGE){
-                this.stanceAnimation();
-            }
-            */
         };
         AnimationFighter.prototype.stanceAnimation = function () {
             this.animation.stop();
@@ -2541,7 +2535,7 @@ var StreetFighterCards;
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.opponentAi = new Ai();
             this.energyCount = 5;
-            this.playerLife = 10; //GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
@@ -3174,7 +3168,7 @@ var StreetFighterCards;
             if (target === Constants.PLAYER) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.playerLife -= totalDamage;
-                if (this.playerLife < 0) {
+                if (this.playerLife <= 0) {
                     this.playerLife = 0;
                     this.battleEnd = true;
                 }
@@ -3184,7 +3178,7 @@ var StreetFighterCards;
             if (target === Constants.OPPONENT) {
                 totalDamage = (attack - block) > 0 ? (attack - block) : 0;
                 this.opponentLife -= totalDamage;
-                if (this.opponentLife < 0) {
+                if (this.opponentLife <= 0) {
                     this.opponentLife = 0;
                     this.battleEnd = true;
                 }

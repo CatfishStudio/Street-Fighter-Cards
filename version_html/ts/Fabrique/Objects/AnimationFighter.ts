@@ -32,13 +32,6 @@ module Fabrique {
             }else{
                 this.event.dispatch(Constants.ANIMATION_OPPONENT_COMPLETE, this.animationType);
             }
-
-            // Возврат к стойке после анимации урона
-            /*
-            if(this.animationType === Constants.ANIMATION_TYPE_DAMAGE){
-                this.stanceAnimation();
-            }
-            */
         }
 
         public stanceAnimation():void{
