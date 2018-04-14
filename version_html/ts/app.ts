@@ -38,21 +38,21 @@ module StreetFighterCards{
                 }
                 
                 private onGameBlur(...events):void {
-                        console.log('-- Blur --', events);
+                        Utilits.Data.debugLog('-- Blur --', events);
                 }
 
                 private onGameFocus(...events):void {
-                        console.log('-- Focus --', events);
+                        Utilits.Data.debugLog('-- Focus --', events);
                         //this.stage.disableVisibilityChange = false;
                 }
 
                 private onGamePause(...events):void {
-                        console.log('-- Pause --', events);
+                        Utilits.Data.debugLog('-- Pause --', events);
                         //this.stage.disableVisibilityChange = true;
                    }
 
                 private onGameResume(...events):void {
-                        console.log('-- Resume --', events);
+                        Utilits.Data.debugLog('-- Resume --', events);
                 }
         }
 }

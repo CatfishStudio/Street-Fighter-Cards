@@ -43,14 +43,14 @@ var StreetFighterCards;
             for (var _i = 0; _i < arguments.length; _i++) {
                 events[_i - 0] = arguments[_i];
             }
-            console.log('-- Blur --', events);
+            Utilits.Data.debugLog('-- Blur --', events);
         };
         Game.prototype.onGameFocus = function () {
             var events = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 events[_i - 0] = arguments[_i];
             }
-            console.log('-- Focus --', events);
+            Utilits.Data.debugLog('-- Focus --', events);
             //this.stage.disableVisibilityChange = false;
         };
         Game.prototype.onGamePause = function () {
@@ -58,7 +58,7 @@ var StreetFighterCards;
             for (var _i = 0; _i < arguments.length; _i++) {
                 events[_i - 0] = arguments[_i];
             }
-            console.log('-- Pause --', events);
+            Utilits.Data.debugLog('-- Pause --', events);
             //this.stage.disableVisibilityChange = true;
         };
         Game.prototype.onGameResume = function () {
@@ -66,7 +66,7 @@ var StreetFighterCards;
             for (var _i = 0; _i < arguments.length; _i++) {
                 events[_i - 0] = arguments[_i];
             }
-            console.log('-- Resume --', events);
+            Utilits.Data.debugLog('-- Resume --', events);
         };
         Game.instance = null;
         return Game;
@@ -878,7 +878,7 @@ var Fabrique;
             this.animationType = Constants.ANIMATION_TYPE_STANCE;
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animStance);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, true, false);
+            this.animation.play(15, true, false);
         };
         AnimationFighter.prototype.onComplete = function (sprite, animation) {
             //console.log( (sprite as AnimationFighter).animation);
@@ -896,7 +896,7 @@ var Fabrique;
             this.animationType = Constants.ANIMATION_TYPE_STANCE;
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animStance);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, true, false);
+            this.animation.play(15, true, false);
         };
         AnimationFighter.prototype.hitAnimation = function (cardData) {
             this.animation.stop();
@@ -914,28 +914,28 @@ var Fabrique;
                 this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animBlock);
             }
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         };
         AnimationFighter.prototype.damageAnimation = function () {
             this.animationType = Constants.ANIMATION_TYPE_DAMAGE;
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animDamage);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         };
         AnimationFighter.prototype.loseAnimation = function () {
             this.animationType = Constants.ANIMATION_TYPE_LOSE;
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animLose);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         };
         AnimationFighter.prototype.winAnimation = function () {
             this.animationType = Constants.ANIMATION_TYPE_WIN;
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animWin);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         };
         return AnimationFighter;
     }(Phaser.Sprite));
@@ -2917,7 +2917,7 @@ var StreetFighterCards;
                  */
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.status.active = Constants.ACTIVE_PLAYER;
-                this.buttonTablo.visible = false; // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 this.status.playerHit = true; // Игрок закончил выкладывать карты
                 this.status.opponentHit = false; // ИИ получает очередь выкладывать карты
                 this.timer.setMessage("Ход противника");
@@ -2933,7 +2933,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                this.buttonTablo.visible = false; // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             }
@@ -2960,7 +2960,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer(); // останачливаем таймер
-                this.buttonTablo.visible = false; // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
@@ -3068,7 +3068,7 @@ var StreetFighterCards;
                             // атака (игрок) - атака (оппонент)
                             if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK
                                 && opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
-                                this.steepHits = -2;
+                                this.steepHits = -1;
                                 this.targetDamage = Constants.PLAYER_AND_OPPONENT; // игрок и оппонент получат удары
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
@@ -3113,6 +3113,7 @@ var StreetFighterCards;
                 this.playerAnimation.damageAnimation();
                 this.opponentAnimation.damageAnimation();
             }
+            Utilits.Data.debugLog('ANIMATION steep hits:', this.steepHits);
             if (this.steepHits >= 2) {
                 if (this.battleEnd === false) {
                     this.steepHits = 0;

@@ -510,7 +510,7 @@ module StreetFighterCards {
                  */
                 this.cardsDragAndDrop(false);           // запрещаем перетаскивание карт
                 this.status.active = Constants.ACTIVE_PLAYER;
-                this.buttonTablo.visible = false;       // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 this.status.playerHit = true;           // Игрок закончил выкладывать карты
                 this.status.opponentHit = false;        // ИИ получает очередь выкладывать карты
                 this.timer.setMessage("Ход противника");
@@ -525,7 +525,7 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                this.buttonTablo.visible = false;               // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
@@ -550,7 +550,7 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer();                         // останачливаем таймер
-                this.buttonTablo.visible = false;               // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
@@ -667,7 +667,7 @@ module StreetFighterCards {
                             if (playerCard.cardData.type === Constants.CARD_TYPE_ATTACK
                                 && opponentCard.cardData.type === Constants.CARD_TYPE_ATTACK) {
 
-                                this.steepHits = -2;
+                                this.steepHits = -1;
                                 this.targetDamage = Constants.PLAYER_AND_OPPONENT; // игрок и оппонент получат удары
                                 this.playerAnimation.hitAnimation(playerCard.cardData);         // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData);     // выполняется карта оппонента
@@ -710,6 +710,7 @@ module StreetFighterCards {
                 this.opponentAnimation.damageAnimation();
             }
 
+            Utilits.Data.debugLog('ANIMATION steep hits:', this.steepHits);
             if (this.steepHits >= 2) {
                 if (this.battleEnd === false) {   // битва еще не завершена
                     this.steepHits = 0;

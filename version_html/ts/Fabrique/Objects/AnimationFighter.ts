@@ -19,7 +19,7 @@ module Fabrique {
             this.animationType = Constants.ANIMATION_TYPE_STANCE;
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animStance);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, true, false);
+            this.animation.play(15, true, false);
         }
 
         private onComplete(sprite, animation): void {
@@ -39,7 +39,7 @@ module Fabrique {
             this.animationType = Constants.ANIMATION_TYPE_STANCE;
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animStance);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, true, false);
+            this.animation.play(15, true, false);
         }
 
         public hitAnimation(cardData: GameData.ICard): void {
@@ -60,7 +60,7 @@ module Fabrique {
             }
             
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         }
 
         public damageAnimation():void {
@@ -68,7 +68,7 @@ module Fabrique {
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animDamage);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         }
 
         public loseAnimation():void {
@@ -76,7 +76,7 @@ module Fabrique {
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animLose);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         }
 
         public winAnimation():void {
@@ -84,7 +84,7 @@ module Fabrique {
             this.animation.stop();
             this.animation = this.animations.add(this.personageAnimation.name, this.personageAnimation.animWin);
             this.animation.onComplete.add(this.onComplete, this);
-            this.animation.play(10, false, false);
+            this.animation.play(15, false, false);
         }
     }
 }
