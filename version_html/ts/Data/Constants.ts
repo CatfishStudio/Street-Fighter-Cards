@@ -20,6 +20,7 @@ class Constants {
     public static ANIMATION_TYPE_WIN    = "animation_type_win";
     public static ANIMATION_PLAYER_COMPLETE     = "animation_player_complete";
     public static ANIMATION_OPPONENT_COMPLETE   = "animation_opponent_complete";
+    public static ANIMATION_FLASH_COMPLETE      = "animation_flash_complete";
 
     public static BUTTON_PLAY           = 'button_play';
     public static BUTTON_SETTINGS       = 'button_settings';

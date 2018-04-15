@@ -13,6 +13,7 @@
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
+/// <reference path="Fabrique\Objects\AnimationFlash.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\ButtonTablo.ts" />

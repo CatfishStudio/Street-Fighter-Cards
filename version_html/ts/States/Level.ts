@@ -1,5 +1,6 @@
 module StreetFighterCards {
     import AnimationFighter = Fabrique.AnimationFighter;
+    import AnimationFlash = Fabrique.AnimationFlash;
     import ButtonComix = Fabrique.ButtonComix;
     import ButtonTablo = Fabrique.ButtonTablo;
     import Settings = Fabrique.Settings;
@@ -39,6 +40,7 @@ module StreetFighterCards {
         private energyCount: number;
 
         // Player
+        private playerFlash: AnimationFlash[];
         private playerAnimation: AnimationFighter;
         private playerProgressBar: FighterProgressBar;
         private playerLife: number;
@@ -49,6 +51,7 @@ module StreetFighterCards {
 
         // Opponent
         private opponentAi: Ai;
+        private opponentFlash: AnimationFlash[];
         private opponentAnimation: AnimationFighter;
         private opponentProgressBar: FighterProgressBar;
         private opponentLife: number;
@@ -120,23 +123,28 @@ module StreetFighterCards {
             this.createFighters();
             this.createHand();
             this.createDeck();
+            this.createFlases();
             this.createBorder();
         }
 
         public shutdown(): void {
             this.opponentAi = null;
-            this.buttonExit.shutdown();
-            this.buttonSettings.shutdown();
+            this.timer.shutdown();
+            // groups clear
             this.boardGroup.removeAll();
             this.handGroup.removeAll();
             this.borderGroup.removeAll();
-            this.timer.shutdown();
+            this.group.removeAll();
+            // buttons clear
+            this.buttonExit.shutdown();
+            this.buttonSettings.shutdown();
             this.buttonTablo.shutdown();
-
+            // slots clear
             this.slots.forEach((slot: Slot) => {
                 if (slot !== null && slot !== undefined) slot.shutdown();
             });
             this.slots = null;
+            // player clear
             this.playerDeck.forEach((card: Card) => {
                 if (card !== null && card !== undefined) card.shutdown();
             });
@@ -149,8 +157,28 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
-
-            this.group.removeAll();
+            this.playerFlash.forEach((flash:AnimationFlash) => {
+                flash.removeChildren();
+            });
+            this.playerFlash = null;
+            // opponent clear
+            this.opponentDeck.forEach((card: Card) => {
+                if (card !== null && card !== undefined) card.shutdown();
+            });
+            this.opponentDeck = null;
+            this.opponentHand.forEach((card: Card) => {
+                if (card !== null && card !== undefined) card.shutdown();
+            });
+            this.opponentHand = null;
+            this.opponentSlots.forEach((card: Card) => {
+                if (card !== null && card !== undefined) card.shutdown();
+            });
+            this.opponentSlots = null;
+            this.opponentFlash.forEach((flash:AnimationFlash) => {
+                flash.removeChildren();
+            });
+            this.opponentFlash = null;
+            // stage clear
             this.game.stage.removeChildren();
         }
 
@@ -268,11 +296,6 @@ module StreetFighterCards {
             this.group.addChild(this.opponentAnimation);
         }
 
-        private createBorder(): void {
-            let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
-            this.borderGroup.addChild(border);
-        }
-
         private createDeck(): void {
             this.group.inputEnableChildren = true; // enable drag and drop
 
@@ -304,6 +327,27 @@ module StreetFighterCards {
             this.moveCardDeckToHandOpponent();
         }
 
+        private createFlases():void {
+            this.playerFlash = [];
+            this.opponentFlash = [];
+            let flash:AnimationFlash;
+            for(let i:number = 0; i < this.slotsPoints.length; i++){
+                if(i < 3){
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0]-330, this.slotsPoints[i][1]-240);
+                    this.playerFlash.push(flash);
+                    this.borderGroup.add(this.playerFlash[this.playerFlash.length-1]);
+                }else{
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0]-330, this.slotsPoints[i][1]-240);
+                    this.opponentFlash.push(flash);
+                    this.borderGroup.add(this.opponentFlash[this.opponentFlash.length-1]);
+                }
+            }
+        }
+
+        private createBorder(): void {
+            let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
+            this.borderGroup.addChild(border);
+        }
         // ДЕЙСТВИЕ: Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
             Utilits.Data.debugLog("START: x=", pointer.x + " y= " + pointer.y);
@@ -604,6 +648,7 @@ module StreetFighterCards {
             this.playerSlots[this.totalHits] = null;
             this.opponentSlots[this.totalHits] = null;
             if (playerCard !== null) {
+                this.playerFlash[this.totalHits].playAnimation();
                 playerCard.x = 660;
                 playerCard.y = 390;
                 playerCard.scale.set(1.0, 1.0);
@@ -614,6 +659,7 @@ module StreetFighterCards {
                 this.boardGroup.removeChild(playerCard);
             }
             if (opponentCard !== null) {
+                this.opponentFlash[this.totalHits].playAnimation();
                 opponentCard.x = 800;
                 opponentCard.y = 100;
                 opponentCard.scale.set(1.0, 1.0);

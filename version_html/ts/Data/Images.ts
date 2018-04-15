@@ -15,6 +15,8 @@ class Images {
     public static HandBackground: string = 'levels/hand_bg.jpg';
     public static TabloLevel: string = 'levels/tablo.png';
     public static BorderLevel: string = 'levels/border_level.png';
+    public static FightLevel: string = 'levels/fight.png';
+    public static KOLevel: string = 'levels/ko.png';
 
     public static preloadList:Array<string> = [
         Images.MenuImage,
@@ -31,6 +33,8 @@ class Images {
         Images.HandBackground,
         Images.TabloLevel,
         Images.BorderLevel,
+        Images.FightLevel,
+        Images.KOLevel,
 
         'tournament/akuma.png',
         'tournament/alex.png',

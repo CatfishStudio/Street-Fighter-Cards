@@ -23,6 +23,7 @@ class Atlases {
     public static Urien: string = 'Urien';
     public static Yang: string = 'Yang';
     public static Yun: string = 'Yun';
+    public static Flash: string = 'Flash';
     
     public static preloadList:Array<string> = [
         Atlases.BigKen,
@@ -48,6 +49,7 @@ class Atlases {
         Atlases.Twelve,
         Atlases.Urien,
         Atlases.Yang,
-        Atlases.Yun
+        Atlases.Yun,
+        Atlases.Flash
     ];
 }

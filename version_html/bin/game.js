@@ -326,6 +326,7 @@ var Constants = (function () {
     Constants.ANIMATION_TYPE_WIN = "animation_type_win";
     Constants.ANIMATION_PLAYER_COMPLETE = "animation_player_complete";
     Constants.ANIMATION_OPPONENT_COMPLETE = "animation_opponent_complete";
+    Constants.ANIMATION_FLASH_COMPLETE = "animation_flash_complete";
     Constants.BUTTON_PLAY = 'button_play';
     Constants.BUTTON_SETTINGS = 'button_settings';
     Constants.BUTTON_SETTINGS_CLOSE = 'button_settings_close';
@@ -368,6 +369,8 @@ var Images = (function () {
     Images.HandBackground = 'levels/hand_bg.jpg';
     Images.TabloLevel = 'levels/tablo.png';
     Images.BorderLevel = 'levels/border_level.png';
+    Images.FightLevel = 'levels/fight.png';
+    Images.KOLevel = 'levels/ko.png';
     Images.preloadList = [
         Images.MenuImage,
         Images.BorderImage,
@@ -383,6 +386,8 @@ var Images = (function () {
         Images.HandBackground,
         Images.TabloLevel,
         Images.BorderLevel,
+        Images.FightLevel,
+        Images.KOLevel,
         'tournament/akuma.png',
         'tournament/alex.png',
         'tournament/chun_li.png',
@@ -545,6 +550,7 @@ var Atlases = (function () {
     Atlases.Urien = 'Urien';
     Atlases.Yang = 'Yang';
     Atlases.Yun = 'Yun';
+    Atlases.Flash = 'Flash';
     Atlases.preloadList = [
         Atlases.BigKen,
         Atlases.BigRyu,
@@ -569,7 +575,8 @@ var Atlases = (function () {
         Atlases.Twelve,
         Atlases.Urien,
         Atlases.Yang,
-        Atlases.Yun
+        Atlases.Yun,
+        Atlases.Flash
     ];
     return Atlases;
 }());
@@ -940,6 +947,31 @@ var Fabrique;
         return AnimationFighter;
     }(Phaser.Sprite));
     Fabrique.AnimationFighter = AnimationFighter;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var AnimationFlash = (function (_super) {
+        __extends(AnimationFlash, _super);
+        function AnimationFlash(game, x, y) {
+            _super.call(this, game, x, y, Atlases.Flash, 0);
+            this.init();
+        }
+        AnimationFlash.prototype.init = function () {
+            this.visible = false;
+            this.animation = this.animations.add(Atlases.Flash);
+            this.animation.onComplete.add(this.onComplete, this);
+        };
+        AnimationFlash.prototype.onComplete = function () {
+            this.visible = false;
+        };
+        AnimationFlash.prototype.playAnimation = function () {
+            this.visible = true;
+            this.animation.frame = 0;
+            this.animation.play(10, false, false);
+        };
+        return AnimationFlash;
+    }(Phaser.Sprite));
+    Fabrique.AnimationFlash = AnimationFlash;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
@@ -2506,6 +2538,7 @@ var StreetFighterCards;
 var StreetFighterCards;
 (function (StreetFighterCards) {
     var AnimationFighter = Fabrique.AnimationFighter;
+    var AnimationFlash = Fabrique.AnimationFlash;
     var ButtonComix = Fabrique.ButtonComix;
     var ButtonTablo = Fabrique.ButtonTablo;
     var Settings = Fabrique.Settings;
@@ -2562,22 +2595,28 @@ var StreetFighterCards;
             this.createFighters();
             this.createHand();
             this.createDeck();
+            this.createFlases();
             this.createBorder();
         };
         Level.prototype.shutdown = function () {
             this.opponentAi = null;
-            this.buttonExit.shutdown();
-            this.buttonSettings.shutdown();
+            this.timer.shutdown();
+            // groups clear
             this.boardGroup.removeAll();
             this.handGroup.removeAll();
             this.borderGroup.removeAll();
-            this.timer.shutdown();
+            this.group.removeAll();
+            // buttons clear
+            this.buttonExit.shutdown();
+            this.buttonSettings.shutdown();
             this.buttonTablo.shutdown();
+            // slots clear
             this.slots.forEach(function (slot) {
                 if (slot !== null && slot !== undefined)
                     slot.shutdown();
             });
             this.slots = null;
+            // player clear
             this.playerDeck.forEach(function (card) {
                 if (card !== null && card !== undefined)
                     card.shutdown();
@@ -2593,7 +2632,31 @@ var StreetFighterCards;
                     card.shutdown();
             });
             this.playerSlots = null;
-            this.group.removeAll();
+            this.playerFlash.forEach(function (flash) {
+                flash.removeChildren();
+            });
+            this.playerFlash = null;
+            // opponent clear
+            this.opponentDeck.forEach(function (card) {
+                if (card !== null && card !== undefined)
+                    card.shutdown();
+            });
+            this.opponentDeck = null;
+            this.opponentHand.forEach(function (card) {
+                if (card !== null && card !== undefined)
+                    card.shutdown();
+            });
+            this.opponentHand = null;
+            this.opponentSlots.forEach(function (card) {
+                if (card !== null && card !== undefined)
+                    card.shutdown();
+            });
+            this.opponentSlots = null;
+            this.opponentFlash.forEach(function (flash) {
+                flash.removeChildren();
+            });
+            this.opponentFlash = null;
+            // stage clear
             this.game.stage.removeChildren();
         };
         Level.prototype.settingsCreate = function () {
@@ -2699,10 +2762,6 @@ var StreetFighterCards;
             this.opponentAnimation.event.add(this.onAnimationComplete, this);
             this.group.addChild(this.opponentAnimation);
         };
-        Level.prototype.createBorder = function () {
-            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
-            this.borderGroup.addChild(border);
-        };
         Level.prototype.createDeck = function () {
             var _this = this;
             this.group.inputEnableChildren = true; // enable drag and drop
@@ -2728,6 +2787,27 @@ var StreetFighterCards;
                 _this.group.addChild(card);
             });
             this.moveCardDeckToHandOpponent();
+        };
+        Level.prototype.createFlases = function () {
+            this.playerFlash = [];
+            this.opponentFlash = [];
+            var flash;
+            for (var i = 0; i < this.slotsPoints.length; i++) {
+                if (i < 3) {
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0] - 330, this.slotsPoints[i][1] - 240);
+                    this.playerFlash.push(flash);
+                    this.borderGroup.add(this.playerFlash[this.playerFlash.length - 1]);
+                }
+                else {
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0] - 330, this.slotsPoints[i][1] - 240);
+                    this.opponentFlash.push(flash);
+                    this.borderGroup.add(this.opponentFlash[this.opponentFlash.length - 1]);
+                }
+            }
+        };
+        Level.prototype.createBorder = function () {
+            var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
+            this.borderGroup.addChild(border);
         };
         // ДЕЙСТВИЕ: Взять карту
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
@@ -3006,6 +3086,7 @@ var StreetFighterCards;
             this.playerSlots[this.totalHits] = null;
             this.opponentSlots[this.totalHits] = null;
             if (playerCard !== null) {
+                this.playerFlash[this.totalHits].playAnimation();
                 playerCard.x = 660;
                 playerCard.y = 390;
                 playerCard.scale.set(1.0, 1.0);
@@ -3016,6 +3097,7 @@ var StreetFighterCards;
                 this.boardGroup.removeChild(playerCard);
             }
             if (opponentCard !== null) {
+                this.opponentFlash[this.totalHits].playAnimation();
                 opponentCard.x = 800;
                 opponentCard.y = 100;
                 opponentCard.scale.set(1.0, 1.0);
@@ -3225,6 +3307,7 @@ var StreetFighterCards;
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
+/// <reference path="Fabrique\Objects\AnimationFlash.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\ButtonTablo.ts" />
