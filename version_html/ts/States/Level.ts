@@ -1,6 +1,8 @@
 module StreetFighterCards {
-    import AnimationFighter = Fabrique.AnimationFighter;
     import AnimationFlash = Fabrique.AnimationFlash;
+    import AnimationKO = Fabrique.AnimationKO;
+    import AnimationFight = Fabrique.AnimationFight;
+    import AnimationFighter = Fabrique.AnimationFighter;
     import ButtonComix = Fabrique.ButtonComix;
     import ButtonTablo = Fabrique.ButtonTablo;
     import Settings = Fabrique.Settings;
@@ -347,6 +349,9 @@ module StreetFighterCards {
         private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
+
+            let fight:AnimationFight = new AnimationFight(this.game, 200, 150);
+            this.borderGroup.addChild(fight);
         }
         // ДЕЙСТВИЕ: Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
@@ -842,6 +847,9 @@ module StreetFighterCards {
 
         // Завершение битвы
         private endBattle(): void {
+            let ko:AnimationKO = new AnimationKO(this.game, 315, 100);
+            this.borderGroup.addChild(ko);
+
             if (this.playerLife > 0 && this.opponentLife <= 0) {
                 GameData.Data.progressIndex++;
             }

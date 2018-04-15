@@ -872,6 +872,34 @@ var Fabrique;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
+    var AnimationFight = (function (_super) {
+        __extends(AnimationFight, _super);
+        function AnimationFight(game, x, y) {
+            _super.call(this, game, x, y, Images.FightLevel);
+            this.init();
+        }
+        AnimationFight.prototype.init = function () {
+            this.scale.set(0, 0);
+            var tween = this.game.add.tween(this.scale);
+            tween.onComplete.add(this.onTweenUpComplete, this);
+            tween.to({ x: 1, y: 1 }, 500, 'Linear');
+            tween.start();
+        };
+        AnimationFight.prototype.onTweenUpComplete = function () {
+            var tween = this.game.add.tween(this.scale);
+            tween.onComplete.add(this.onTweenUpComplete, this);
+            tween.to({ x: 0, y: 0 }, 500, 'Linear');
+            tween.start();
+        };
+        AnimationFight.prototype.onTweenDownComplete = function () {
+            this.removeChildren();
+        };
+        return AnimationFight;
+    }(Phaser.Sprite));
+    Fabrique.AnimationFight = AnimationFight;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
     var AnimationFighter = (function (_super) {
         __extends(AnimationFighter, _super);
         function AnimationFighter(game, fighterType, personageName, personageAnim) {
@@ -972,6 +1000,24 @@ var Fabrique;
         return AnimationFlash;
     }(Phaser.Sprite));
     Fabrique.AnimationFlash = AnimationFlash;
+})(Fabrique || (Fabrique = {}));
+var Fabrique;
+(function (Fabrique) {
+    var AnimationKO = (function (_super) {
+        __extends(AnimationKO, _super);
+        function AnimationKO(game, x, y) {
+            _super.call(this, game, x, y, Images.KOLevel);
+            this.init();
+        }
+        AnimationKO.prototype.init = function () {
+            this.scale.set(0, 0);
+            var tween = this.game.add.tween(this.scale);
+            tween.to({ x: 1, y: 1 }, 250, 'Linear');
+            tween.start();
+        };
+        return AnimationKO;
+    }(Phaser.Sprite));
+    Fabrique.AnimationKO = AnimationKO;
 })(Fabrique || (Fabrique = {}));
 var Fabrique;
 (function (Fabrique) {
@@ -2537,8 +2583,10 @@ var StreetFighterCards;
 })(StreetFighterCards || (StreetFighterCards = {}));
 var StreetFighterCards;
 (function (StreetFighterCards) {
-    var AnimationFighter = Fabrique.AnimationFighter;
     var AnimationFlash = Fabrique.AnimationFlash;
+    var AnimationKO = Fabrique.AnimationKO;
+    var AnimationFight = Fabrique.AnimationFight;
+    var AnimationFighter = Fabrique.AnimationFighter;
     var ButtonComix = Fabrique.ButtonComix;
     var ButtonTablo = Fabrique.ButtonTablo;
     var Settings = Fabrique.Settings;
@@ -2808,6 +2856,8 @@ var StreetFighterCards;
         Level.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
+            var fight = new AnimationFight(this.game, 200, 150);
+            this.borderGroup.addChild(fight);
         };
         // ДЕЙСТВИЕ: Взять карту
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
@@ -3280,6 +3330,8 @@ var StreetFighterCards;
         };
         // Завершение битвы
         Level.prototype.endBattle = function () {
+            var ko = new AnimationKO(this.game, 315, 100);
+            this.borderGroup.addChild(ko);
             if (this.playerLife > 0 && this.opponentLife <= 0) {
                 GameData.Data.progressIndex++;
             }
@@ -3306,8 +3358,10 @@ var StreetFighterCards;
 /// <reference path="Data\Utilits.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
+/// <reference path="Fabrique\Objects\AnimationFight.ts" />
 /// <reference path="Fabrique\Objects\AnimationFighter.ts" />
 /// <reference path="Fabrique\Objects\AnimationFlash.ts" />
+/// <reference path="Fabrique\Objects\AnimationKO.ts" />
 /// <reference path="Fabrique\Objects\ButtonOrange.ts" />
 /// <reference path="Fabrique\Objects\ButtonComix.ts" />
 /// <reference path="Fabrique\Objects\ButtonTablo.ts" />
