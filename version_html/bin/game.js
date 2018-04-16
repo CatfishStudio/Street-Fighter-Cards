@@ -1344,38 +1344,42 @@ var Fabrique;
 (function (Fabrique) {
     var FighterProgressBar = (function (_super) {
         __extends(FighterProgressBar, _super);
-        function FighterProgressBar(game, parent, fighterIndex, x, y, orientation) {
+        function FighterProgressBar(game, parent, fighterIndex, x, y, orientation, fighterName) {
             _super.call(this, game, parent);
-            this.init(fighterIndex, x, y, orientation);
+            this.init(fighterIndex, x, y, orientation, fighterName);
         }
         FighterProgressBar.prototype.shutdown = function () {
-            this.lifeBar.removeAll();
+            this.barGroup.removeAll();
             this.energyBar.removeAll();
             this.removeAll();
         };
-        FighterProgressBar.prototype.init = function (fighterIndex, x, y, orientation) {
+        FighterProgressBar.prototype.init = function (fighterIndex, x, y, orientation, fighterName) {
             this.x = x;
             this.y = y;
             this.orientation = orientation;
             this.fighterIndex = fighterIndex;
             this.energyBar = new Phaser.Group(this.game, this);
-            this.lifeBar = new Phaser.Group(this.game, this);
+            this.barGroup = new Phaser.Group(this.game, this);
+            var namePlayerText;
             if (orientation === Fabrique.Icon.LEFT) {
                 this.leftBars();
                 this.leftIcon();
+                namePlayerText = this.game.add.text(25, 45, fighterName, { font: "bold 16px Arial", fill: "#FFFFFF", align: "left" });
             }
             else {
                 this.rightBars();
                 this.rightIcon();
+                namePlayerText = this.game.add.text(0, 45, fighterName, { font: "bold 16px Arial", fill: "#FFFFFF", align: "left" });
             }
+            this.barGroup.addChild(namePlayerText);
             this.energyProgress = new Phaser.Graphics(this.game, 0, 0);
             this.lifeProgress = new Phaser.Graphics(this.game, 0, 20);
             this.energyBar.addChild(this.energyProgress);
-            this.lifeBar.addChild(this.lifeProgress);
+            this.barGroup.addChild(this.lifeProgress);
             this.energyText = this.game.add.text(0, 0, "0/10", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
             this.energyBar.addChild(this.energyText);
-            this.lifeText = this.game.add.text(0, 20, "0/200", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
-            this.lifeBar.addChild(this.lifeText);
+            this.text = this.game.add.text(0, 20, "0/200", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.barGroup.addChild(this.text);
         };
         FighterProgressBar.prototype.leftIcon = function () {
             var polygonLeft = new Phaser.Polygon([
@@ -1478,7 +1482,7 @@ var Fabrique;
             backgroundLife.lineStyle(2, 0x006FBD, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
-            this.lifeBar.addChild(backgroundLife);
+            this.barGroup.addChild(backgroundLife);
         };
         FighterProgressBar.prototype.rightBars = function () {
             // Energy
@@ -1509,7 +1513,7 @@ var Fabrique;
             backgroundLife.lineStyle(2, 0xA32727, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
-            this.lifeBar.addChild(backgroundLife);
+            this.barGroup.addChild(backgroundLife);
         };
         FighterProgressBar.prototype.setEnergy = function (value) {
             if (this.orientation === FighterProgressBar.LEFT) {
@@ -1564,9 +1568,9 @@ var Fabrique;
                 this.lifeProgress.lineStyle(0, 0x000000, 0.95);
                 this.lifeProgress.drawPolygon(polygonLifeProgress);
                 this.lifeProgress.endFill();
-                this.lifeText.x = 140;
-                this.lifeText.y = 22;
-                this.lifeText.setText(value.toString() + "/200");
+                this.text.x = 140;
+                this.text.y = 22;
+                this.text.setText(value.toString() + "/200");
             }
             else {
                 var i = (120 / 200);
@@ -1582,9 +1586,9 @@ var Fabrique;
                 this.lifeProgress.lineStyle(0, 0x000000, 0.95);
                 this.lifeProgress.drawPolygon(polygonLifeProgress);
                 this.lifeProgress.endFill();
-                this.lifeText.x = -90;
-                this.lifeText.y = 22;
-                this.lifeText.setText(value.toString() + "/200");
+                this.text.x = -90;
+                this.text.y = 22;
+                this.text.setText(value.toString() + "/200");
             }
         };
         FighterProgressBar.LEFT = "left";
@@ -2819,10 +2823,12 @@ var StreetFighterCards;
             this.buttonSettings.event.add(this.onButtonClick, this);
         };
         Level.prototype.createBars = function () {
-            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT);
+            var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
+            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT, playerName);
             this.playerProgressBar.setEnergy(this.playerEnergy);
             this.playerProgressBar.setLife(this.playerLife);
-            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT);
+            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT, opponentName);
             this.opponentProgressBar.setEnergy(this.opponentEnergy);
             this.opponentProgressBar.setLife(this.opponentLife);
         };
@@ -3372,7 +3378,7 @@ var StreetFighterCards;
             setTimeout(function () {
                 this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
                 Utilits.Data.debugLog("BATTLE", "END!");
-            }.bind(this), 5000);
+            }.bind(this), 3000);
         };
         Level.Name = "level";
         return Level;

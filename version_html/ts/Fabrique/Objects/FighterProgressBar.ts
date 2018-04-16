@@ -1,9 +1,9 @@
 module Fabrique {
     export class FighterProgressBar extends Phaser.Group {
 
-        constructor(game: Phaser.Game, parent: Phaser.Group, fighterIndex: number, x: number, y: number, orientation: string) {
+        constructor(game: Phaser.Game, parent: Phaser.Group, fighterIndex: number, x: number, y: number, orientation: string, fighterName: string) {
             super(game, parent);
-            this.init(fighterIndex, x, y, orientation);
+            this.init(fighterIndex, x, y, orientation, fighterName);
         }
 
         public static LEFT: string = "left";
@@ -12,46 +12,52 @@ module Fabrique {
         private orientation: string;
         private fighterIndex: number;
 
-        private lifeBar: Phaser.Group;
+        private barGroup: Phaser.Group;
         private lifeProgress: Phaser.Graphics;
         private energyBar: Phaser.Group;
         private energyProgress: Phaser.Graphics;
 
-        private lifeText:Phaser.Text;
+        private text:Phaser.Text;
         private energyText:Phaser.Text;
 
         public shutdown(): void {
-            this.lifeBar.removeAll();
+            this.barGroup.removeAll();
             this.energyBar.removeAll();
             this.removeAll();
         }
 
-        private init(fighterIndex: number, x: number, y: number, orientation: string): void {
+        private init(fighterIndex: number, x: number, y: number, orientation: string, fighterName: string): void {
             this.x = x;
             this.y = y;
             this.orientation = orientation;
             this.fighterIndex = fighterIndex;
 
             this.energyBar = new Phaser.Group(this.game, this);
-            this.lifeBar = new Phaser.Group(this.game, this);
+            this.barGroup = new Phaser.Group(this.game, this);
+
+            let namePlayerText:Phaser.Text;
 
             if (orientation === Icon.LEFT) {
                 this.leftBars();
                 this.leftIcon();
+                namePlayerText = this.game.add.text(25, 45, fighterName, { font: "bold 16px Arial", fill: "#FFFFFF", align: "left" });
             } else {
                 this.rightBars();
                 this.rightIcon();
+                namePlayerText = this.game.add.text(0, 45, fighterName, { font: "bold 16px Arial", fill: "#FFFFFF", align: "left" });
+                
             }
+            this.barGroup.addChild(namePlayerText);
 
             this.energyProgress = new Phaser.Graphics(this.game, 0, 0);
             this.lifeProgress = new Phaser.Graphics(this.game, 0, 20);
             this.energyBar.addChild(this.energyProgress);
-            this.lifeBar.addChild(this.lifeProgress);
+            this.barGroup.addChild(this.lifeProgress);
 
-            this.energyText = this.game.add.text(0, 0, "0/10", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" })
+            this.energyText = this.game.add.text(0, 0, "0/10", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
             this.energyBar.addChild(this.energyText);
-            this.lifeText = this.game.add.text(0, 20, "0/200", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" })
-            this.lifeBar.addChild(this.lifeText);
+            this.text = this.game.add.text(0, 20, "0/200", { font: "bold 12px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.barGroup.addChild(this.text);
         }
 
         private leftIcon(): void {
@@ -170,7 +176,7 @@ module Fabrique {
             backgroundLife.lineStyle(2, 0x006FBD, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
-            this.lifeBar.addChild(backgroundLife);
+            this.barGroup.addChild(backgroundLife);
         }
 
         private rightBars(): void {
@@ -203,7 +209,7 @@ module Fabrique {
             backgroundLife.lineStyle(2, 0xA32727, 0.95);
             backgroundLife.drawPolygon(polygonLife);
             backgroundLife.endFill();
-            this.lifeBar.addChild(backgroundLife);
+            this.barGroup.addChild(backgroundLife);
         }
 
         public setEnergy(value: number): void { // 10/10
@@ -262,9 +268,9 @@ module Fabrique {
                 this.lifeProgress.drawPolygon(polygonLifeProgress);
                 this.lifeProgress.endFill();
 
-                this.lifeText.x = 140;
-                this.lifeText.y = 22;
-                this.lifeText.setText(value.toString() + "/200");
+                this.text.x = 140;
+                this.text.y = 22;
+                this.text.setText(value.toString() + "/200");
             } else {
                 let i: number = (120 / 200);
                 let polygonLifeProgress: Phaser.Polygon = new Phaser.Polygon([
@@ -280,9 +286,9 @@ module Fabrique {
                 this.lifeProgress.drawPolygon(polygonLifeProgress);
                 this.lifeProgress.endFill();
 
-                this.lifeText.x = -90;
-                this.lifeText.y = 22;
-                this.lifeText.setText(value.toString() + "/200");
+                this.text.x = -90;
+                this.text.y = 22;
+                this.text.setText(value.toString() + "/200");
             }
         }
     }

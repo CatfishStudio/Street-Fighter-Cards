@@ -274,10 +274,12 @@ module StreetFighterCards {
         }
 
         private createBars(): void {
-            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT);
+            let playerName: string = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            let opponentName: string = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
+            this.playerProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.fighterIndex, 25, 25, FighterProgressBar.LEFT, playerName);
             this.playerProgressBar.setEnergy(this.playerEnergy);
             this.playerProgressBar.setLife(this.playerLife);
-            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT);
+            this.opponentProgressBar = new FighterProgressBar(this.game, this.group, GameData.Data.tournamentListIds[GameData.Data.progressIndex], 690, 25, FighterProgressBar.RIGHT, opponentName);
             this.opponentProgressBar.setEnergy(this.opponentEnergy);
             this.opponentProgressBar.setLife(this.opponentLife);
         }
@@ -862,7 +864,7 @@ module StreetFighterCards {
             setTimeout(function () {
                 this.game.state.start(Tournament.Name, true, false);
                 Utilits.Data.debugLog("BATTLE", "END!");
-            }.bind(this), 5000);
+            }.bind(this), 3000);
         }
     }
 }
