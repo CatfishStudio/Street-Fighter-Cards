@@ -498,7 +498,6 @@ module StreetFighterCards {
             } else if (this.status === Constants.STATUS_4_AI_AI_PROCESS_P_WAIT) {
                 this.opponentHitsAI = this.opponentAi.getHits(Constants.ACTIVE_OPPONENT);
             }
-            //////////this.opponentHitsAI = [null, null, null];
 
             if (this.opponentHitsAI.length > 0) {
                 let tweenMoveToSlot: Phaser.Tween;
@@ -608,7 +607,7 @@ module StreetFighterCards {
                 this.status = Constants.STATUS_6_AI_ATTACK;
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
-                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
+                this.buttonTablo.visible = false;
                 this.endTurn();
             } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
                 /**
