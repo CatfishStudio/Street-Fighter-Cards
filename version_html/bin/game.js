@@ -2061,47 +2061,20 @@ var Fabrique;
             this.init();
         }
         Timer.prototype.shutdown = function () {
-            this.stopTimer();
+            this.timer.stop(true);
             this.removeChildren();
         };
         Timer.prototype.init = function () {
             this.event = new Phaser.Signal();
             this.count = 30;
-            this.pause = false;
-            this.stop = false;
+            this.timer = this.game.time.create(false);
+            this.timer.loop(1000, this.onTimerComplete, this);
             this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.timerText);
             this.messageText = this.game.add.text(40, 40, "............................", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" });
             this.addChild(this.messageText);
         };
-        Timer.prototype.run = function () {
-            setTimeout(this.onTimerComplete.bind(this), 1000);
-        };
-        Timer.prototype.runTimer = function () {
-            this.resetTimer();
-            this.run();
-        };
-        Timer.prototype.pauseTimer = function (value) {
-            if (value === void 0) { value = true; }
-            this.pause = value;
-            if (this.pause === false)
-                this.runTimer();
-            Utilits.Data.debugLog("TIMER PAUSE:", this.pause);
-        };
-        Timer.prototype.stopTimer = function () {
-            this.stop = true;
-            this.count = 30;
-            this.setMessage("............................");
-            Utilits.Data.debugLog("TIMER STOP:", this.stop);
-        };
-        Timer.prototype.resetTimer = function () {
-            this.stop = false;
-            this.pause = false;
-            this.count = 30;
-        };
         Timer.prototype.onTimerComplete = function () {
-            if (this.pause === true || this.stop === true)
-                return;
             this.count--;
             if (this.timerText !== undefined && this.timerText !== null) {
                 if (this.count > 9)
@@ -2109,12 +2082,35 @@ var Fabrique;
                 else
                     this.timerText.text = "0:0" + this.count.toString();
             }
-            if (this.count <= 0) {
-                this.count = 30;
+            if (this.count === 0) {
                 this.event.dispatch(Constants.TIMER_END);
+                this.count = 30;
+                Utilits.Data.debugLog("TIMER:", "ON COMPLETE");
             }
-            if (this.pause === false || this.stop === false)
-                this.run();
+        };
+        Timer.prototype.run = function () {
+            this.timer.start(this.count);
+        };
+        Timer.prototype.runTimer = function () {
+            this.resetTimer();
+            this.run();
+        };
+        Timer.prototype.pauseTimer = function (value) {
+            if (value === void 0) { value = true; }
+            if (value === true)
+                this.timer.pause();
+            else
+                this.timer.start(this.count);
+            Utilits.Data.debugLog("TIMER PAUSE:", value);
+        };
+        Timer.prototype.stopTimer = function () {
+            this.timer.stop(false);
+            this.count = 30;
+            this.setMessage("............................");
+            Utilits.Data.debugLog("TIMER:", "STOP");
+        };
+        Timer.prototype.resetTimer = function () {
+            this.count = 30;
         };
         Timer.prototype.setMessage = function (value) {
             if (this.messageText !== undefined && this.messageText !== null) {
@@ -3422,3 +3418,80 @@ var StreetFighterCards;
 /// <reference path="States\Tournament.ts" />
 /// <reference path="States\Level.ts" />
 /// <reference path="app.ts" /> 
+var Fabrique;
+(function (Fabrique) {
+    var TimerOld = (function (_super) {
+        __extends(TimerOld, _super);
+        function TimerOld(game, x, y) {
+            _super.call(this, game, x, y, Images.TabloLevel);
+            this.init();
+        }
+        TimerOld.prototype.shutdown = function () {
+            this.stopTimer();
+            this.removeChildren();
+        };
+        TimerOld.prototype.init = function () {
+            this.event = new Phaser.Signal();
+            this.count = 30;
+            this.pause = false;
+            this.stop = false;
+            this.timerText = this.game.add.text(45, 12, "0:" + this.count.toString(), { font: "bold 24px arial", fill: "#FFFFFF", align: "left" });
+            this.addChild(this.timerText);
+            this.messageText = this.game.add.text(40, 40, "............................", { font: "bold 12px arial", fill: "#FFFFFF", align: "left" });
+            this.addChild(this.messageText);
+        };
+        TimerOld.prototype.run = function () {
+            setTimeout(this.onTimerComplete.bind(this), 1000);
+        };
+        TimerOld.prototype.runTimer = function () {
+            this.resetTimer();
+            this.run();
+        };
+        TimerOld.prototype.pauseTimer = function (value) {
+            if (value === void 0) { value = true; }
+            this.pause = value;
+            if (this.pause === false)
+                this.runTimer();
+            Utilits.Data.debugLog("TIMER PAUSE:", this.pause);
+        };
+        TimerOld.prototype.stopTimer = function () {
+            this.stop = true;
+            this.count = 30;
+            this.setMessage("............................");
+            Utilits.Data.debugLog("TIMER STOP:", this.stop);
+        };
+        TimerOld.prototype.resetTimer = function () {
+            this.stop = false;
+            this.pause = false;
+            this.count = 30;
+        };
+        TimerOld.prototype.onTimerComplete = function () {
+            if (this.pause === true || this.stop === true)
+                return;
+            this.count--;
+            if (this.timerText !== undefined && this.timerText !== null) {
+                if (this.count > 9)
+                    this.timerText.text = "0:" + this.count.toString();
+                else
+                    this.timerText.text = "0:0" + this.count.toString();
+            }
+            if (this.count <= 0) {
+                this.count = 30;
+                this.event.dispatch(Constants.TIMER_END);
+            }
+            if (this.pause === false || this.stop === false)
+                this.run();
+        };
+        TimerOld.prototype.setMessage = function (value) {
+            if (this.messageText !== undefined && this.messageText !== null) {
+                this.messageText.text = value;
+                if (value.length < 10)
+                    this.messageText.x = 42;
+                else
+                    this.messageText.x = 20;
+            }
+        };
+        return TimerOld;
+    }(Phaser.Sprite));
+    Fabrique.TimerOld = TimerOld;
+})(Fabrique || (Fabrique = {}));
