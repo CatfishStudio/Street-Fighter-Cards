@@ -12,12 +12,6 @@ module StreetFighterCards {
     import Timer = Fabrique.Timer;
     import Ai = AI.Ai;
 
-    export interface IStatus {
-        active: string;         // ход Игрока или Оппонента
-        playerHit: boolean;     // true - значит Игрок закончил выкладывать карты
-        opponentHit: boolean;   // true - значит Оппонент закончил выкладывать карты
-    }
-
     export class Level extends Phaser.State {
         public static Name: string = "level";
         public name: string = Level.Name;
@@ -38,7 +32,7 @@ module StreetFighterCards {
         private buttonSettings: ButtonComix;
         private slots: Slot[];
 
-        private status: IStatus;
+        private status: number;
         private energyCount: number;
 
         // Player
@@ -99,7 +93,7 @@ module StreetFighterCards {
             this.playerHand = [];
             this.playerSlots = [null, null, null];
 
-            this.opponentLife = 10;//GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -108,10 +102,7 @@ module StreetFighterCards {
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
-            this.status = <IStatus>{};
-            this.status.active = Constants.ACTIVE_PLAYER;
-            this.status.playerHit = false;
-            this.status.opponentHit = false;
+            this.status = 1;
 
             this.totalHits = 0;
             this.steepHits = 0;
@@ -161,7 +152,7 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.playerSlots = null;
-            this.playerFlash.forEach((flash:AnimationFlash) => {
+            this.playerFlash.forEach((flash: AnimationFlash) => {
                 flash.removeChildren();
             });
             this.playerFlash = null;
@@ -178,7 +169,7 @@ module StreetFighterCards {
                 if (card !== null && card !== undefined) card.shutdown();
             });
             this.opponentSlots = null;
-            this.opponentFlash.forEach((flash:AnimationFlash) => {
+            this.opponentFlash.forEach((flash: AnimationFlash) => {
                 flash.removeChildren();
             });
             this.opponentFlash = null;
@@ -333,19 +324,19 @@ module StreetFighterCards {
             this.moveCardDeckToHandOpponent();
         }
 
-        private createFlash():void {
+        private createFlash(): void {
             this.playerFlash = [];
             this.opponentFlash = [];
-            let flash:AnimationFlash;
-            for(let i:number = 0; i < this.slotsPoints.length; i++){
-                if(i < 3){
-                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0]-330, this.slotsPoints[i][1]-240);
+            let flash: AnimationFlash;
+            for (let i: number = 0; i < this.slotsPoints.length; i++) {
+                if (i < 3) {
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0] - 330, this.slotsPoints[i][1] - 240);
                     this.playerFlash.push(flash);
-                    this.borderGroup.add(this.playerFlash[this.playerFlash.length-1]);
-                }else{
-                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0]-330, this.slotsPoints[i][1]-240);
+                    this.borderGroup.add(this.playerFlash[this.playerFlash.length - 1]);
+                } else {
+                    flash = new AnimationFlash(this.game, this.slotsPoints[i][0] - 330, this.slotsPoints[i][1] - 240);
                     this.opponentFlash.push(flash);
-                    this.borderGroup.add(this.opponentFlash[this.opponentFlash.length-1]);
+                    this.borderGroup.add(this.opponentFlash[this.opponentFlash.length - 1]);
                 }
             }
         }
@@ -356,7 +347,7 @@ module StreetFighterCards {
         }
 
         private showAnimFight(): void {
-            let fight:AnimationFight = new AnimationFight(this.game, 200, 50);
+            let fight: AnimationFight = new AnimationFight(this.game, 200, 50);
             this.borderGroup.addChild(fight);
         }
 
@@ -418,18 +409,14 @@ module StreetFighterCards {
             if (this.playerHand.length < 5) {
                 this.playerHand.push(this.playerDeck.shift());
 
-                if (this.status.active === Constants.ACTIVE_PLAYER) {
-                    if (this.status.playerHit === false) {
-                        this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт
-                    } else {
-                        this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
-                    }
-                } else if (this.status.active === Constants.ACTIVE_OPPONENT) {
-                    if (this.status.opponentHit === true && this.status.playerHit === false) {
-                        this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт
-                    } else {
-                        this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
-                    }
+                if (this.status === Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT) {
+                    this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт                    
+                } else if (this.status === Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS) {
+                    this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
+                } else if (this.status === Constants.STATUS_4_AI_AI_PROCESS_P_WAIT) {
+                    this.playerHand[this.playerHand.length - 1].dragAndDrop(false);  // запрещаем перетаскивание карт
+                } else if (this.status === Constants.STATUS_5_AI_AI_COMPLETE_P_PROCESS) {
+                    this.playerHand[this.playerHand.length - 1].dragAndDrop(true); // разрешаем игроку перетаскивание карт
                 }
 
                 this.playerHand[this.playerHand.length - 1].indexInHand = this.playerHand.length - 1;
@@ -506,7 +493,12 @@ module StreetFighterCards {
             this.opponentDataAI.playerLife = this.playerLife;
             this.opponentDataAI.playerSlots = this.playerSlots;
             this.opponentAi.setData(this.opponentDataAI);
-            this.opponentHitsAI = this.opponentAi.getHits(this.status.active);
+            if (this.status === Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS) {
+                this.opponentHitsAI = this.opponentAi.getHits(Constants.ACTIVE_PLAYER);
+            } else if (this.status === Constants.STATUS_4_AI_AI_PROCESS_P_WAIT) {
+                this.opponentHitsAI = this.opponentAi.getHits(Constants.ACTIVE_OPPONENT);
+            }
+            //////////this.opponentHitsAI = [null, null, null];
 
             if (this.opponentHitsAI.length > 0) {
                 let tweenMoveToSlot: Phaser.Tween;
@@ -556,62 +548,76 @@ module StreetFighterCards {
             }
         }
 
-        // ХОД
+        /** ХОД (очередность состояний)
+         *  status-1: Ход игрока - игрок выкладывает карты - ИИ ждет					(кнопка - true)
+            status-2: Ход игрока - игрок положил карты - ИИ выкладыват карты		(кнопка - false)
+            status-3: Выполняются карты на столе												(кнопка - false)
+            status-4: Ход ИИ - ИИ выкладывает карты - игрок ждет						(кнопка - false)
+            status-5: Ход ИИ - ИИ положил карты - игрок выкладывает карты			(кнопка - true)
+            status-6: Выполняются карты на столе												(кнопка - false)
+         */
         private endTurn(): void {
-            if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === false) {
+            Utilits.Data.debugLog("Status", this.status);
+            if (this.status === Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT) {
                 /**
-                 * Ход игрока.
+                 * Атака игрока.
                  * Время выкладывать карты игрока вышло. 
                  * Очередь выкладывать карты переходит к оппоненту
                  */
+                this.status = Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS;
                 this.cardsDragAndDrop(false);           // запрещаем перетаскивание карт
-                this.status.active = Constants.ACTIVE_PLAYER;
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
-                this.status.playerHit = true;           // Игрок закончил выкладывать карты
-                this.status.opponentHit = false;        // ИИ получает очередь выкладывать карты
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 this.timer.setMessage("Ход противника");
                 this.moveCardHandToBoardOpponent();     // ИИ выкладывания карт
-            } else if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
+            } else if (this.status === Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS) {
                 /**
-                 * Ход игрока. 
+                 * Атака игрока. 
                  * Время выкладывать карты оппонента вышло.
+                 * Статус выполнения ударов
+                 */
+                this.timer.stopTimer();
+                this.status = Constants.STATUS_3_PLAYER_ATTACK;
+                this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
+                this.timer.setMessage("Ход противника");
+                this.buttonTablo.visible = false                // скрываем кнопку Ход
+                this.endTurn();
+            } else if (this.status === Constants.STATUS_3_PLAYER_ATTACK) {
+                /**
                  * Выполняются УДАРЫ выложенными картами.
                  * Ход передается оппоненту
                  */
-                this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
-                this.timer.setMessage("Ход противника");
-                this.timer.stopTimer();
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
-            } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
+            } else if (this.status === Constants.STATUS_4_AI_AI_PROCESS_P_WAIT) {
                 /**
-                 * Ход оппонента.
+                 * Атака оппонента.
                  * Время выкладывать карты оппонента вышло. 
                  * Очередь выкладывать карты переходит к игроку
                  */
+                this.status = Constants.STATUS_5_AI_AI_COMPLETE_P_PROCESS;
                 this.cardsDragAndDrop(true);                    // разрешаем перетаскивание карт
-                this.status.active = Constants.ACTIVE_OPPONENT; // первым ходит ИИ
                 this.buttonTablo.visible = true;                // показываем кнопку Ход
-                this.status.playerHit = false;                  // Игрок получает очередь выкладывать карты
-                this.status.opponentHit = true;                 // ИИ закончил выкладывать карты
                 this.timer.setMessage("Ваш ход");
-            } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === true) {
+            } else if (this.status === Constants.STATUS_5_AI_AI_COMPLETE_P_PROCESS) {
                 /**
-                 * Ход оппонента. 
+                 * Атака оппонента. 
                  * Время выкладывать карты игрока вышло.
+                 * Статус выполнения ударов
+                 */
+                this.timer.stopTimer();                         // останачливаем таймер
+                this.status = Constants.STATUS_6_AI_ATTACK;
+                this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
+                this.timer.setMessage("Ваш ход");
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
+                this.endTurn();
+            } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
+                /**
                  * Выполняются УДАРЫ выложенными картами.
                  * Ход передается игроку
                  */
-                this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
-                this.timer.setMessage("Ваш ход");
-                this.timer.stopTimer();                         // останачливаем таймер
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
-
-            Utilits.Data.debugLog("Status", this.status);
         }
 
         // ВЫПОЛНЕНИЕ УДАРОВ
@@ -629,19 +635,14 @@ module StreetFighterCards {
                 this.moveCardDeckToHandPlayer();
                 this.moveCardDeckToHandOpponent();
 
-                if (this.status.active === Constants.ACTIVE_PLAYER && this.status.playerHit === true) {
-                    this.status.active = Constants.ACTIVE_OPPONENT; // первым ходит ИИ
-                    this.buttonTablo.visible = false;               // скрываем кнопку Ход
-                    this.status.playerHit = false;                  // Игрок ожидает своей очереди выкладывать карты
-                    this.status.opponentHit = false;                // ИИ получает очередь выкладывать карты
+                if (this.status === Constants.STATUS_3_PLAYER_ATTACK) {
+                    this.status = Constants.STATUS_4_AI_AI_PROCESS_P_WAIT;
                     this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                     this.timer.setMessage("Ход противника");
                     setTimeout(this.moveCardHandToBoardOpponent.bind(this), 3000);     // ИИ выкладывания карт
-                } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === true) {
-                    this.status.active = Constants.ACTIVE_PLAYER;   // первым ходит Игрок
+                } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
+                    this.status = Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT;
                     this.buttonTablo.visible = true;                // показываем кнопку Ход
-                    this.status.playerHit = false;                  // Игрок получает очередь выкладывать карты
-                    this.status.opponentHit = false;                // ИИ ожидает своей очереди выкладывать карты
                     this.cardsDragAndDrop(true);                    // разрешаем игроку перетаскивание карт
                     this.timer.setMessage("Ваш ход");
                 }
@@ -750,10 +751,10 @@ module StreetFighterCards {
 
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
                 this.steepHits++;
-                if(hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.playerAnimation.stanceAnimation();
+                if (hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.playerAnimation.stanceAnimation();
             } else if (target === Constants.ANIMATION_OPPONENT_COMPLETE) {
                 this.steepHits++;
-                if(hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.opponentAnimation.stanceAnimation();
+                if (hit === Constants.ANIMATION_TYPE_DAMAGE && this.battleEnd === false) this.opponentAnimation.stanceAnimation();
             }
 
             if (this.targetDamage === Constants.PLAYER) {
@@ -778,19 +779,19 @@ module StreetFighterCards {
                     this.opponentAnimation.stanceAnimation();
                     this.implementHits();
                 } else {  // битва завершена (последняя анимация победа/поражение)
-                    
-                    if(this.steepHits <= 2){
+
+                    if (this.steepHits <= 2) {
                         this.timer.stopTimer();
                         this.timer.setMessage("Конец боя");
-                        if(this.playerLife > 0 && this.opponentLife <= 0){ // победа игрока
+                        if (this.playerLife > 0 && this.opponentLife <= 0) { // победа игрока
                             this.playerAnimation.winAnimation();
                             this.opponentAnimation.loseAnimation();
-                        }else{  // игрок проиграл
+                        } else {  // игрок проиграл
                             this.playerAnimation.loseAnimation();
                             this.opponentAnimation.winAnimation();
                         }
                     }
-                    if(this.steepHits >= 4){
+                    if (this.steepHits >= 4) {
                         this.endBattle();
                     }
                 }
@@ -854,7 +855,7 @@ module StreetFighterCards {
 
         // Завершение битвы
         private endBattle(): void {
-            let ko:AnimationKO = new AnimationKO(this.game, 315, 100);
+            let ko: AnimationKO = new AnimationKO(this.game, 315, 100);
             this.borderGroup.addChild(ko);
 
             if (this.playerLife > 0 && this.opponentLife <= 0) {
