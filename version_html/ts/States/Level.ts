@@ -99,7 +99,7 @@ module StreetFighterCards {
             this.playerHand = [];
             this.playerSlots = [null, null, null];
 
-            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 10;//GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -125,8 +125,10 @@ module StreetFighterCards {
             this.createFighters();
             this.createHand();
             this.createDeck();
-            this.createFlases();
+            this.createFlash();
             this.createBorder();
+
+            this.showAnimFight();
         }
 
         public shutdown(): void {
@@ -329,7 +331,7 @@ module StreetFighterCards {
             this.moveCardDeckToHandOpponent();
         }
 
-        private createFlases():void {
+        private createFlash():void {
             this.playerFlash = [];
             this.opponentFlash = [];
             let flash:AnimationFlash;
@@ -349,10 +351,13 @@ module StreetFighterCards {
         private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
+        }
 
-            let fight:AnimationFight = new AnimationFight(this.game, 200, 150);
+        private showAnimFight(): void {
+            let fight:AnimationFight = new AnimationFight(this.game, 200, 50);
             this.borderGroup.addChild(fight);
         }
+
         // ДЕЙСТВИЕ: Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
             Utilits.Data.debugLog("START: x=", pointer.x + " y= " + pointer.y);

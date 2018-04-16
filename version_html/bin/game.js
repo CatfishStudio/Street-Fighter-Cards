@@ -876,22 +876,37 @@ var Fabrique;
         __extends(AnimationFight, _super);
         function AnimationFight(game, x, y) {
             _super.call(this, game, x, y, Images.FightLevel);
-            this.init();
+            this.init(x, y);
         }
-        AnimationFight.prototype.init = function () {
+        AnimationFight.prototype.init = function (x, y) {
+            this.x1 = x;
+            this.y1 = y;
+            this.x2 = x + (this.width / 2);
+            this.y2 = x + (this.height / 4);
             this.scale.set(0, 0);
-            var tween = this.game.add.tween(this.scale);
-            tween.onComplete.add(this.onTweenUpComplete, this);
-            tween.to({ x: 1, y: 1 }, 500, 'Linear');
-            tween.start();
+            this.x = this.x2;
+            this.y = this.y2;
+            var tweenScale = this.game.add.tween(this.scale);
+            tweenScale.onComplete.add(this.onTweenMaxScaleComplete, this);
+            tweenScale.to({ x: 1, y: 1 }, 500, 'Linear');
+            tweenScale.start();
+            var tweenPosition = this.game.add.tween(this);
+            tweenPosition.onComplete.add(this.onTweenPositionComplete, this);
+            tweenPosition.to({ x: this.x1, y: this.y1 }, 500, 'Linear');
+            tweenPosition.start();
         };
-        AnimationFight.prototype.onTweenUpComplete = function () {
-            var tween = this.game.add.tween(this.scale);
-            tween.onComplete.add(this.onTweenUpComplete, this);
-            tween.to({ x: 0, y: 0 }, 500, 'Linear');
-            tween.start();
+        AnimationFight.prototype.onTweenPositionComplete = function () {
+            var tweenPosition = this.game.add.tween(this);
+            tweenPosition.to({ x: this.x2, y: this.y2 }, 500, 'Linear');
+            tweenPosition.start();
         };
-        AnimationFight.prototype.onTweenDownComplete = function () {
+        AnimationFight.prototype.onTweenMaxScaleComplete = function () {
+            var tweenScale = this.game.add.tween(this.scale);
+            tweenScale.onComplete.add(this.onTweenMinScaleComplete, this);
+            tweenScale.to({ x: 0, y: 0 }, 500, 'Linear');
+            tweenScale.start();
+        };
+        AnimationFight.prototype.onTweenMinScaleComplete = function () {
             this.removeChildren();
         };
         return AnimationFight;
@@ -1007,13 +1022,20 @@ var Fabrique;
         __extends(AnimationKO, _super);
         function AnimationKO(game, x, y) {
             _super.call(this, game, x, y, Images.KOLevel);
-            this.init();
+            this.init(x, y);
         }
-        AnimationKO.prototype.init = function () {
+        AnimationKO.prototype.init = function (x, y) {
+            this.xEnd = x;
+            this.yEnd = y;
+            this.x = x + (this.width / 2);
+            this.y = x + (this.height / 2);
             this.scale.set(0, 0);
-            var tween = this.game.add.tween(this.scale);
-            tween.to({ x: 1, y: 1 }, 250, 'Linear');
-            tween.start();
+            var tweenScale = this.game.add.tween(this.scale);
+            tweenScale.to({ x: 1, y: 1 }, 250, 'Linear');
+            tweenScale.start();
+            var tweenPosition = this.game.add.tween(this);
+            tweenPosition.to({ x: this.xEnd, y: this.yEnd }, 250, 'Linear');
+            tweenPosition.start();
         };
         return AnimationKO;
     }(Phaser.Sprite));
@@ -2621,7 +2643,7 @@ var StreetFighterCards;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 10; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -2643,8 +2665,9 @@ var StreetFighterCards;
             this.createFighters();
             this.createHand();
             this.createDeck();
-            this.createFlases();
+            this.createFlash();
             this.createBorder();
+            this.showAnimFight();
         };
         Level.prototype.shutdown = function () {
             this.opponentAi = null;
@@ -2836,7 +2859,7 @@ var StreetFighterCards;
             });
             this.moveCardDeckToHandOpponent();
         };
-        Level.prototype.createFlases = function () {
+        Level.prototype.createFlash = function () {
             this.playerFlash = [];
             this.opponentFlash = [];
             var flash;
@@ -2856,7 +2879,9 @@ var StreetFighterCards;
         Level.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
-            var fight = new AnimationFight(this.game, 200, 150);
+        };
+        Level.prototype.showAnimFight = function () {
+            var fight = new AnimationFight(this.game, 200, 50);
             this.borderGroup.addChild(fight);
         };
         // ДЕЙСТВИЕ: Взять карту
