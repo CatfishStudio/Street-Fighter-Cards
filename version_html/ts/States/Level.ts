@@ -564,7 +564,7 @@ module StreetFighterCards {
                  */
                 this.cardsDragAndDrop(false);           // запрещаем перетаскивание карт
                 this.status.active = Constants.ACTIVE_PLAYER;
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 this.status.playerHit = true;           // Игрок закончил выкладывать карты
                 this.status.opponentHit = false;        // ИИ получает очередь выкладывать карты
                 this.timer.setMessage("Ход противника");
@@ -579,7 +579,7 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             } else if (this.status.active === Constants.ACTIVE_OPPONENT && this.status.opponentHit === false) {
@@ -604,7 +604,7 @@ module StreetFighterCards {
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer();                         // останачливаем таймер
-                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function(){ this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }

@@ -1318,13 +1318,22 @@ var Fabrique;
             this.init(index);
         }
         FighterCard.prototype.init = function (index) {
-            this.defenseText = this.game.add.text(13, 13, GameData.Data.personages[index].defense.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            var defense = GameData.Data.personages[index].defense.toString();
+            var health = GameData.Data.personages[index].life.toString();
+            var damage = GameData.Data.personages[index].attack.toString();
+            var energy = GameData.Data.personages[index].energy.toString();
+            if (defense.length < 3) {
+                this.defenseText = this.game.add.text(17, 13, defense, { font: "bold 16px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
+            else {
+                this.defenseText = this.game.add.text(13, 13, defense, { font: "bold 16px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
             this.addChild(this.defenseText);
-            this.healthText = this.game.add.text(150, 13, GameData.Data.personages[index].life.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            this.healthText = this.game.add.text(152, 13, health, { font: "bold 16px Times New Roman", fill: "#FFFFFF", align: "left" });
             this.addChild(this.healthText);
-            this.damageText = this.game.add.text(11, 242, GameData.Data.personages[index].attack.toString(), { font: "bold 18px Times New Roman", fill: "#D83900", align: "left" });
+            this.damageText = this.game.add.text(12, 243, damage, { font: "bold 16px Times New Roman", fill: "#E52D00", align: "left" });
             this.addChild(this.damageText);
-            this.energyText = this.game.add.text(157, 242, GameData.Data.personages[index].energy.toString(), { font: "bold 18px Times New Roman", fill: "#0026FF", align: "left" });
+            this.energyText = this.game.add.text(157, 243, energy, { font: "bold 16px Times New Roman", fill: "#0026FF", align: "left" });
             this.addChild(this.energyText);
         };
         return FighterCard;
@@ -3072,7 +3081,7 @@ var StreetFighterCards;
                  */
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.status.active = Constants.ACTIVE_PLAYER;
-                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 this.status.playerHit = true; // Игрок закончил выкладывать карты
                 this.status.opponentHit = false; // ИИ получает очередь выкладывать карты
                 this.timer.setMessage("Ход противника");
@@ -3088,7 +3097,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
                 this.timer.stopTimer();
-                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT PLAYER]", "Execute HITS");
                 this.implementHits();
             }
@@ -3115,7 +3124,7 @@ var StreetFighterCards;
                 this.cardsDragAndDrop(false); // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
                 this.timer.stopTimer(); // останачливаем таймер
-                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 100); // скрываем кнопку Ход
+                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
                 Utilits.Data.debugLog("[HIT OPPONENT]", "Execute HITS");
                 this.implementHits();
             }
