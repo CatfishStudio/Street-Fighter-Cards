@@ -46,6 +46,7 @@ module StreetFighterCards {
         private playerSlots: Card[];
 
         // Opponent
+        private timerAI: Phaser.Timer;
         private opponentAi: Ai;
         private opponentFlash: AnimationFlash[];
         private opponentAnimation: AnimationFighter;
@@ -98,7 +99,8 @@ module StreetFighterCards {
             this.opponentDeck = [];
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
-
+            this.timerAI = this.game.time.create(false);
+            
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
@@ -173,6 +175,7 @@ module StreetFighterCards {
                 flash.removeChildren();
             });
             this.opponentFlash = null;
+            this.timerAI.destroy();
             // stage clear
             this.game.stage.removeChildren();
         }
@@ -542,19 +545,24 @@ module StreetFighterCards {
                     }
                 }
 
-                setTimeout(this.endTurn.bind(this), 3000);
+                this.timerAI.loop(3000, () => {
+                    this.timerAI.stop();
+                    this.endTurn();
+                }, this);
+                this.timerAI.start();
+                
                 Utilits.Data.debugLog("AI: Slots/Hand:", [this.opponentSlots, this.opponentHand]);
             }
         }
 
-        /** ХОД (очередность состояний)
-         *  status-1: Ход игрока - игрок выкладывает карты - ИИ ждет					(кнопка - true)
-            status-2: Ход игрока - игрок положил карты - ИИ выкладыват карты		(кнопка - false)
-            status-3: Выполняются карты на столе												(кнопка - false)
-            status-4: Ход ИИ - ИИ выкладывает карты - игрок ждет						(кнопка - false)
-            status-5: Ход ИИ - ИИ положил карты - игрок выкладывает карты			(кнопка - true)
-            status-6: Выполняются карты на столе												(кнопка - false)
-         */
+        /** ХОД (очередность ходов)
+         *  status-1: Ход игрока - игрок выкладывает карты - ИИ ждет				(кнопка - true)
+         *  status-2: Ход игрока - игрок положил карты - ИИ выкладыват карты		(кнопка - false)
+         *  status-3: Выполняются карты на столе (Атака Игрока)									(кнопка - false)
+         *  status-4: Ход ИИ - ИИ выкладывает карты - игрок ждет					(кнопка - false)
+         *  status-5: Ход ИИ - ИИ положил карты - игрок выкладывает карты			(кнопка - true)
+         *  status-6: Выполняются карты на столе (Атака ИИ)							(кнопка - false)	
+        */
         private endTurn(): void {
             Utilits.Data.debugLog("Status", this.status);
             if (this.status === Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT) {
@@ -638,7 +646,11 @@ module StreetFighterCards {
                     this.status = Constants.STATUS_4_AI_AI_PROCESS_P_WAIT;
                     this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                     this.timer.setMessage("Ход противника");
-                    setTimeout(this.moveCardHandToBoardOpponent.bind(this), 3000);     // ИИ выкладывания карт
+                    this.timerAI.loop(3000, () => {
+                        this.timerAI.stop();
+                        this.moveCardHandToBoardOpponent();         // ИИ выкладывания карт
+                    }, this);
+                    this.timerAI.start();
                 } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
                     this.status = Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT;
                     this.buttonTablo.visible = true;                // показываем кнопку Ход
