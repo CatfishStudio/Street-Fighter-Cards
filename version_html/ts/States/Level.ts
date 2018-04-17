@@ -547,6 +547,7 @@ module StreetFighterCards {
 
                 this.timerAI.loop(3000, () => {
                     this.timerAI.stop();
+                    this.timer.resetTimer();
                     this.endTurn();
                 }, this);
                 this.timerAI.start();
@@ -573,7 +574,7 @@ module StreetFighterCards {
                  */
                 this.status = Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS;
                 this.cardsDragAndDrop(false);           // запрещаем перетаскивание карт
-                setTimeout(function () { this.buttonTablo.visible = false; }.bind(this), 50); // скрываем кнопку Ход
+                this.buttonTablo.buttonVisible(false);
                 this.timer.setMessage("Ход противника");
                 this.moveCardHandToBoardOpponent();     // ИИ выкладывания карт
             } else if (this.status === Constants.STATUS_2_PLAYER_P_COMPLETE_AI_PROCESS) {
@@ -586,7 +587,7 @@ module StreetFighterCards {
                 this.status = Constants.STATUS_3_PLAYER_ATTACK;
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ход противника");
-                this.buttonTablo.visible = false                // скрываем кнопку Ход
+                this.buttonTablo.buttonVisible(false);
                 this.endTurn();
             } else if (this.status === Constants.STATUS_3_PLAYER_ATTACK) {
                 /**
@@ -603,7 +604,7 @@ module StreetFighterCards {
                  */
                 this.status = Constants.STATUS_5_AI_AI_COMPLETE_P_PROCESS;
                 this.cardsDragAndDrop(true);                    // разрешаем перетаскивание карт
-                this.buttonTablo.visible = true;                // показываем кнопку Ход
+                this.buttonTablo.buttonVisible(true);
                 this.timer.setMessage("Ваш ход");
             } else if (this.status === Constants.STATUS_5_AI_AI_COMPLETE_P_PROCESS) {
                 /**
@@ -615,7 +616,7 @@ module StreetFighterCards {
                 this.status = Constants.STATUS_6_AI_ATTACK;
                 this.cardsDragAndDrop(false);                   // запрещаем перетаскивание карт
                 this.timer.setMessage("Ваш ход");
-                this.buttonTablo.visible = false;
+                this.buttonTablo.buttonVisible(false);
                 this.endTurn();
             } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
                 /**
@@ -653,7 +654,7 @@ module StreetFighterCards {
                     this.timerAI.start();
                 } else if (this.status === Constants.STATUS_6_AI_ATTACK) {
                     this.status = Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT;
-                    this.buttonTablo.visible = true;                // показываем кнопку Ход
+                    this.buttonTablo.buttonVisible(true);
                     this.cardsDragAndDrop(true);                    // разрешаем игроку перетаскивание карт
                     this.timer.setMessage("Ваш ход");
                 }
