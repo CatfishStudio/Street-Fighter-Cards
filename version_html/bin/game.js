@@ -2673,7 +2673,7 @@ var StreetFighterCards;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 10; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -2851,18 +2851,23 @@ var StreetFighterCards;
         Level.prototype.createFighters = function () {
             var playerPersonage = GameData.Data.personages[GameData.Data.fighterIndex];
             this.playerAnimation = new AnimationFighter(this.game, Constants.ACTIVE_PLAYER, playerPersonage.name, playerPersonage);
-            this.playerAnimation.x = 250;
-            this.playerAnimation.y = (370 - 50) - this.playerAnimation.height;
             this.playerAnimation.event.add(this.onAnimationComplete, this);
             this.group.addChild(this.playerAnimation);
             var opponentPersonage = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]];
             this.opponentAnimation = new AnimationFighter(this.game, Constants.ACTIVE_OPPONENT, opponentPersonage.name, opponentPersonage);
-            this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation.width / 2);
-            this.opponentAnimation.y = (370 - 50) - this.opponentAnimation.height;
             this.opponentAnimation.anchor.setTo(.0, .0);
             this.opponentAnimation.scale.x *= -1;
             this.opponentAnimation.event.add(this.onAnimationComplete, this);
             this.group.addChild(this.opponentAnimation);
+            this.correctPositionFighterAnimation();
+        };
+        Level.prototype.correctPositionFighterAnimation = function () {
+            //this.playerAnimation.x = 250;
+            this.playerAnimation.x = (Constants.GAME_WIDTH / 3);
+            this.playerAnimation.y = (370 - 50) - this.playerAnimation.height;
+            //this.opponentAnimation.x = (800 - 225) - (this.opponentAnimation.width / 2);
+            this.opponentAnimation.x = (Constants.GAME_WIDTH - Constants.GAME_WIDTH / 2.5) - (this.opponentAnimation.width / 2);
+            this.opponentAnimation.y = (370 - 50) - this.opponentAnimation.height;
         };
         Level.prototype.createDeck = function () {
             var _this = this;
@@ -3187,6 +3192,7 @@ var StreetFighterCards;
                 this.targetDamage = null;
                 this.playerAnimation.stanceAnimation();
                 this.opponentAnimation.stanceAnimation();
+                this.correctPositionFighterAnimation();
                 this.moveCardDeckToHandPlayer();
                 this.moveCardDeckToHandOpponent();
                 if (this.status === Constants.STATUS_3_PLAYER_ATTACK) {
@@ -3240,6 +3246,7 @@ var StreetFighterCards;
             // выполняем анимацию карт
             this.animationHits(playerCard, opponentCard);
         };
+        // Распределение анимаций
         Level.prototype.animationHits = function (playerCard, opponentCard) {
             // #1: оба слота пустые
             if (playerCard === null && opponentCard === null) {
@@ -3248,6 +3255,7 @@ var StreetFighterCards;
                 this.targetDamage = null;
                 this.playerAnimation.stanceAnimation();
                 this.opponentAnimation.stanceAnimation();
+                this.correctPositionFighterAnimation();
                 this.implementHits();
             }
             else {
@@ -3261,6 +3269,7 @@ var StreetFighterCards;
                         this.steepHits++; // оппонент ничего не делает
                     }
                     this.playerAnimation.hitAnimation(playerCard.cardData);
+                    this.correctPositionFighterAnimation();
                 }
                 else {
                     // #3: слот игрока пустой, стол оппонента не пустой
@@ -3273,6 +3282,7 @@ var StreetFighterCards;
                             this.steepHits++; // игрок ничего не делает
                         }
                         this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет атаку
+                        this.correctPositionFighterAnimation();
                     }
                     else {
                         // #4: оба слота не пустые
@@ -3284,6 +3294,7 @@ var StreetFighterCards;
                                 this.targetDamage = Constants.PLAYER_AND_OPPONENT; // игрок и оппонент получат удары
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
+                                this.correctPositionFighterAnimation();
                             }
                             else {
                                 // блок (игрок) - блок (оппонент)
@@ -3291,6 +3302,7 @@ var StreetFighterCards;
                                 // блок (игрок) - атака (оппонент)
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
+                                this.correctPositionFighterAnimation();
                             }
                             this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
                             this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
@@ -3299,7 +3311,7 @@ var StreetFighterCards;
                 }
             }
         };
-        // АНИМАЦИЯ УДАРОВ/БЛОКОВ/ПОВРЕЖДЕНИЙ - ВЫПОЛНЕНА
+        // АНИМАЦИЯ УДАРОВ/БЛОКОВ/ПОВРЕЖДЕНИЙ - АНИМАЦИЯ ВЫПОЛНЕНА
         Level.prototype.onAnimationComplete = function (target, hit) {
             Utilits.Data.debugLog('ANIMATION steep complete [target/type]:', [target, hit]);
             if (target === Constants.ANIMATION_PLAYER_COMPLETE) {
@@ -3315,15 +3327,18 @@ var StreetFighterCards;
             if (this.targetDamage === Constants.PLAYER) {
                 this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
+                this.correctPositionFighterAnimation();
             }
             else if (this.targetDamage === Constants.OPPONENT) {
                 this.targetDamage = null;
                 this.opponentAnimation.damageAnimation();
+                this.correctPositionFighterAnimation();
             }
             else if (this.targetDamage === Constants.PLAYER_AND_OPPONENT) {
                 this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
                 this.opponentAnimation.damageAnimation();
+                this.correctPositionFighterAnimation();
             }
             Utilits.Data.debugLog('ANIMATION steep hits:', this.steepHits);
             if (this.steepHits >= 2) {
@@ -3333,6 +3348,7 @@ var StreetFighterCards;
                     this.targetDamage = null;
                     this.playerAnimation.stanceAnimation();
                     this.opponentAnimation.stanceAnimation();
+                    this.correctPositionFighterAnimation();
                     this.implementHits();
                 }
                 else {
@@ -3342,10 +3358,12 @@ var StreetFighterCards;
                         if (this.playerLife > 0 && this.opponentLife <= 0) {
                             this.playerAnimation.winAnimation();
                             this.opponentAnimation.loseAnimation();
+                            this.correctPositionFighterAnimation();
                         }
                         else {
                             this.playerAnimation.loseAnimation();
                             this.opponentAnimation.winAnimation();
+                            this.correctPositionFighterAnimation();
                         }
                     }
                     if (this.steepHits >= 4) {
