@@ -278,7 +278,7 @@ var AI;
             if (this.energy > 0) {
                 for (var i = 0; i < result.length; i++) {
                     if (result[i] === null) {
-                        hit = this.getHitCardAI(ATTACK, DEFENSE); // слот AI пуст - приоритет атакующая карта
+                        hit = this.getHitCardAI(ATTACK, null); // слот AI пуст - приоритет атакующая карта
                         if (hit.index !== undefined && hit.index !== null && result[i] === null) {
                             result[i] = hit.index; // записываем выбранную карту AI
                             this.energy -= hit.energy; // уменьшаем кол-во энергии AI
