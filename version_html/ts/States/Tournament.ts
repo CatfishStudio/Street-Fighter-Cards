@@ -125,6 +125,7 @@ module StreetFighterCards {
 
         private createComix():void {
             let comix: Comix = new Comix(this.game, this.group);
+            comix.event.add(this.onGameOver, this);
         }
 
         private settingsCreate() {
@@ -164,5 +165,11 @@ module StreetFighterCards {
             }
         }
 
+        private onGameOver(event){
+            Utilits.Data.debugLog('GAME:', 'OVER');
+            if(event === Constants.GAME_OVER){
+                this.game.state.start(Menu.Name, true, false);
+            }
+        }
     }
 }
