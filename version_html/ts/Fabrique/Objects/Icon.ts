@@ -74,7 +74,7 @@ module Fabrique {
                 
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
-                if(index < GameData.Data.progressIndex) iconSprite.tint = 0x000000;
+                if(index < GameData.Data.progressIndex && index !== 18) iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }else{
                 background = new Phaser.Graphics(this.game, 0, 0);
@@ -97,7 +97,7 @@ module Fabrique {
                 iconSprite.anchor.setTo(.5,.5);
                 iconSprite.scale.x *= -1;
                 iconSprite.mask = iconMask;
-                if(index < GameData.Data.progressIndex) iconSprite.tint = 0x000000;
+                if(index < GameData.Data.progressIndex && index !== GameData.Data.fighterIndex) iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }
            

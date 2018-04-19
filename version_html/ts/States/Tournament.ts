@@ -25,12 +25,16 @@ module StreetFighterCards {
 
         public create():void {
             this.group = new Phaser.Group(this.game, this.stage);
-            
-            this.createBackground();
-            this.createVSPlayers();
-            this.createIcons();
-            this.createButtons();          
-            this.createBorder();
+
+            if(GameData.Data.progressIndex === 18) GameData.Data.progressIndex++;
+
+            if(GameData.Data.progressIndex < 20){
+                this.createBackground();
+                this.createVSPlayers();
+                this.createIcons();
+                this.createButtons();          
+                this.createBorder();
+            }            
             this.createComix();
         }
 
@@ -70,7 +74,7 @@ module StreetFighterCards {
             let opponentName: Phaser.Text = this.game.add.text(575, 350, GameData.Data.personages[opponentId].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
             opponentName.setShadow(5, 5, 'rgba(0,0,0,0.5)', 0);
             this.group.addChild(opponentName);
-
+            
             /* VS */
             let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
             vs.scale.set(0.8, 0.8);

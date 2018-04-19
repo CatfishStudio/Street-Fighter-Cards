@@ -742,7 +742,7 @@ var GameData;
             }
         };
         Data.initTournament = function () {
-            this.progressIndex = 0;
+            this.progressIndex = 17; //0;
             GameData.Data.tournamentListIds = [];
             var listIDs = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
             var id;
@@ -1680,7 +1680,8 @@ var Fabrique;
                 this.addChild(iconBackgroundSprite);
                 iconSprite = new Phaser.Sprite(this.game, 0, 0, GameData.Data.fighters[fighterIndex][4]);
                 iconSprite.mask = iconMask;
-                if (index < GameData.Data.progressIndex)
+                console.error(index, GameData.Data.progressIndex, GameData.Data.fighterIndex);
+                if (index < GameData.Data.progressIndex && index !== 18)
                     iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }
@@ -1702,7 +1703,7 @@ var Fabrique;
                 iconSprite.anchor.setTo(.5, .5);
                 iconSprite.scale.x *= -1;
                 iconSprite.mask = iconMask;
-                if (index < GameData.Data.progressIndex)
+                if (index < GameData.Data.progressIndex && index !== GameData.Data.fighterIndex)
                     iconSprite.tint = 0x000000;
                 this.addChild(iconSprite);
             }
@@ -2521,11 +2522,15 @@ var StreetFighterCards;
         }
         Tournament.prototype.create = function () {
             this.group = new Phaser.Group(this.game, this.stage);
-            this.createBackground();
-            this.createVSPlayers();
-            this.createIcons();
-            this.createButtons();
-            this.createBorder();
+            if (GameData.Data.progressIndex === 18)
+                GameData.Data.progressIndex++;
+            if (GameData.Data.progressIndex < 20) {
+                this.createBackground();
+                this.createVSPlayers();
+                this.createIcons();
+                this.createButtons();
+                this.createBorder();
+            }
             this.createComix();
         };
         Tournament.prototype.shutdown = function () {
@@ -2681,7 +2686,7 @@ var StreetFighterCards;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = 10; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 5; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];

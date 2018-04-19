@@ -94,7 +94,7 @@ module StreetFighterCards {
             this.playerHand = [];
             this.playerSlots = [null, null, null];
 
-            this.opponentLife = 10;//GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 5;//GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
