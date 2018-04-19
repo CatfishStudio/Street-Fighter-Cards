@@ -9,6 +9,7 @@ module Fabrique {
 
         constructor(game:Phaser.Game, parent:Phaser.Group){
             super(game, parent);
+            this.event = new Phaser.Signal();
 
             if(GameData.Data.comixIndex >= (GameData.Data.progressIndex+2)){
                 this.removeAll();
@@ -24,7 +25,6 @@ module Fabrique {
         }
 
         private init():void {
-            this.event = new Phaser.Signal();
             this.index = 0;
             this.createBackground();
             this.createButton();

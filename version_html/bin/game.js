@@ -1287,6 +1287,7 @@ var Fabrique;
         __extends(Comix, _super);
         function Comix(game, parent) {
             _super.call(this, game, parent);
+            this.event = new Phaser.Signal();
             if (GameData.Data.comixIndex >= (GameData.Data.progressIndex + 2)) {
                 this.removeAll();
             }
@@ -1300,7 +1301,6 @@ var Fabrique;
             this.removeAll();
         };
         Comix.prototype.init = function () {
-            this.event = new Phaser.Signal();
             this.index = 0;
             this.createBackground();
             this.createButton();
