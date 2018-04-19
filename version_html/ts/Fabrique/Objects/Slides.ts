@@ -86,7 +86,7 @@ module Fabrique {
             if(GameData.Data.fighterIndex === 0){
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
-            }else if(GameData.Data.fighterIndex === GameData.Data.personages.length-2){
+            }else if(GameData.Data.fighterIndex === GameData.Data.personages.length-1){
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }else{

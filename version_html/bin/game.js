@@ -1954,7 +1954,6 @@ var Fabrique;
                             GameData.Data.fighterIndex--;
                             if (GameData.Data.fighterIndex === 5)
                                 GameData.Data.fighterIndex--;
-                            console.error(GameData.Data.fighterIndex);
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -1969,7 +1968,6 @@ var Fabrique;
                             GameData.Data.fighterIndex++;
                             if (GameData.Data.fighterIndex === 5)
                                 GameData.Data.fighterIndex++;
-                            console.error(GameData.Data.fighterIndex);
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -1986,7 +1984,7 @@ var Fabrique;
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
             }
-            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 2) {
+            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }
