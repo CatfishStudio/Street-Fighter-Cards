@@ -28,9 +28,12 @@ module Fabrique {
             
             let posX:number = 5;
             let posY:number = 90;
+            let index:number = 0;
             for(let i:number = 0; i < GameData.Data.personages.length; i++){
-                let fCard:Fabrique.FighterCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
+                if(i === 5) continue;
+                let fCard:Fabrique.FighterCard = new Fabrique.FighterCard(this.game, posX + (300 * index), posY, GameData.Data.fighters[i][2], i);
                 this.slideGroup.addChild(fCard);
+                index++;
             }
             
             this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
@@ -53,6 +56,7 @@ module Fabrique {
                         if(this.canClick){
                             this.canClick = false;
                             GameData.Data.fighterIndex--;
+                            if(GameData.Data.fighterIndex === 5) GameData.Data.fighterIndex--;
                             let tween: Phaser.Tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x + 300}, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -65,6 +69,7 @@ module Fabrique {
                         if(this.canClick){
                             this.canClick = false;
                             GameData.Data.fighterIndex++;
+                            if(GameData.Data.fighterIndex === 5) GameData.Data.fighterIndex++;
                             let tween: Phaser.Tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x - 300}, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -81,7 +86,7 @@ module Fabrique {
             if(GameData.Data.fighterIndex === 0){
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
-            }else if(GameData.Data.fighterIndex === GameData.Data.personages.length-1){
+            }else if(GameData.Data.fighterIndex === GameData.Data.personages.length-2){
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }else{

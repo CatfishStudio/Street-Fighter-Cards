@@ -1927,9 +1927,13 @@ var Fabrique;
             this.slideGroup = new Phaser.Group(this.game, this);
             var posX = 5;
             var posY = 90;
+            var index = 0;
             for (var i = 0; i < GameData.Data.personages.length; i++) {
-                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * i), posY, GameData.Data.fighters[i][2], i);
+                if (i === 5)
+                    continue;
+                var fCard = new Fabrique.FighterCard(this.game, posX + (300 * index), posY, GameData.Data.fighters[i][2], i);
                 this.slideGroup.addChild(fCard);
+                index++;
             }
             this.buttonLeft = new Phaser.Button(this.game, 205, 190, Images.ArrowLeft, this.onButtonClick, this);
             this.buttonLeft.name = Constants.BUTTON_ARROW_LEFT;
@@ -1948,6 +1952,9 @@ var Fabrique;
                         if (this.canClick) {
                             this.canClick = false;
                             GameData.Data.fighterIndex--;
+                            if (GameData.Data.fighterIndex === 5)
+                                GameData.Data.fighterIndex--;
+                            console.error(GameData.Data.fighterIndex);
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x + 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -1960,6 +1967,9 @@ var Fabrique;
                         if (this.canClick) {
                             this.canClick = false;
                             GameData.Data.fighterIndex++;
+                            if (GameData.Data.fighterIndex === 5)
+                                GameData.Data.fighterIndex++;
+                            console.error(GameData.Data.fighterIndex);
                             var tween = this.game.add.tween(this.slideGroup);
                             tween.to({ x: this.slideGroup.x - 300 }, 250, 'Linear');
                             tween.onComplete.add(this.onTweenComplete, this);
@@ -1976,7 +1986,7 @@ var Fabrique;
                 this.buttonLeft.visible = false;
                 this.buttonRight.visible = true;
             }
-            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 1) {
+            else if (GameData.Data.fighterIndex === GameData.Data.personages.length - 2) {
                 this.buttonLeft.visible = true;
                 this.buttonRight.visible = false;
             }
