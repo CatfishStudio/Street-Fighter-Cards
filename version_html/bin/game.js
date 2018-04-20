@@ -2327,7 +2327,7 @@ var StreetFighterCards;
             }
         };
         Preloader.prototype.onLoadComplete = function () {
-            GameData.Data.music = this.game.add.audio(Sounds.MenuMusic);
+            GameData.Data.music = this.game.add.audio(Sounds.MenuMusic1);
             GameData.Data.music.loop = true;
             GameData.Data.music.play();
             GameData.Data.initPersonages(this.game);
@@ -3520,9 +3520,17 @@ var StreetFighterCards;
 var Sounds = (function () {
     function Sounds() {
     }
-    Sounds.MenuMusic = 'menu';
+    Sounds.MenuMusic1 = 'music1';
+    Sounds.MenuMusic2 = 'music2';
+    Sounds.BattleMusic1 = 'battle1';
+    Sounds.BattleMusic2 = 'battle2';
+    Sounds.BattleMusic3 = 'battle3';
     Sounds.preloadList = [
-        Sounds.MenuMusic
+        Sounds.MenuMusic1,
+        Sounds.MenuMusic2,
+        Sounds.BattleMusic1,
+        Sounds.BattleMusic2,
+        Sounds.BattleMusic3,
     ];
     return Sounds;
 }());
