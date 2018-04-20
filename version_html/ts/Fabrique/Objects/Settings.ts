@@ -107,12 +107,14 @@ module Fabrique {
                 case 'music':
                     {
                         if(Config.settingMusic === true){
+                            GameData.Data.music.stop();
                             Config.settingMusic = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
                             event.name = 'music';
                             this.addChild(event);
                         }else{
+                            GameData.Data.music.play();
                             Config.settingMusic = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);

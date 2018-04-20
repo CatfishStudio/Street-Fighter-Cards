@@ -51,6 +51,9 @@ module StreetFighterCards {
                         this.game.load.json(assetName, 'assets/data/'+ assetName);
                     });
                     
+                    Sounds.preloadList.forEach((assetName: string)=>{
+                        this.game.load.audio(assetName, ['assets/sounds/'+assetName+'.mp3', 'assets/sounds/'+assetName+'.ogg']);
+                    });
                 }
             });
         }

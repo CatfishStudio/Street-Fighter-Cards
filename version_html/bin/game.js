@@ -1875,6 +1875,7 @@ var Fabrique;
                 case 'music':
                     {
                         if (Config.settingMusic === true) {
+                            GameData.Data.music.stop();
                             Config.settingMusic = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
@@ -1882,6 +1883,7 @@ var Fabrique;
                             this.addChild(event);
                         }
                         else {
+                            GameData.Data.music.play();
                             Config.settingMusic = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
@@ -2277,6 +2279,9 @@ var StreetFighterCards;
                     Decks.preloadList.forEach(function (assetName) {
                         _this.game.load.json(assetName, 'assets/data/' + assetName);
                     });
+                    Sounds.preloadList.forEach(function (assetName) {
+                        _this.game.load.audio(assetName, ['assets/sounds/' + assetName + '.mp3', 'assets/sounds/' + assetName + '.ogg']);
+                    });
                 }
             });
         };
@@ -2322,6 +2327,9 @@ var StreetFighterCards;
             }
         };
         Preloader.prototype.onLoadComplete = function () {
+            GameData.Data.music = this.game.add.audio(Sounds.MenuMusic);
+            GameData.Data.music.loop = true;
+            GameData.Data.music.play();
             GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
             this.game.state.start(this.config.nextStage, true, false);
@@ -3509,6 +3517,15 @@ var StreetFighterCards;
 /// <reference path="States\Tournament.ts" />
 /// <reference path="States\Level.ts" />
 /// <reference path="app.ts" /> 
+var Sounds = (function () {
+    function Sounds() {
+    }
+    Sounds.MenuMusic = 'menu';
+    Sounds.preloadList = [
+        Sounds.MenuMusic
+    ];
+    return Sounds;
+}());
 var Fabrique;
 (function (Fabrique) {
     var TimerOld = (function (_super) {

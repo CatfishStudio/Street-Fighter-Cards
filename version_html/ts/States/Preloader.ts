@@ -46,6 +46,10 @@ module StreetFighterCards {
         }
        
         private onLoadComplete() {
+            GameData.Data.music = this.game.add.audio(Sounds.MenuMusic);
+            GameData.Data.music.loop = true;
+            GameData.Data.music.play();
+
             GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
             this.game.state.start(this.config.nextStage, true, false);
