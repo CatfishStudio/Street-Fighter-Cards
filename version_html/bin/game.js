@@ -2329,7 +2329,7 @@ var StreetFighterCards;
         Preloader.prototype.onLoadComplete = function () {
             GameData.Data.music = this.game.add.audio(Sounds.MenuMusic1);
             GameData.Data.music.loop = true;
-            GameData.Data.music.volume = 0.1;
+            GameData.Data.music.volume = 0.5;
             GameData.Data.music.play();
             GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
@@ -2806,6 +2806,8 @@ var StreetFighterCards;
             this.group.removeChild(this.settings);
         };
         Level.prototype.onButtonClick = function (event) {
+            if (this.battleEnd === true)
+                return;
             switch (event.name) {
                 case Constants.BUTTON_EXIT_BATTLE:
                     {
@@ -3466,6 +3468,7 @@ var StreetFighterCards;
         };
         // Завершение битвы
         Level.prototype.endBattle = function () {
+            this.cardsDragAndDrop(false);
             var ko = new AnimationKO(this.game, 315, 100);
             this.borderGroup.addChild(ko);
             if (this.playerLife > 0 && this.opponentLife <= 0) {

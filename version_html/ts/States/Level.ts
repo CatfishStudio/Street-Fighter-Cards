@@ -191,6 +191,7 @@ module StreetFighterCards {
         }
 
         private onButtonClick(event) {
+            if(this.battleEnd === true) return;
             switch (event.name) {
                 case Constants.BUTTON_EXIT_BATTLE:
                     {
@@ -887,6 +888,8 @@ module StreetFighterCards {
 
         // Завершение битвы
         private endBattle(): void {
+            this.cardsDragAndDrop(false);
+
             let ko: AnimationKO = new AnimationKO(this.game, 315, 100);
             this.borderGroup.addChild(ko);
 
