@@ -2329,6 +2329,7 @@ var StreetFighterCards;
         Preloader.prototype.onLoadComplete = function () {
             GameData.Data.music = this.game.add.audio(Sounds.MenuMusic1);
             GameData.Data.music.loop = true;
+            GameData.Data.music.volume = 0.1;
             GameData.Data.music.play();
             GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
@@ -3525,12 +3526,20 @@ var Sounds = (function () {
     Sounds.BattleMusic1 = 'battle1';
     Sounds.BattleMusic2 = 'battle2';
     Sounds.BattleMusic3 = 'battle3';
+    Sounds.ArrowSound = 'arrow';
+    Sounds.ButtonSound = 'button';
+    Sounds.CardFlipSound1 = 'flip1';
+    Sounds.CardFlipSound2 = 'flip2';
     Sounds.preloadList = [
         Sounds.MenuMusic1,
         Sounds.MenuMusic2,
         Sounds.BattleMusic1,
         Sounds.BattleMusic2,
         Sounds.BattleMusic3,
+        Sounds.ArrowSound,
+        Sounds.ButtonSound,
+        Sounds.CardFlipSound1,
+        Sounds.CardFlipSound2,
     ];
     return Sounds;
 }());
