@@ -5,7 +5,7 @@ module StreetFighterCards {
     import Settings = Fabrique.Settings;
     import Comix = Fabrique.Comix;
 
-    export class Tournament extends Phaser.State{
+    export class Tournament extends Phaser.State {
 
         public static Name: string = "tournament";
         public name: string = Tournament.Name;
@@ -14,8 +14,8 @@ module StreetFighterCards {
         private buttonBack: ButtonComix;
         private buttonSettings: ButtonComix;
         private buttonStartBattle: ButtonComix;
-        private tutorial:Tutorial;
-        private settings:Settings;
+        private tutorial: Tutorial;
+        private settings: Settings;
 
         private group: Phaser.Group;
 
@@ -23,42 +23,43 @@ module StreetFighterCards {
             super();
         }
 
-        public create():void {
+        public create(): void {
             this.group = new Phaser.Group(this.game, this.stage);
 
-            if(GameData.Data.progressIndex === 18) GameData.Data.progressIndex++;
+            if (GameData.Data.progressIndex === 18) GameData.Data.progressIndex++;
 
-            if(GameData.Data.progressIndex < 20){
+            if (GameData.Data.progressIndex < 20) {
                 this.createBackground();
                 this.createVSPlayers();
                 this.createIcons();
-                this.createButtons();  
-                this.createTutorial();        
+                this.createButtons();
+                this.createTutorial();
                 this.createBorder();
-            }            
+            }
             this.createComix();
+            this.playMusic();
         }
 
-        public shutdown():void {
+        public shutdown(): void {
             this.icons.forEach(icon => {
                 icon.shutdown();
             });
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
-            if(this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
+            if (this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.group.removeAll();
         }
 
-        private createBackground():void {
+        private createBackground(): void {
             let background: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament)
             this.group.addChild(background);
         }
 
-        private createVSPlayers():void {
+        private createVSPlayers(): void {
             /* Player */
             let player: Phaser.Sprite = new Phaser.Sprite(this.game, 200, 300, GameData.Data.fighters[GameData.Data.fighterIndex][3]);
-            player.anchor.setTo(.5,.5);
+            player.anchor.setTo(.5, .5);
             player.scale.x *= -1;
             //this.player.scale.y *= -1;
             this.group.addChild(player);
@@ -75,17 +76,17 @@ module StreetFighterCards {
             let opponentName: Phaser.Text = this.game.add.text(575, 350, GameData.Data.personages[opponentId].name, { font: "54px Georgia", fill: "#FFFFFF", align: "left" });
             opponentName.setShadow(5, 5, 'rgba(0,0,0,0.5)', 0);
             this.group.addChild(opponentName);
-            
+
             /* VS */
             let vs: Phaser.Sprite = new Phaser.Sprite(this.game, 195, 200, Images.vsTournament);
             vs.scale.set(0.8, 0.8);
             this.group.addChild(vs);
         }
 
-        private createIcons():void {
+        private createIcons(): void {
             /* Icons */
             let icon: Icon;
-            let position:any[][] = [
+            let position: any[][] = [
                 [25, 415, Icon.LEFT], [110, 415, Icon.LEFT], [195, 415, Icon.LEFT], [280, 415, Icon.LEFT],
                 [440, 415, Icon.RIGHT], [525, 415, Icon.RIGHT], [610, 415, Icon.RIGHT], [695, 415, Icon.RIGHT],
 
@@ -98,9 +99,9 @@ module StreetFighterCards {
                 [85, 535, Icon.LEFT],
                 [635, 535, Icon.RIGHT]
             ];
-            
+
             this.icons = [];
-            let i:number = 0;
+            let i: number = 0;
             GameData.Data.tournamentListIds.forEach(index => {
                 icon = new Icon(this.game, this.group, i, index, position[i][0], position[i][1], position[i][2]);
                 this.icons.push(icon);
@@ -108,7 +109,7 @@ module StreetFighterCards {
             });
         }
 
-        private createButtons():void {
+        private createButtons(): void {
             this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
 
@@ -119,19 +120,19 @@ module StreetFighterCards {
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         }
 
-        private createTutorial():void {
-            if(Config.settingTutorial === true && GameData.Data.progressIndex === 0){
+        private createTutorial(): void {
+            if (Config.settingTutorial === true && GameData.Data.progressIndex === 0) {
                 this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[1], Tutorial.RIGHT);
                 this.group.addChild(this.tutorial);
             }
         }
 
-        private createBorder():void {
+        private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
             this.group.addChild(border);
         }
 
-        private createComix():void {
+        private createComix(): void {
             let comix: Comix = new Comix(this.game, this.group);
             comix.event.add(this.onGameOver, this);
         }
@@ -140,7 +141,7 @@ module StreetFighterCards {
             this.settings = new Settings(this.game, this.group);
             this.settings.event.add(this.onButtonClick, this);
         }
-        
+
         private settingsClose() {
             this.settings.removeAll();
             this.group.removeChild(this.settings);
@@ -157,7 +158,7 @@ module StreetFighterCards {
                     {
                         this.game.state.start(Menu.Name, true, false);
                         break;
-                    } 
+                    }
                 case Constants.BUTTON_SETTINGS:
                     {
                         this.settingsCreate();
@@ -167,17 +168,26 @@ module StreetFighterCards {
                     {
                         this.settingsClose();
                         break;
-                    }         
+                    }
                 default:
                     break;
             }
         }
 
-        private onGameOver(event){
+        private playMusic(): void {
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[1][0]
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[1][1];
+            GameData.Data.music.play();
+        }
+
+        private onGameOver(event) {
             Utilits.Data.debugLog('GAME:', 'OVER');
-            if(event === Constants.GAME_OVER){
+            if (event === Constants.GAME_OVER) {
                 this.game.state.start(Menu.Name, true, false);
             }
         }
+
     }
 }

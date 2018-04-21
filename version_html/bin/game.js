@@ -2684,6 +2684,7 @@ var StreetFighterCards;
                 this.createBorder();
             }
             this.createComix();
+            this.playMusic();
         };
         Tournament.prototype.shutdown = function () {
             this.icons.forEach(function (icon) {
@@ -2799,6 +2800,13 @@ var StreetFighterCards;
                 default:
                     break;
             }
+        };
+        Tournament.prototype.playMusic = function () {
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[1][0];
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[1][1];
+            GameData.Data.music.play();
         };
         Tournament.prototype.onGameOver = function (event) {
             Utilits.Data.debugLog('GAME:', 'OVER');
