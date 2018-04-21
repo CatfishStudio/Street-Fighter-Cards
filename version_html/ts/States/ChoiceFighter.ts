@@ -66,7 +66,7 @@ module StreetFighterCards {
         }
 
         private createTutorial():void {
-            this.tutorial = new Tutorial(this.game, 'Выберите персонаж!');
+            this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[GameData.Data.tutorProgress], Tutorial.RIGHT);
             this.groupWindow.addChild(this.tutorial);
         }
 

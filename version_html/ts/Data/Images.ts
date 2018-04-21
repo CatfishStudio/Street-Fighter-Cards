@@ -6,7 +6,8 @@ class Images {
     public static ChoiceImage: string = 'choice.png';
     public static ArrowLeft: string = 'arrow_left.png';
     public static ArrowRight: string = 'arrow_right.png';
-    public static TutorialImage: string = 'tutorial.png';
+    public static TutorialLeftImage: string = 'tutorial_left.png';
+    public static TutorialRightImage: string = 'tutorial_right.png';
     public static ButtonOff: string = 'buttons_off.png';
     public static ButtonOn: string = 'buttons_on.png';
     public static BackgroundTournament: string = 'tournament/background_tournament.jpg';
@@ -24,7 +25,8 @@ class Images {
         Images.ChoiceImage,
         Images.ArrowLeft,
         Images.ArrowRight,
-        Images.TutorialImage,
+        Images.TutorialLeftImage,
+        Images.TutorialRightImage,
         Images.ButtonOff,
         Images.ButtonOn,
         Images.BackgroundTournament,

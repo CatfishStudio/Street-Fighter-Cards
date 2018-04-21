@@ -375,7 +375,8 @@ var Images = (function () {
     Images.ChoiceImage = 'choice.png';
     Images.ArrowLeft = 'arrow_left.png';
     Images.ArrowRight = 'arrow_right.png';
-    Images.TutorialImage = 'tutorial.png';
+    Images.TutorialLeftImage = 'tutorial_left.png';
+    Images.TutorialRightImage = 'tutorial_right.png';
     Images.ButtonOff = 'buttons_off.png';
     Images.ButtonOn = 'buttons_on.png';
     Images.BackgroundTournament = 'tournament/background_tournament.jpg';
@@ -392,7 +393,8 @@ var Images = (function () {
         Images.ChoiceImage,
         Images.ArrowLeft,
         Images.ArrowRight,
-        Images.TutorialImage,
+        Images.TutorialLeftImage,
+        Images.TutorialRightImage,
         Images.ButtonOff,
         Images.ButtonOn,
         Images.BackgroundTournament,
@@ -836,6 +838,10 @@ var GameData;
             [Sounds.BattleMusic1, 0.2],
             [Sounds.BattleMusic2, 0.2],
             [Sounds.BattleMusic3, 0.2]
+        ];
+        Data.tutorProgress = 0;
+        Data.tutorList = [
+            'Выберите бойца.\nНажмите "Выбрать".'
         ];
         return Data;
     }());
@@ -2202,9 +2208,15 @@ var Fabrique;
 (function (Fabrique) {
     var Tutorial = (function (_super) {
         __extends(Tutorial, _super);
-        function Tutorial(game, text) {
-            _super.call(this, game, 25, 600, Images.TutorialImage);
+        function Tutorial(game, text, orientation) {
+            if (orientation === Tutorial.LEFT) {
+                _super.call(this, game, 25, 600, Images.TutorialLeftImage);
+            }
+            else {
+                _super.call(this, game, 625, 600, Images.TutorialRightImage);
+            }
             this.text = text;
+            this.orientation = orientation;
             this.init();
         }
         Tutorial.prototype.shutdown = function () {
@@ -2218,9 +2230,14 @@ var Fabrique;
             this.tween.start();
         };
         Tutorial.prototype.onComplete = function () {
-            this.createDialog();
+            if (this.orientation === Tutorial.LEFT) {
+                this.createLeftDialog();
+            }
+            else {
+                this.createRightDialog();
+            }
         };
-        Tutorial.prototype.createDialog = function () {
+        Tutorial.prototype.createLeftDialog = function () {
             this.dialog = new Phaser.Sprite(this.game, 0, 0);
             var graphics = this.game.add.graphics(0, 0);
             graphics.beginFill(0xFFFFFF, 1);
@@ -2231,12 +2248,8 @@ var Fabrique;
             graphics.lineTo(-20, 20);
             graphics.endFill();
             graphics.beginFill(0xFFFFFF, 1);
-            graphics.lineStyle(0, 0x000000, 1);
-            graphics.drawRoundedRect(0, 0, 200, 50, 15);
-            graphics.endFill();
-            graphics.beginFill(0xFFFFFF, 0);
             graphics.lineStyle(2, 0x000000, 1);
-            graphics.drawRoundedRect(0, 0, 200, 50, 15);
+            graphics.drawRoundedRect(0, 0, 200, 70, 15);
             graphics.endFill();
             graphics.beginFill(0xFFFFFF, 1);
             graphics.lineStyle(1, 0xFFFFFF, 1);
@@ -2262,6 +2275,34 @@ var Fabrique;
             this.tween.onComplete.add(this.tweenDialogStart, this);
             this.tween.start();
         };
+        Tutorial.prototype.createRightDialog = function () {
+            this.dialog = new Phaser.Sprite(this.game, 0, 0);
+            var graphics = this.game.add.graphics(0, 0);
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.moveTo(-40, 20);
+            graphics.lineTo(-65, 30);
+            graphics.lineTo(-65, 47);
+            graphics.lineTo(-40, 20);
+            graphics.endFill();
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(2, 0x000000, 1);
+            graphics.drawRoundedRect(-265, 0, 200, 70, 15);
+            graphics.endFill();
+            graphics.beginFill(0xFFFFFF, 1);
+            graphics.lineStyle(1, 0xFFFFFF, 1);
+            graphics.drawRect(-68, 30, 4, 13.5);
+            graphics.endFill();
+            this.dialog.addChild(graphics);
+            var messageText = this.game.add.text(-255, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            this.dialog.addChild(messageText);
+            this.dialog.x = 85;
+            this.dialog.y = 75;
+            this.addChild(this.dialog);
+            this.tweenDialogStart();
+        };
+        Tutorial.LEFT = "left";
+        Tutorial.RIGHT = "right";
         return Tutorial;
     }(Phaser.Sprite));
     Fabrique.Tutorial = Tutorial;
@@ -2508,7 +2549,7 @@ var StreetFighterCards;
             this.slides = new Slides(this.game, this.groupWindow);
         };
         ChoiceFighter.prototype.createTutorial = function () {
-            this.tutorial = new Tutorial(this.game, 'Выберите персонаж!');
+            this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[GameData.Data.tutorProgress], Tutorial.RIGHT);
             this.groupWindow.addChild(this.tutorial);
         };
         ChoiceFighter.prototype.createBorder = function () {

@@ -89,6 +89,11 @@ module GameData {
             [Sounds.BattleMusic3, 0.2]
         ];
 
+        public static tutorProgress:number = 0;
+        public static tutorList:any[] = [
+            'Выберите бойца.\nНажмите "Выбрать".'
+        ];
+
         public static initPersonages(game: Phaser.Game):void {  // инициализация персонажей
             this.progressIndex = -1;
             this.comixIndex = 0;
