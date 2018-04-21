@@ -81,11 +81,12 @@ module GameData {
         ];
 
         public static music:Phaser.Sound;
+        public static musicSelected:number = 2;
         public static musicList:any[][] = [
             [Sounds.MenuMusic1, 0.1],
             [Sounds.MenuMusic2, 0.3],
             [Sounds.BattleMusic1, 0.2],
-            [Sounds.BattleMusic2, 0.2],
+            [Sounds.BattleMusic2, 0.3],
             [Sounds.BattleMusic3, 0.2]
         ];
 

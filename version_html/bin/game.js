@@ -832,11 +832,12 @@ var GameData;
             ['comix/comix_page_20.jpg'],
             ['comix/comix_page_21.jpg']
         ];
+        Data.musicSelected = 2;
         Data.musicList = [
             [Sounds.MenuMusic1, 0.1],
             [Sounds.MenuMusic2, 0.3],
             [Sounds.BattleMusic1, 0.2],
-            [Sounds.BattleMusic2, 0.2],
+            [Sounds.BattleMusic2, 0.3],
             [Sounds.BattleMusic3, 0.2]
         ];
         Data.tutorList = [
@@ -1916,7 +1917,7 @@ var Fabrique;
                 case 'music':
                     {
                         if (Config.settingMusic === true) {
-                            GameData.Data.music.stop();
+                            this.stopMusic();
                             Config.settingMusic = false;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOff, this.onButtonClick, this);
@@ -1924,7 +1925,7 @@ var Fabrique;
                             this.addChild(event);
                         }
                         else {
-                            GameData.Data.music.play();
+                            this.playMusic();
                             Config.settingMusic = true;
                             this.removeChild(event);
                             event = new Phaser.Button(this.game, event.x, event.y, Images.ButtonOn, this.onButtonClick, this);
@@ -1954,6 +1955,19 @@ var Fabrique;
                 default:
                     break;
             }
+        };
+        Settings.prototype.stopMusic = function () {
+            GameData.Data.music.stop();
+        };
+        Settings.prototype.playMusic = function () {
+            GameData.Data.musicSelected++;
+            if (GameData.Data.musicSelected > 4)
+                GameData.Data.musicSelected = 2;
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
+            GameData.Data.music.play();
         };
         return Settings;
     }(Phaser.Group));
@@ -2179,8 +2193,12 @@ var Fabrique;
         };
         Timer.prototype.pauseTimer = function (value) {
             if (value === void 0) { value = true; }
+            /*
+            if(value === true) this.timer.pause();
+            else this.timer.start(this.count);
+            */
             if (value === true)
-                this.timer.pause();
+                this.timer.stop(false);
             else
                 this.timer.start(this.count);
             Utilits.Data.debugLog("TIMER PAUSE:", value);
@@ -2846,6 +2864,7 @@ var StreetFighterCards;
             this.totalHits = 0;
             this.steepHits = 0;
             this.targetDamage = null;
+            this.playMusic();
             this.createBackground();
             this.createTimer();
             this.createSlots();
@@ -2924,12 +2943,14 @@ var StreetFighterCards;
             this.game.stage.removeChildren();
         };
         Level.prototype.settingsCreate = function () {
-            this.settings = new Settings(this.game, this.group);
+            this.settings = new Settings(this.game, this.borderGroup);
             this.settings.event.add(this.onButtonClick, this);
+            this.timer.pauseTimer(true);
         };
         Level.prototype.settingsClose = function () {
             this.settings.removeAll();
             this.group.removeChild(this.settings);
+            this.timer.pauseTimer(false);
         };
         Level.prototype.onButtonClick = function (event) {
             if (this.battleEnd === true)
@@ -2960,6 +2981,16 @@ var StreetFighterCards;
                 default:
                     break;
             }
+        };
+        Level.prototype.playMusic = function () {
+            GameData.Data.musicSelected++;
+            if (GameData.Data.musicSelected > 4)
+                GameData.Data.musicSelected = 2;
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
+            GameData.Data.music.play();
         };
         Level.prototype.createBackground = function () {
             var opponentID = GameData.Data.tournamentListIds[GameData.Data.progressIndex];

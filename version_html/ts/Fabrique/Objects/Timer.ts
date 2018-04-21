@@ -1,9 +1,9 @@
 module Fabrique {
     export class Timer extends Phaser.Sprite {
         public event: Phaser.Signal;
-        private count:number;
-        private timerText:Phaser.Text;
-        private messageText:Phaser.Text;
+        private count: number;
+        private timerText: Phaser.Text;
+        private messageText: Phaser.Text;
 
         private timer: Phaser.Timer;
 
@@ -21,7 +21,7 @@ module Fabrique {
             this.event = new Phaser.Signal();
 
             this.count = 30;
-            
+
             this.timer = this.game.time.create(false);
             this.timer.loop(1000, this.onTimerComplete, this);
 
@@ -32,21 +32,21 @@ module Fabrique {
             this.addChild(this.messageText);
         }
 
-        private onTimerComplete():void {
+        private onTimerComplete(): void {
             this.count--;
             if (this.timerText !== undefined && this.timerText !== null) {
-                if(this.count > 9) this.timerText.text = "0:" + this.count.toString();
+                if (this.count > 9) this.timerText.text = "0:" + this.count.toString();
                 else this.timerText.text = "0:0" + this.count.toString();
             }
-           
-            if(this.count === 0){
+
+            if (this.count === 0) {
                 this.event.dispatch(Constants.TIMER_END);
                 this.count = 30;
                 Utilits.Data.debugLog("TIMER:", "ON COMPLETE");
             }
         }
 
-        private run():void {
+        private run(): void {
             this.timer.start(this.count);
         }
 
@@ -55,27 +55,31 @@ module Fabrique {
             this.run();
         }
 
-        public pauseTimer(value:boolean = true):void {
-            if(value === true) this.timer.pause()
+        public pauseTimer(value: boolean = true): void {
+            /*
+            if(value === true) this.timer.pause();
+            else this.timer.start(this.count);
+            */
+            if (value === true) this.timer.stop(false);
             else this.timer.start(this.count);
             Utilits.Data.debugLog("TIMER PAUSE:", value);
         }
 
-        public stopTimer():void {
+        public stopTimer(): void {
             this.timer.stop(false);
             this.count = 30;
             this.setMessage("............................");
             Utilits.Data.debugLog("TIMER:", "STOP");
         }
 
-        public resetTimer():void {
+        public resetTimer(): void {
             this.count = 30;
         }
 
-        public setMessage(value:string):void {
+        public setMessage(value: string): void {
             if (this.messageText !== undefined && this.messageText !== null) {
                 this.messageText.text = value;
-                if(value.length < 10) this.messageText.x = 42;
+                if (value.length < 10) this.messageText.x = 42;
                 else this.messageText.x = 20;
             }
         }

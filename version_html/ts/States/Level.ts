@@ -112,6 +112,7 @@ module StreetFighterCards {
             this.steepHits = 0;
             this.targetDamage = null;
 
+            this.playMusic();
             this.createBackground();
             this.createTimer();
             this.createSlots();
@@ -185,13 +186,15 @@ module StreetFighterCards {
         }
 
         private settingsCreate() {
-            this.settings = new Settings(this.game, this.group);
+            this.settings = new Settings(this.game, this.borderGroup);
             this.settings.event.add(this.onButtonClick, this);
+            this.timer.pauseTimer(true);
         }
 
         private settingsClose() {
             this.settings.removeAll();
             this.group.removeChild(this.settings);
+            this.timer.pauseTimer(false);
         }
 
         private onButtonClick(event) {
@@ -222,6 +225,16 @@ module StreetFighterCards {
                 default:
                     break;
             }
+        }
+
+        private playMusic():void {
+            GameData.Data.musicSelected++;
+            if(GameData.Data.musicSelected > 4) GameData.Data.musicSelected = 2;
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0]
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
+            GameData.Data.music.play();
         }
 
         private createBackground(): void {
