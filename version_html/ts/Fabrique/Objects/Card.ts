@@ -100,7 +100,13 @@ module Fabrique {
             this.addChild(this.footer);
 
             // Text
-            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
+            let energyValue:string = this.cardData.energy.toString();
+            if(energyValue.length > 1){
+                energyText = this.game.add.text(10, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
+            }else{
+                energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" })
+            }
+            
             this.addChild(energyText);
             this.footer.addChild(powerText);
         }

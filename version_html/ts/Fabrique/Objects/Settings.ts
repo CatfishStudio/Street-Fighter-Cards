@@ -150,12 +150,6 @@ module Fabrique {
         }
 
         private playMusic():void {
-            GameData.Data.musicSelected++;
-            if(GameData.Data.musicSelected > 4) GameData.Data.musicSelected = 2;
-            GameData.Data.music.stop();
-            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0]
-            GameData.Data.music.loop = true;
-            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
             GameData.Data.music.play();
         }
     }

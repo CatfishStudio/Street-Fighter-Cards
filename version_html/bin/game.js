@@ -1314,7 +1314,13 @@ var Fabrique;
             this.footer = new Phaser.Sprite(this.game, 0, this.headerHeight, bitmapData);
             this.addChild(this.footer);
             // Text
-            energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            var energyValue = this.cardData.energy.toString();
+            if (energyValue.length > 1) {
+                energyText = this.game.add.text(10, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
+            else {
+                energyText = this.game.add.text(14, 6, this.cardData.energy.toString(), { font: "bold 18px Times New Roman", fill: "#FFFFFF", align: "left" });
+            }
             this.addChild(energyText);
             this.footer.addChild(powerText);
         };
@@ -1960,13 +1966,6 @@ var Fabrique;
             GameData.Data.music.stop();
         };
         Settings.prototype.playMusic = function () {
-            GameData.Data.musicSelected++;
-            if (GameData.Data.musicSelected > 4)
-                GameData.Data.musicSelected = 2;
-            GameData.Data.music.stop();
-            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
-            GameData.Data.music.loop = true;
-            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
             GameData.Data.music.play();
         };
         return Settings;
