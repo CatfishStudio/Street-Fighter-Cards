@@ -491,6 +491,31 @@ var Images = (function () {
     ];
     return Images;
 }());
+var Sounds = (function () {
+    function Sounds() {
+    }
+    Sounds.MenuMusic1 = 'music1';
+    Sounds.MenuMusic2 = 'music2';
+    Sounds.BattleMusic1 = 'battle1';
+    Sounds.BattleMusic2 = 'battle2';
+    Sounds.BattleMusic3 = 'battle3';
+    Sounds.ArrowSound = 'arrow';
+    Sounds.ButtonSound = 'button';
+    Sounds.CardFlipSound1 = 'flip1';
+    Sounds.CardFlipSound2 = 'flip2';
+    Sounds.preloadList = [
+        Sounds.MenuMusic1,
+        Sounds.MenuMusic2,
+        Sounds.BattleMusic1,
+        Sounds.BattleMusic2,
+        Sounds.BattleMusic3,
+        Sounds.ArrowSound,
+        Sounds.ButtonSound,
+        Sounds.CardFlipSound1,
+        Sounds.CardFlipSound2,
+    ];
+    return Sounds;
+}());
 var Animations = (function () {
     function Animations() {
     }
@@ -804,6 +829,13 @@ var GameData;
             ['comix/comix_page_19.jpg'],
             ['comix/comix_page_20.jpg'],
             ['comix/comix_page_21.jpg']
+        ];
+        Data.musicList = [
+            [Sounds.MenuMusic1, 0.1],
+            [Sounds.MenuMusic2, 0.3],
+            [Sounds.BattleMusic1, 0.2],
+            [Sounds.BattleMusic2, 0.2],
+            [Sounds.BattleMusic3, 0.2]
         ];
         return Data;
     }());
@@ -2327,9 +2359,9 @@ var StreetFighterCards;
             }
         };
         Preloader.prototype.onLoadComplete = function () {
-            GameData.Data.music = this.game.add.audio(Sounds.MenuMusic1);
+            GameData.Data.music = this.game.add.audio(GameData.Data.musicList[0][0]);
             GameData.Data.music.loop = true;
-            GameData.Data.music.volume = 0.5;
+            GameData.Data.music.volume = GameData.Data.musicList[0][1];
             GameData.Data.music.play();
             GameData.Data.initPersonages(this.game);
             this.game.stage.removeChildren();
@@ -3489,6 +3521,7 @@ var StreetFighterCards;
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
 /// <reference path="Data\Images.ts" />
+/// <reference path="Data\Sounds.ts" />
 /// <reference path="Data\Animations.ts" />
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />
@@ -3521,31 +3554,6 @@ var StreetFighterCards;
 /// <reference path="States\Tournament.ts" />
 /// <reference path="States\Level.ts" />
 /// <reference path="app.ts" /> 
-var Sounds = (function () {
-    function Sounds() {
-    }
-    Sounds.MenuMusic1 = 'music1';
-    Sounds.MenuMusic2 = 'music2';
-    Sounds.BattleMusic1 = 'battle1';
-    Sounds.BattleMusic2 = 'battle2';
-    Sounds.BattleMusic3 = 'battle3';
-    Sounds.ArrowSound = 'arrow';
-    Sounds.ButtonSound = 'button';
-    Sounds.CardFlipSound1 = 'flip1';
-    Sounds.CardFlipSound2 = 'flip2';
-    Sounds.preloadList = [
-        Sounds.MenuMusic1,
-        Sounds.MenuMusic2,
-        Sounds.BattleMusic1,
-        Sounds.BattleMusic2,
-        Sounds.BattleMusic3,
-        Sounds.ArrowSound,
-        Sounds.ButtonSound,
-        Sounds.CardFlipSound1,
-        Sounds.CardFlipSound2,
-    ];
-    return Sounds;
-}());
 var Fabrique;
 (function (Fabrique) {
     var TimerOld = (function (_super) {

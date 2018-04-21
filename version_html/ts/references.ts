@@ -4,6 +4,7 @@
 /// <reference path="Data\Constants.ts" />
 /// <reference path="Data\Config.ts" />
 /// <reference path="Data\Images.ts" />
+/// <reference path="Data\Sounds.ts" />
 /// <reference path="Data\Animations.ts" />
 /// <reference path="Data\Atlases.ts" />
 /// <reference path="Data\Sheets.ts" />

@@ -27,14 +27,11 @@ module GameData {
 
     export class Data {
 
-        public static music:Phaser.Sound;
-
         public static fighterIndex:number = 0;      // id выбранного игроком персонажа (в сохранение)
         public static progressIndex:number = -1;    // индекс прогресса в игре (в сохранение)
         public static comixIndex:number = 0;        // индекс комикса
         public static personages:IPersonage[];      // массив персонажей и их характеристик
         public static tournamentListIds:number[];   // турнирная таблица (в сохранение)
-
 
         public static fighters:any[][] = [
             [0, 'Akuma', 'akuma_card.png', 'tournament/akuma.png', 'icons/akuma.png'],
@@ -81,6 +78,15 @@ module GameData {
             ['comix/comix_page_19.jpg'],
             ['comix/comix_page_20.jpg'],
             ['comix/comix_page_21.jpg']
+        ];
+
+        public static music:Phaser.Sound;
+        public static musicList:any[][] = [
+            [Sounds.MenuMusic1, 0.1],
+            [Sounds.MenuMusic2, 0.3],
+            [Sounds.BattleMusic1, 0.2],
+            [Sounds.BattleMusic2, 0.2],
+            [Sounds.BattleMusic3, 0.2]
         ];
 
         public static initPersonages(game: Phaser.Game):void {  // инициализация персонажей
