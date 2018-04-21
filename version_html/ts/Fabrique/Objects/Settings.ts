@@ -86,6 +86,7 @@ module Fabrique {
         }
 
         private onButtonClick(event) {
+            this.playButtonSound();
             switch (event.name) {
                 case 'sound':
                     {
@@ -151,6 +152,14 @@ module Fabrique {
 
         private playMusic():void {
             GameData.Data.music.play();
+        }
+
+        private playButtonSound():void {
+            if(Config.settingSound){
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
         }
     }
 

@@ -148,6 +148,7 @@ module StreetFighterCards {
         }
 
         private onButtonClick(event) {
+            this.playButtonSound();
             switch (event.name) {
                 case Constants.BUTTON_START_BATTLE:
                     {
@@ -176,10 +177,20 @@ module StreetFighterCards {
 
         private playMusic(): void {
             GameData.Data.music.stop();
-            GameData.Data.music.key = GameData.Data.musicList[1][0]
+            GameData.Data.music.key = GameData.Data.musicList[1][0];
             GameData.Data.music.loop = true;
             GameData.Data.music.volume = GameData.Data.musicList[1][1];
-            GameData.Data.music.play();
+            if (Config.settingMusic) {
+                GameData.Data.music.play();
+            }
+        }
+
+        private playButtonSound(): void {
+            if (Config.settingSound) {
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
         }
 
         private onGameOver(event) {

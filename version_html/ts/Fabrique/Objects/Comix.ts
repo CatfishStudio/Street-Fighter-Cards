@@ -52,6 +52,7 @@ module Fabrique {
         }
 
         private onButtonClick(event) {
+            this.playButtonSound();
             if((GameData.Data.comixes[GameData.Data.comixIndex].length-1) === this.index){
                 this.shutdown();
                 this.parent.removeChild(this);
@@ -61,6 +62,14 @@ module Fabrique {
             }else{
                 this.index++;
                 this.background.loadTexture(GameData.Data.comixes[GameData.Data.comixIndex][this.index]);
+            }
+        }
+
+        private playButtonSound():void {
+            if(Config.settingSound){
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
             }
         }
     }

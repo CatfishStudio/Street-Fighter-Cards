@@ -80,6 +80,10 @@ module GameData {
             ['comix/comix_page_21.jpg']
         ];
 
+        public static buttonSound:Phaser.Sound;
+        public static arrowSound:Phaser.Sound;
+        public static flipUpSound:Phaser.Sound;
+        public static flipDownSound:Phaser.Sound;
         public static music:Phaser.Sound;
         public static musicSelected:number = 2;
         public static musicList:any[][] = [

@@ -29,7 +29,7 @@ module StreetFighterCards {
         private timer: Timer;
         private buttonTablo: ButtonTablo;
         private settings: Settings;
-        private tutorial:Tutorial;
+        private tutorial: Tutorial;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
         private slots: Slot[];
@@ -102,7 +102,7 @@ module StreetFighterCards {
             this.opponentHand = [];
             this.opponentSlots = [null, null, null];
             this.timerAI = this.game.time.create(false);
-            
+
             GameData.Data.deckMix(GameData.Data.fighterIndex);
             GameData.Data.deckMix(GameData.Data.tournamentListIds[GameData.Data.progressIndex]);
 
@@ -129,7 +129,7 @@ module StreetFighterCards {
         }
 
         public shutdown(): void {
-            if(this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
+            if (this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.opponentAi = null;
             this.timer.shutdown();
             // groups clear
@@ -198,11 +198,11 @@ module StreetFighterCards {
         }
 
         private onButtonClick(event) {
-            if(this.battleEnd === true) return;
+            this.playButtonSound();
+            if (this.battleEnd === true) return;
             switch (event.name) {
                 case Constants.BUTTON_EXIT_BATTLE:
                     {
-                        //this.game.state.start(Menu.Name, true, false);
                         this.game.state.start(Tournament.Name, true, false);
                         break;
                     }
@@ -227,14 +227,40 @@ module StreetFighterCards {
             }
         }
 
-        private playMusic():void {
+        private playMusic(): void {
             GameData.Data.musicSelected++;
-            if(GameData.Data.musicSelected > 4) GameData.Data.musicSelected = 2;
+            if (GameData.Data.musicSelected > 4) GameData.Data.musicSelected = 2;
             GameData.Data.music.stop();
-            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0]
+            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
             GameData.Data.music.loop = true;
             GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
-            GameData.Data.music.play();
+            if (Config.settingMusic) {
+                GameData.Data.music.play();
+            }
+        }
+
+        private playButtonSound(): void {
+            if (Config.settingSound) {
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
+        }
+
+        private playFlipUpSound():void {
+            if (Config.settingSound) {
+                GameData.Data.flipUpSound.loop = false;
+                GameData.Data.flipUpSound.volume = 0.5;
+                GameData.Data.flipUpSound.play();
+            }
+        }
+
+        private playFlipDownSound():void {
+            if (Config.settingSound) {
+                GameData.Data.flipDownSound.loop = false;
+                GameData.Data.flipDownSound.volume = 0.5;
+                GameData.Data.flipDownSound.play();
+            }
         }
 
         private createBackground(): void {
@@ -312,7 +338,7 @@ module StreetFighterCards {
             this.correctPositionFighterAnimation();
         }
 
-        private correctPositionFighterAnimation():void {
+        private correctPositionFighterAnimation(): void {
             //this.playerAnimation.x = 250;
             this.playerAnimation.x = (Constants.GAME_WIDTH / 3);
             this.playerAnimation.y = (370 - 50) - this.playerAnimation.height;
@@ -369,8 +395,8 @@ module StreetFighterCards {
             }
         }
 
-        private createTutorial():void {
-            if(Config.settingTutorial === true && GameData.Data.progressIndex === 0){
+        private createTutorial(): void {
+            if (Config.settingTutorial === true && GameData.Data.progressIndex === 0) {
                 this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[2], Tutorial.RIGHT);
                 this.borderGroup.addChild(this.tutorial);
             }
@@ -389,6 +415,7 @@ module StreetFighterCards {
         // ДЕЙСТВИЕ: Взять карту
         private onDragStart(sprite: Phaser.Sprite, pointer: Phaser.Point, x: number, y: number): void {
             Utilits.Data.debugLog("START: x=", pointer.x + " y= " + pointer.y);
+            this.playFlipUpSound();
             this.handGroup.addChild(sprite);
             this.group.removeChild(sprite);
             (sprite as Card).reduce(true);
@@ -397,15 +424,16 @@ module StreetFighterCards {
         // ДЕЙСТВИЕ: Положить карту
         private onDragStop(sprite: Phaser.Sprite, pointer: Phaser.Point): void {
             Utilits.Data.debugLog("STOP: x=", pointer.x + " y= " + pointer.y);
+            this.playFlipDownSound();
 
             let pushInSlot: boolean = false;
 
             if ((sprite as Card).cardData.energy <= this.playerEnergy) {
                 for (let index in this.slotsPoints) {
-                    if (index === '3'){ 
-                        if(pointer.y < 300) this.tutorMessage(GameData.Data.tutorList[3]); // доступны только слоты игрока
+                    if (index === '3') {
+                        if (pointer.y < 300) this.tutorMessage(GameData.Data.tutorList[3]); // доступны только слоты игрока
                         break;
-                    }    
+                    }
 
                     // проверяем координаты
                     if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
@@ -434,8 +462,8 @@ module StreetFighterCards {
                         break;
                     }
                 }
-            }else{
-                if(pointer.y < 300)  this.tutorMessage(GameData.Data.tutorList[4]); // недостаточно энергии
+            } else {
+                if (pointer.y < 300) this.tutorMessage(GameData.Data.tutorList[4]); // недостаточно энергии
             }
 
             if (pushInSlot === false) {     // карта возвращается в руку
@@ -465,6 +493,8 @@ module StreetFighterCards {
                 this.tween.onComplete.add(this.moveCardDeckToHandPlayer, this);
                 this.tween.to({ x: this.handPoints[this.playerHand.length - 1][0] }, 250, 'Linear');
                 this.tween.start();
+
+                this.playFlipDownSound();
             }
             Utilits.Data.debugLog("Player Hand:", this.playerHand);
         }
@@ -477,6 +507,8 @@ module StreetFighterCards {
                     tweenMoveToEmpty = this.game.add.tween(this.playerHand[i]);
                     tweenMoveToEmpty.to({ x: this.handPoints[i][0] }, 250, 'Linear');
                     tweenMoveToEmpty.start();
+
+                    this.playFlipDownSound();
                 }
             }
         }
@@ -568,6 +600,8 @@ module StreetFighterCards {
                     tweenScale = this.game.add.tween(card.scale);
                     tweenScale.to({ x: 0.65, y: 0.65 }, 250, 'Linear');
                     tweenScale.start();
+
+                    this.playFlipDownSound();
                 }
 
                 // коррекция данных в руке (передвигаем карты в руке)
@@ -588,7 +622,7 @@ module StreetFighterCards {
                     this.endTurn();
                 }, this);
                 this.timerAI.start();
-                
+
                 Utilits.Data.debugLog("AI: Slots/Hand:", [this.opponentSlots, this.opponentHand]);
             }
         }
@@ -936,15 +970,15 @@ module StreetFighterCards {
 
         // Обучение и подсказки
         private tutorHidden(): void {
-            if(this.tutorial !== null && this.tutorial !== undefined){
+            if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.hidden();
-            } 
+            }
         }
 
-        private tutorMessage(message:string): void {
-            if(this.tutorial !== null && this.tutorial !== undefined){
+        private tutorMessage(message: string): void {
+            if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.showTemporarily(message);
-            } 
+            }
         }
     }
 }

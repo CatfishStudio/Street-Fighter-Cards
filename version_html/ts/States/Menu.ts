@@ -27,6 +27,8 @@ module StreetFighterCards {
         }
         
         public create():void {
+            this.initSounds();
+
             this.groupMenu = new Phaser.Group(this.game, this.stage);
             
             this.menuSprite = new Phaser.Sprite(this.game, 0, 0, Images.MenuImage)
@@ -56,6 +58,22 @@ module StreetFighterCards {
             this.game.stage.removeChildren();
         }
 
+        public initSounds():void{
+            if(GameData.Data.music === undefined || GameData.Data.music === null){
+                GameData.Data.music = this.game.add.audio(GameData.Data.musicList[0][0]);
+                GameData.Data.buttonSound = this.game.add.audio(Sounds.ButtonSound);
+                GameData.Data.arrowSound = this.game.add.audio(Sounds.ArrowSound);
+                GameData.Data.flipUpSound = this.game.add.audio(Sounds.CardFlipSound1);
+                GameData.Data.flipDownSound = this.game.add.audio(Sounds.CardFlipSound2);
+            }else{
+                GameData.Data.music.stop();
+                GameData.Data.music.key = GameData.Data.musicList[0][0];
+            }
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[0][1];
+            GameData.Data.music.play();
+        }
+
         public createButtons():void {
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
@@ -82,6 +100,7 @@ module StreetFighterCards {
         }
 
         private onButtonClick(event):void {
+            this.playButtonSound();
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
@@ -113,6 +132,12 @@ module StreetFighterCards {
             }
         }
 
-        
+        private playButtonSound():void {
+            if(Config.settingSound){
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
+        }
     }
 }

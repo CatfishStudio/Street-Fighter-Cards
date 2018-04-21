@@ -92,6 +92,7 @@ module StreetFighterCards {
         }
 
         private onButtonClick(event) {
+            this.playButtonSound();
             switch (event.name) {
                 case Constants.BUTTON_SELECT:
                     {
@@ -119,6 +120,12 @@ module StreetFighterCards {
             }
         }
 
-
+        private playButtonSound():void {
+            if(Config.settingSound){
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
+        }
     }
 }

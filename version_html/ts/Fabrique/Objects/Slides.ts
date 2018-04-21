@@ -50,6 +50,7 @@ module Fabrique {
         }
 
         private onButtonClick(event) {
+            this.playArrowSound();
             switch (event.name) {
                 case Constants.BUTTON_ARROW_LEFT:
                     {
@@ -96,6 +97,14 @@ module Fabrique {
             
             this.canClick = true;
         }
-    }
 
+        private playArrowSound():void {
+            if(Config.settingSound){
+                GameData.Data.arrowSound.loop = false;
+                GameData.Data.arrowSound.volume = 0.1;
+                GameData.Data.arrowSound.play();
+            }
+        }
+
+    }
 }
