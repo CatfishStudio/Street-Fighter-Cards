@@ -839,9 +839,12 @@ var GameData;
             [Sounds.BattleMusic2, 0.2],
             [Sounds.BattleMusic3, 0.2]
         ];
-        Data.tutorProgress = 0;
         Data.tutorList = [
-            'Выберите бойца.\nНажмите "Выбрать".'
+            'Выберите бойца.\nНажмите "Выбрать"',
+            'Турнирная таблица.\nНажмите "Начать бой"',
+            'Положите карту в слот\nи нажмите "Ход"',
+            'Этот слот оппонента\nон вам недоступен',
+            'Недостаточно энергии\nдля этой карты'
         ];
         return Data;
     }());
@@ -2224,6 +2227,7 @@ var Fabrique;
             this.removeChild(this.dialog);
         };
         Tutorial.prototype.init = function () {
+            this.statusIsDisplayed = true;
             this.tween = this.game.add.tween(this);
             this.tween.to({ x: this.x, y: this.y - 225 }, 750, 'Linear');
             this.tween.onComplete.add(this.onComplete, this);
@@ -2256,24 +2260,12 @@ var Fabrique;
             graphics.drawRect(-1, 28, 4, 11);
             graphics.endFill();
             this.dialog.addChild(graphics);
-            var messageText = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
-            this.dialog.addChild(messageText);
+            this.messageText = this.game.add.text(5, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            this.dialog.addChild(this.messageText);
             this.dialog.x = 110;
             this.dialog.y = 75;
             this.addChild(this.dialog);
             this.tweenDialogStart();
-        };
-        Tutorial.prototype.tweenDialogStart = function () {
-            this.tween = this.game.add.tween(this.dialog);
-            this.tween.to({ x: this.dialog.x + 25, y: this.dialog.y }, 1000, 'Linear');
-            this.tween.onComplete.add(this.tweenDialogEnd, this);
-            this.tween.start();
-        };
-        Tutorial.prototype.tweenDialogEnd = function () {
-            this.tween = this.game.add.tween(this.dialog);
-            this.tween.to({ x: this.dialog.x - 25, y: this.dialog.y }, 1000, 'Linear');
-            this.tween.onComplete.add(this.tweenDialogStart, this);
-            this.tween.start();
         };
         Tutorial.prototype.createRightDialog = function () {
             this.dialog = new Phaser.Sprite(this.game, 0, 0);
@@ -2294,12 +2286,58 @@ var Fabrique;
             graphics.drawRect(-68, 30, 4, 13.5);
             graphics.endFill();
             this.dialog.addChild(graphics);
-            var messageText = this.game.add.text(-255, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
-            this.dialog.addChild(messageText);
+            this.messageText = this.game.add.text(-260, 5, this.text, { font: "18px Georgia", fill: "#000000", align: "left" });
+            this.dialog.addChild(this.messageText);
             this.dialog.x = 85;
             this.dialog.y = 75;
             this.addChild(this.dialog);
             this.tweenDialogStart();
+        };
+        Tutorial.prototype.tweenDialogStart = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x + 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogEnd, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.tweenDialogEnd = function () {
+            this.tween = this.game.add.tween(this.dialog);
+            this.tween.to({ x: this.dialog.x - 25, y: this.dialog.y }, 1000, 'Linear');
+            this.tween.onComplete.add(this.tweenDialogStart, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.hidden = function () {
+            if (this.statusIsDisplayed) {
+                this.tween.stop();
+                this.y = 375;
+                this.tween = this.game.add.tween(this);
+                this.tween.to({ x: this.x, y: this.y + 225 }, 250, 'Linear');
+                this.tween.onComplete.add(this.onHidden, this);
+                this.tween.start();
+            }
+        };
+        Tutorial.prototype.onHidden = function () {
+            this.statusIsDisplayed = false;
+            this.y = 600;
+        };
+        Tutorial.prototype.showTemporarily = function (message) {
+            if (this.statusIsDisplayed)
+                return;
+            this.statusIsDisplayed = true;
+            this.messageText.setText(message);
+            this.tween = this.game.add.tween(this);
+            this.tween.to({ x: this.x, y: this.y - 225 }, 250, 'Linear');
+            this.tween.onComplete.add(this.onTemporarily, this);
+            this.tween.start();
+        };
+        Tutorial.prototype.onTemporarily = function () {
+            var _this = this;
+            this.y = 375;
+            this.timer = this.game.time.create(false);
+            this.timer.loop(2000, function () {
+                _this.timer.stop();
+                _this.hidden();
+            }, this);
+            this.timer.start();
         };
         Tutorial.LEFT = "left";
         Tutorial.RIGHT = "right";
@@ -2529,7 +2567,8 @@ var StreetFighterCards;
             this.buttonBack.shutdown();
             this.buttonSelect.shutdown();
             this.buttonSettings.shutdown();
-            this.tutorial.shutdown();
+            if (this.tutorial !== null && this.tutorial !== undefined)
+                this.tutorial.shutdown();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         };
@@ -2549,8 +2588,10 @@ var StreetFighterCards;
             this.slides = new Slides(this.game, this.groupWindow);
         };
         ChoiceFighter.prototype.createTutorial = function () {
-            this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[GameData.Data.tutorProgress], Tutorial.RIGHT);
-            this.groupWindow.addChild(this.tutorial);
+            if (Config.settingTutorial === true) {
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[0], Tutorial.LEFT);
+                this.groupWindow.addChild(this.tutorial);
+            }
         };
         ChoiceFighter.prototype.createBorder = function () {
             var borderSprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
@@ -2603,6 +2644,7 @@ var StreetFighterCards;
 (function (StreetFighterCards) {
     var Icon = Fabrique.Icon;
     var ButtonComix = Fabrique.ButtonComix;
+    var Tutorial = Fabrique.Tutorial;
     var Settings = Fabrique.Settings;
     var Comix = Fabrique.Comix;
     var Tournament = (function (_super) {
@@ -2620,6 +2662,7 @@ var StreetFighterCards;
                 this.createVSPlayers();
                 this.createIcons();
                 this.createButtons();
+                this.createTutorial();
                 this.createBorder();
             }
             this.createComix();
@@ -2631,7 +2674,7 @@ var StreetFighterCards;
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
-            if (this.tutorial != null)
+            if (this.tutorial !== null && this.tutorial !== undefined)
                 this.tutorial.shutdown();
             this.group.removeAll();
         };
@@ -2690,6 +2733,12 @@ var StreetFighterCards;
             this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
+        };
+        Tournament.prototype.createTutorial = function () {
+            if (Config.settingTutorial === true && GameData.Data.progressIndex === 0) {
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[1], Tutorial.RIGHT);
+                this.group.addChild(this.tutorial);
+            }
         };
         Tournament.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderImage);
@@ -2753,6 +2802,7 @@ var StreetFighterCards;
     var ButtonComix = Fabrique.ButtonComix;
     var ButtonTablo = Fabrique.ButtonTablo;
     var Settings = Fabrique.Settings;
+    var Tutorial = Fabrique.Tutorial;
     var Card = Fabrique.Card;
     var FighterProgressBar = Fabrique.FighterProgressBar;
     var Slot = Fabrique.Slot;
@@ -2805,10 +2855,13 @@ var StreetFighterCards;
             this.createHand();
             this.createDeck();
             this.createFlash();
+            this.createTutorial();
             this.createBorder();
             this.showAnimFight();
         };
         Level.prototype.shutdown = function () {
+            if (this.tutorial !== null && this.tutorial !== undefined)
+                this.tutorial.shutdown();
             this.opponentAi = null;
             this.timer.shutdown();
             // groups clear
@@ -3025,6 +3078,12 @@ var StreetFighterCards;
                 }
             }
         };
+        Level.prototype.createTutorial = function () {
+            if (Config.settingTutorial === true && GameData.Data.progressIndex === 0) {
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[2], Tutorial.RIGHT);
+                this.borderGroup.addChild(this.tutorial);
+            }
+        };
         Level.prototype.createBorder = function () {
             var border = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
@@ -3046,8 +3105,11 @@ var StreetFighterCards;
             var pushInSlot = false;
             if (sprite.cardData.energy <= this.playerEnergy) {
                 for (var index in this.slotsPoints) {
-                    if (index === '3')
-                        break; // доступны только слоты игрока
+                    if (index === '3') {
+                        if (pointer.y < 300)
+                            this.tutorMessage(GameData.Data.tutorList[3]); // доступны только слоты игрока
+                        break;
+                    }
                     // проверяем координаты
                     if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
                         && (pointer.y >= this.slotsPoints[index][1] && pointer.y <= this.slotsPoints[index][1] + 84)) {
@@ -3073,6 +3135,10 @@ var StreetFighterCards;
                         break;
                     }
                 }
+            }
+            else {
+                if (pointer.y < 300)
+                    this.tutorMessage(GameData.Data.tutorList[4]); // недостаточно энергии
             }
             if (pushInSlot === false) {
                 sprite.reduce(false);
@@ -3228,6 +3294,7 @@ var StreetFighterCards;
         */
         Level.prototype.endTurn = function () {
             Utilits.Data.debugLog("Status", this.status);
+            this.tutorHidden();
             if (this.status === Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT) {
                 /**
                  * Атака игрока.
@@ -3551,6 +3618,17 @@ var StreetFighterCards;
                 this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
                 Utilits.Data.debugLog("BATTLE", "END!");
             }.bind(this), 3000);
+        };
+        // Обучение и подсказки
+        Level.prototype.tutorHidden = function () {
+            if (this.tutorial !== null && this.tutorial !== undefined) {
+                this.tutorial.hidden();
+            }
+        };
+        Level.prototype.tutorMessage = function (message) {
+            if (this.tutorial !== null && this.tutorial !== undefined) {
+                this.tutorial.showTemporarily(message);
+            }
         };
         Level.Name = "level";
         return Level;

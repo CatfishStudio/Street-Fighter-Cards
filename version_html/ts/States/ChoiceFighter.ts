@@ -40,7 +40,7 @@ module StreetFighterCards {
             this.buttonBack.shutdown();
             this.buttonSelect.shutdown();
             this.buttonSettings.shutdown();
-            this.tutorial.shutdown();
+            if(this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.groupWindow.removeAll();
             this.game.stage.removeChildren();
         }
@@ -66,8 +66,10 @@ module StreetFighterCards {
         }
 
         private createTutorial():void {
-            this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[GameData.Data.tutorProgress], Tutorial.RIGHT);
-            this.groupWindow.addChild(this.tutorial);
+            if(Config.settingTutorial === true){
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[0], Tutorial.LEFT);
+                this.groupWindow.addChild(this.tutorial);
+            }
         }
 
         private createBorder():void {

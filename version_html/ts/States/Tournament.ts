@@ -32,7 +32,8 @@ module StreetFighterCards {
                 this.createBackground();
                 this.createVSPlayers();
                 this.createIcons();
-                this.createButtons();          
+                this.createButtons();  
+                this.createTutorial();        
                 this.createBorder();
             }            
             this.createComix();
@@ -45,7 +46,7 @@ module StreetFighterCards {
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
-            if(this.tutorial != null) this.tutorial.shutdown();
+            if(this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.group.removeAll();
         }
 
@@ -116,6 +117,13 @@ module StreetFighterCards {
 
             this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
+        }
+
+        private createTutorial():void {
+            if(Config.settingTutorial === true && GameData.Data.progressIndex === 0){
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[1], Tutorial.RIGHT);
+                this.group.addChild(this.tutorial);
+            }
         }
 
         private createBorder():void {

@@ -89,9 +89,12 @@ module GameData {
             [Sounds.BattleMusic3, 0.2]
         ];
 
-        public static tutorProgress:number = 0;
         public static tutorList:any[] = [
-            'Выберите бойца.\nНажмите "Выбрать".'
+            'Выберите бойца.\nНажмите "Выбрать"',
+            'Турнирная таблица.\nНажмите "Начать бой"',
+            'Положите карту в слот\nи нажмите "Ход"',
+            'Этот слот оппонента\nон вам недоступен',
+            'Недостаточно энергии\nдля этой карты'
         ];
 
         public static initPersonages(game: Phaser.Game):void {  // инициализация персонажей

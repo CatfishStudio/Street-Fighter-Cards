@@ -6,6 +6,7 @@ module StreetFighterCards {
     import ButtonComix = Fabrique.ButtonComix;
     import ButtonTablo = Fabrique.ButtonTablo;
     import Settings = Fabrique.Settings;
+    import Tutorial = Fabrique.Tutorial;
     import Card = Fabrique.Card;
     import FighterProgressBar = Fabrique.FighterProgressBar;
     import Slot = Fabrique.Slot;
@@ -28,6 +29,7 @@ module StreetFighterCards {
         private timer: Timer;
         private buttonTablo: ButtonTablo;
         private settings: Settings;
+        private tutorial:Tutorial;
         private buttonExit: ButtonComix;
         private buttonSettings: ButtonComix;
         private slots: Slot[];
@@ -119,12 +121,14 @@ module StreetFighterCards {
             this.createHand();
             this.createDeck();
             this.createFlash();
+            this.createTutorial();
             this.createBorder();
 
             this.showAnimFight();
         }
 
         public shutdown(): void {
+            if(this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.opponentAi = null;
             this.timer.shutdown();
             // groups clear
@@ -352,6 +356,13 @@ module StreetFighterCards {
             }
         }
 
+        private createTutorial():void {
+            if(Config.settingTutorial === true && GameData.Data.progressIndex === 0){
+                this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[2], Tutorial.RIGHT);
+                this.borderGroup.addChild(this.tutorial);
+            }
+        }
+
         private createBorder(): void {
             let border: Phaser.Sprite = new Phaser.Sprite(this.game, 0, 0, Images.BorderLevel);
             this.borderGroup.addChild(border);
@@ -378,7 +389,10 @@ module StreetFighterCards {
 
             if ((sprite as Card).cardData.energy <= this.playerEnergy) {
                 for (let index in this.slotsPoints) {
-                    if (index === '3') break;   // доступны только слоты игрока
+                    if (index === '3'){ 
+                        if(pointer.y < 300) this.tutorMessage(GameData.Data.tutorList[3]); // доступны только слоты игрока
+                        break;
+                    }    
 
                     // проверяем координаты
                     if ((pointer.x >= this.slotsPoints[index][0] && pointer.x <= this.slotsPoints[index][0] + 84)
@@ -407,6 +421,8 @@ module StreetFighterCards {
                         break;
                     }
                 }
+            }else{
+                if(pointer.y < 300)  this.tutorMessage(GameData.Data.tutorList[4]); // недостаточно энергии
             }
 
             if (pushInSlot === false) {     // карта возвращается в руку
@@ -574,6 +590,8 @@ module StreetFighterCards {
         */
         private endTurn(): void {
             Utilits.Data.debugLog("Status", this.status);
+            this.tutorHidden();
+
             if (this.status === Constants.STATUS_1_PLAYER_P_PROCESS_AI_WAIT) {
                 /**
                  * Атака игрока.
@@ -901,6 +919,19 @@ module StreetFighterCards {
                 this.game.state.start(Tournament.Name, true, false);
                 Utilits.Data.debugLog("BATTLE", "END!");
             }.bind(this), 3000);
+        }
+
+        // Обучение и подсказки
+        private tutorHidden(): void {
+            if(this.tutorial !== null && this.tutorial !== undefined){
+                this.tutorial.hidden();
+            } 
+        }
+
+        private tutorMessage(message:string): void {
+            if(this.tutorial !== null && this.tutorial !== undefined){
+                this.tutorial.showTemporarily(message);
+            } 
         }
     }
 }
