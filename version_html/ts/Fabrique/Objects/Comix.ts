@@ -29,6 +29,7 @@ module Fabrique {
             this.createBackground();
             this.createButton();
             this.createBorder();
+            this.postGame();
         }
 
         private createBackground():void {
@@ -70,6 +71,14 @@ module Fabrique {
                 GameData.Data.buttonSound.loop = false;
                 GameData.Data.buttonSound.volume = 0.5;
                 GameData.Data.buttonSound.play();
+            }
+        }
+
+        private postGame():void {
+            if(GameData.Data.comixIndex === 21){
+                SocialVK.vkWallPostWin();
+            }else{
+                SocialVK.vkWallPost();
             }
         }
     }
