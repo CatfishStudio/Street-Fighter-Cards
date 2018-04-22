@@ -81,7 +81,7 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
-            if(GameData.Data.fighterIndex >= 0){
+            if(GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20){
                 this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
                 this.buttonContinue.event.add(this.onButtonClick, this);
             }
@@ -111,6 +111,10 @@ module StreetFighterCards {
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
+                        GameData.Data.comixIndex = 0;
+                        GameData.Data.progressIndex = -1;
+                        GameData.Data.fighterIndex = -1;
+                        GameData.Data.tournamentListIds = [];
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }

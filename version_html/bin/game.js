@@ -2555,7 +2555,7 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
-            if (GameData.Data.fighterIndex >= 0) {
+            if (GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20) {
                 this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
                 this.buttonContinue.event.add(this.onButtonClick, this);
             }
@@ -2579,6 +2579,10 @@ var StreetFighterCards;
             switch (event.name) {
                 case Constants.BUTTON_PLAY:
                     {
+                        GameData.Data.comixIndex = 0;
+                        GameData.Data.progressIndex = -1;
+                        GameData.Data.fighterIndex = -1;
+                        GameData.Data.tournamentListIds = [];
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }
@@ -2942,7 +2946,7 @@ var StreetFighterCards;
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.opponentAi = new Ai();
             this.energyCount = 5;
-            this.playerLife = 5; //GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
