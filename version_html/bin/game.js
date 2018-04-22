@@ -877,15 +877,16 @@ var SocialVK = (function () {
     function SocialVK() {
     }
     SocialVK.vkInvite = function () {
-        //VK.callMethod("showInviteBox");
+        VK.callMethod("showInviteBox");
     };
     SocialVK.vkWallPost = function () {
         if (GameData.Data.progressIndex > 0) {
             var postPers = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex - 1]];
+            VK.api("wall.post", { message: 'Я одержал победу в схватке с ' + postPers.name + ' в игре Street Fighter Cards.\nДрузья присоединяйтесь к игре https://vk.com/app5883565', attachments: 'photo-62618339_456239021' });
         }
     };
     SocialVK.vkWallPostWin = function () {
-        //VK.api("wall.post", {message: 'Примите поздравления! Вы победили всех соперников в игре Street Fighter Cards.\nДрузья присоединяйтесь к игре https://vk.com/app5883565', attachments: 'photo-62618339_456239022'}); 
+        VK.api("wall.post", { message: 'Примите поздравления! Вы победили всех соперников в игре Street Fighter Cards.\nДрузья присоединяйтесь к игре https://vk.com/app5883565', attachments: 'photo-62618339_456239022' });
     };
     /**
      * Сохранение данных на сервер VK
@@ -897,20 +898,20 @@ var SocialVK = (function () {
         jsonData += '"ci": ' + GameData.Data.comixIndex.toString() + ',';
         jsonData += '"list": [' + GameData.Data.tournamentListIds.toString() + ']';
         jsonData += '}';
-        //VK.api('storage.set', { key:'sfc_data', value: jsonData, global:0 }, SocialVK.onVkDataSet, SocialVK.onVkSetDataError);
+        VK.api('storage.set', { key: 'sfc_data', value: jsonData, global: 0 }, SocialVK.onVkDataSet, SocialVK.onVkSetDataError);
         Utilits.Data.debugLog('VK SAVE DATA:', jsonData);
     };
     SocialVK.onVkDataSet = function (response) {
-        Utilits.Data.debugLog('VK SET DATA:', response);
+        //Utilits.Data.debugLog('VK SET DATA:', response);
     };
     SocialVK.onVkSetDataError = function (response) {
-        console.error('VK SET DATA ERROR:', response);
+        //console.error('VK SET DATA ERROR:', response);
     };
     /**
      * Загрузка данных с сервера VK
      */
     SocialVK.vkLoadData = function (onVkDataGet) {
-        //VK.api('storage.get', { key:'sfc_data' }, onVkDataGet, SocialVK.onVkGetDataError);
+        VK.api('storage.get', { key: 'sfc_data' }, onVkDataGet, onVkDataGet);
     };
     SocialVK.onVkGetDataError = function (response) {
         console.error('VK GET DATA ERROR:', response);
@@ -931,7 +932,16 @@ var SocialVK = (function () {
                 GameData.Data.tournamentListIds = value;
             return value;
         });
-        Utilits.Data.debugLog('LOAD DATA COMPLETE', jsonData);
+        Utilits.Data.debugLog('LOAD DATA COMPLETE', GameData.Data.comixIndex.toString() + " " +
+            GameData.Data.progressIndex.toString() + " " +
+            GameData.Data.fighterIndex.toString() + " " +
+            GameData.Data.tournamentListIds.toString());
+        if (GameData.Data.fighterIndex > -1) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     return SocialVK;
 }());
@@ -2607,7 +2617,7 @@ var StreetFighterCards;
                 this.buttonContinue.event.add(this.onButtonClick, this);
             }
             else {
-                SocialVK.vkLoadData(this.onVkDataGet);
+                SocialVK.vkLoadData(this.onVkDataGet.bind(this));
             }
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
             this.buttonStart.event.add(this.onButtonClick, this);
@@ -2616,11 +2626,13 @@ var StreetFighterCards;
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35, 0, 100);
             this.buttonInvate.event.add(this.onButtonClick, this);
         };
-        Menu.prototype.onVkDataGet = function (response) {
-            SocialVK.LoadData(response.toString());
-            if (GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20) {
-                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
-                this.buttonContinue.event.add(this.onButtonClick, this);
+        Menu.prototype.onVkDataGet = function (object) {
+            Utilits.Data.debugLog('ON VK DATA GET:', object.response.toString());
+            if (SocialVK.LoadData(object.response.toString()) === true) {
+                if (GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20) {
+                    this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                    this.buttonContinue.event.add(this.onButtonClick, this);
+                }
             }
         };
         Menu.prototype.settingsCreate = function () {

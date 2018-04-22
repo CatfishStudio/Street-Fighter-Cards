@@ -85,7 +85,7 @@ module StreetFighterCards {
                 this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
                 this.buttonContinue.event.add(this.onButtonClick, this);
             }else{
-                SocialVK.vkLoadData(this.onVkDataGet);
+                SocialVK.vkLoadData(this.onVkDataGet.bind(this));
             }
 
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
@@ -98,11 +98,13 @@ module StreetFighterCards {
             this.buttonInvate.event.add(this.onButtonClick, this);
         }
 
-        private onVkDataGet(response: any):void {
-            SocialVK.LoadData(response.toString());
-            if(GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20){
-                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
-                this.buttonContinue.event.add(this.onButtonClick, this);
+        private onVkDataGet(object: any):void {
+            Utilits.Data.debugLog('ON VK DATA GET:', object.response.toString());
+            if(SocialVK.LoadData(object.response.toString()) === true){
+                if(GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20){
+                    this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                    this.buttonContinue.event.add(this.onButtonClick, this);
+                }
             }
         }
 
