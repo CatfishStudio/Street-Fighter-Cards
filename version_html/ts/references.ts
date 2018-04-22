@@ -11,6 +11,7 @@
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
 /// <reference path="Data\Utilits.ts" />
+/// <reference path="Data\SocialVK.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFight.ts" />

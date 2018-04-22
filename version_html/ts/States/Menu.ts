@@ -131,7 +131,7 @@ module StreetFighterCards {
                     }
                 case Constants.BUTTON_INVATE:
                     {
-                        
+                        SocialVK.vkInvite();
                         break;
                     }                
                 default:

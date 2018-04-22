@@ -890,6 +890,17 @@ var Utilits;
     }());
     Utilits.Data = Data;
 })(Utilits || (Utilits = {}));
+var SocialVK = (function () {
+    function SocialVK() {
+    }
+    SocialVK.vkInvite = function () {
+        //VK.callMethod("showInviteBox");
+    };
+    SocialVK.vkWallPost = function (text, photo) {
+        //VK.api("wall.post", {message: text, attachments: photo}); 
+    };
+    return SocialVK;
+}());
 var Fabrique;
 (function (Fabrique) {
     var AnimationBigKen = (function (_super) {
@@ -2592,6 +2603,7 @@ var StreetFighterCards;
                     }
                 case Constants.BUTTON_INVATE:
                     {
+                        SocialVK.vkInvite();
                         break;
                     }
                 default:
@@ -2864,6 +2876,7 @@ var StreetFighterCards;
                     }
                 case Constants.BUTTON_INVATE:
                     {
+                        SocialVK.vkInvite();
                         break;
                     }
                 default:
@@ -3792,6 +3805,7 @@ var StreetFighterCards;
 /// <reference path="Data\Decks.ts" />
 /// <reference path="Data\GameData.ts" />
 /// <reference path="Data\Utilits.ts" />
+/// <reference path="Data\SocialVK.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigKen.ts" />
 /// <reference path="Fabrique\Objects\AnimationBigRyu.ts" />
 /// <reference path="Fabrique\Objects\AnimationFight.ts" />
