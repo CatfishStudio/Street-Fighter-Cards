@@ -27,7 +27,7 @@ module GameData {
 
     export class Data {
 
-        public static fighterIndex:number = 0;      // id выбранного игроком персонажа (в сохранение)
+        public static fighterIndex:number = -1;     // id выбранного игроком персонажа (в сохранение)
         public static progressIndex:number = -1;    // индекс прогресса в игре (в сохранение)
         public static comixIndex:number = 0;        // индекс комикса
         public static personages:IPersonage[];      // массив персонажей и их характеристик

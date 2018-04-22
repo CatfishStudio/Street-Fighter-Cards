@@ -11,6 +11,7 @@ module StreetFighterCards {
         public name: string = Tournament.Name;
 
         private icons: Icon[];
+        private buttonInvate: ButtonComix;
         private buttonBack: ButtonComix;
         private buttonSettings: ButtonComix;
         private buttonStartBattle: ButtonComix;
@@ -47,8 +48,10 @@ module StreetFighterCards {
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
+            this.buttonInvate.shutdown();
             if (this.tutorial !== null && this.tutorial !== undefined) this.tutorial.shutdown();
             this.group.removeAll();
+            this.game.stage.removeChildren();
         }
 
         private createBackground(): void {
@@ -110,13 +113,16 @@ module StreetFighterCards {
         }
 
         private createButtons(): void {
-            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД В МЕНЮ', 28, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
+
+            this.buttonInvate = new ButtonComix(this.game, this.group, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 37, 315, 10);
+            this.buttonInvate.event.add(this.onButtonClick, this);
 
             this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 10);
             this.buttonSettings.event.add(this.onButtonClick, this);
 
-            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 315, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         }
 
@@ -168,6 +174,11 @@ module StreetFighterCards {
                 case Constants.BUTTON_SETTINGS_CLOSE:
                     {
                         this.settingsClose();
+                        break;
+                    }
+                case Constants.BUTTON_INVATE:
+                    {
+                        
                         break;
                     }
                 default:

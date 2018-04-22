@@ -17,6 +17,7 @@ module StreetFighterCards {
         private groupMenu: Phaser.Group;
         private groupButtons: Phaser.Group;
         
+        private buttonContinue:ButtonOrange;
         private buttonStart:ButtonOrange;
         private buttonSettings:ButtonOrange;
         private buttonInvate:ButtonOrange;
@@ -50,6 +51,7 @@ module StreetFighterCards {
         }
 
         public shutdown():void {
+            if(this.buttonContinue !== undefined && this.buttonContinue !== null) this.buttonContinue.shutdown();
             this.buttonStart.shutdown();
             this.buttonSettings.shutdown();
             this.buttonInvate.shutdown();
@@ -79,6 +81,11 @@ module StreetFighterCards {
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
 
+            if(GameData.Data.fighterIndex >= 0){
+                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                this.buttonContinue.event.add(this.onButtonClick, this);
+            }
+
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
             this.buttonStart.event.add(this.onButtonClick, this);
 
@@ -86,7 +93,7 @@ module StreetFighterCards {
             this.buttonSettings.event.add(this.onButtonClick, this);
 
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35,  0, 100);
-            this.buttonSettings.event.add(this.onButtonClick, this);
+            this.buttonInvate.event.add(this.onButtonClick, this);
         }
 
         private settingsCreate() {
@@ -107,9 +114,9 @@ module StreetFighterCards {
                         this.game.state.start(ChoiceFighter.Name, true, false);
                         break;
                     }
-                case 'continue':
+                case Constants.BUTTON_CONTINUE:
                     {
-                        
+                        this.game.state.start(Tournament.Name, true, false);
                         break;
                     }
                 case Constants.BUTTON_SETTINGS:

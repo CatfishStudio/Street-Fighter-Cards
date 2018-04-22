@@ -341,6 +341,7 @@ var Constants = (function () {
     Constants.ANIMATION_PLAYER_COMPLETE = "animation_player_complete";
     Constants.ANIMATION_OPPONENT_COMPLETE = "animation_opponent_complete";
     Constants.ANIMATION_FLASH_COMPLETE = "animation_flash_complete";
+    Constants.BUTTON_CONTINUE = 'button_continue';
     Constants.BUTTON_PLAY = 'button_play';
     Constants.BUTTON_SETTINGS = 'button_settings';
     Constants.BUTTON_SETTINGS_CLOSE = 'button_settings_close';
@@ -784,7 +785,7 @@ var GameData;
             GameData.Data.tournamentListIds.push(5); // boss
             Utilits.Data.debugLog("Tournament List:", GameData.Data.tournamentListIds);
         };
-        Data.fighterIndex = 0; // id выбранного игроком персонажа (в сохранение)
+        Data.fighterIndex = -1; // id выбранного игроком персонажа (в сохранение)
         Data.progressIndex = -1; // индекс прогресса в игре (в сохранение)
         Data.comixIndex = 0; // индекс комикса
         Data.fighters = [
@@ -2518,6 +2519,8 @@ var StreetFighterCards;
             this.createButtons();
         };
         Menu.prototype.shutdown = function () {
+            if (this.buttonContinue !== undefined && this.buttonContinue !== null)
+                this.buttonContinue.shutdown();
             this.buttonStart.shutdown();
             this.buttonSettings.shutdown();
             this.buttonInvate.shutdown();
@@ -2545,12 +2548,16 @@ var StreetFighterCards;
             this.groupButtons = new Phaser.Group(this.game, this.groupMenu);
             this.groupButtons.x = 300;
             this.groupButtons.y = 300;
+            if (GameData.Data.fighterIndex >= 0) {
+                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                this.buttonContinue.event.add(this.onButtonClick, this);
+            }
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
             this.buttonStart.event.add(this.onButtonClick, this);
             this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 0, 50);
             this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35, 0, 100);
-            this.buttonSettings.event.add(this.onButtonClick, this);
+            this.buttonInvate.event.add(this.onButtonClick, this);
         };
         Menu.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.groupMenu);
@@ -2568,8 +2575,9 @@ var StreetFighterCards;
                         this.game.state.start(StreetFighterCards.ChoiceFighter.Name, true, false);
                         break;
                     }
-                case 'continue':
+                case Constants.BUTTON_CONTINUE:
                     {
+                        this.game.state.start(StreetFighterCards.Tournament.Name, true, false);
                         break;
                     }
                 case Constants.BUTTON_SETTINGS:
@@ -2641,9 +2649,9 @@ var StreetFighterCards;
         ChoiceFighter.prototype.createButtons = function () {
             this.buttonBack = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
-            this.buttonSettings = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 300, 530);
+            this.buttonSettings = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 10);
             this.buttonSettings.event.add(this.onButtonClick, this);
-            this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 55, 600, 530);
+            this.buttonSelect = new ButtonComix(this.game, this.groupWindow, Constants.BUTTON_SELECT, 'ВЫБРАТЬ', 55, 320, 530);
             this.buttonSelect.event.add(this.onButtonClick, this);
         };
         ChoiceFighter.prototype.createSlides = function () {
@@ -2745,9 +2753,11 @@ var StreetFighterCards;
             this.buttonBack.shutdown();
             this.buttonStartBattle.shutdown();
             this.buttonSettings.shutdown();
+            this.buttonInvate.shutdown();
             if (this.tutorial !== null && this.tutorial !== undefined)
                 this.tutorial.shutdown();
             this.group.removeAll();
+            this.game.stage.removeChildren();
         };
         Tournament.prototype.createBackground = function () {
             var background = new Phaser.Sprite(this.game, 0, 0, Images.BackgroundTournament);
@@ -2798,11 +2808,13 @@ var StreetFighterCards;
             });
         };
         Tournament.prototype.createButtons = function () {
-            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД', 60, 10, 10);
+            this.buttonBack = new ButtonComix(this.game, this.group, Constants.BUTTON_BACK, 'НАЗАД В МЕНЮ', 28, 10, 10);
             this.buttonBack.event.add(this.onButtonClick, this);
+            this.buttonInvate = new ButtonComix(this.game, this.group, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 37, 315, 10);
+            this.buttonInvate.event.add(this.onButtonClick, this);
             this.buttonSettings = new ButtonComix(this.game, this.group, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 600, 10);
             this.buttonSettings.event.add(this.onButtonClick, this);
-            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 300, 530);
+            this.buttonStartBattle = new ButtonComix(this.game, this.group, Constants.BUTTON_START_BATTLE, 'НАЧАТЬ БОЙ', 35, 315, 530);
             this.buttonStartBattle.event.add(this.onButtonClick, this);
         };
         Tournament.prototype.createTutorial = function () {
@@ -2848,6 +2860,10 @@ var StreetFighterCards;
                 case Constants.BUTTON_SETTINGS_CLOSE:
                     {
                         this.settingsClose();
+                        break;
+                    }
+                case Constants.BUTTON_INVATE:
+                    {
                         break;
                     }
                 default:

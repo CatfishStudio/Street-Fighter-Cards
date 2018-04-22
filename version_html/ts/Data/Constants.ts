@@ -37,6 +37,7 @@ class Constants {
     public static ANIMATION_OPPONENT_COMPLETE = "animation_opponent_complete";
     public static ANIMATION_FLASH_COMPLETE  = "animation_flash_complete";
 
+    public static BUTTON_CONTINUE       = 'button_continue';
     public static BUTTON_PLAY           = 'button_play';
     public static BUTTON_SETTINGS       = 'button_settings';
     public static BUTTON_SETTINGS_CLOSE = 'button_settings_close';
