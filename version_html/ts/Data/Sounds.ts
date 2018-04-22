@@ -10,6 +10,16 @@ class Sounds {
     public static CardFlipSound1: string = 'flip1';
     public static CardFlipSound2: string = 'flip2';
 
+    public static DamageManSound: string = 'sound_damage_man';
+    public static DamageWomanSound: string = 'sound_damage_woman';
+    public static HitHandSound: string = 'sound_hit_hand';
+    public static HitLegSound: string = 'sound_hin_leg';
+
+    public static FightersReadySound: string = 'sound_fighters_ready';
+    public static KoSound: string = 'sound_ko';
+    public static YouLoseSound: string = 'sound_you_lose';
+    public static YouWinSound: string = 'sound_you_win';
+
     public static preloadList:Array<string> = [
         Sounds.MenuMusic1,
         Sounds.MenuMusic2,
@@ -21,5 +31,13 @@ class Sounds {
         Sounds.ButtonSound,
         Sounds.CardFlipSound1,
         Sounds.CardFlipSound2,
+        Sounds.DamageManSound,
+        Sounds.DamageWomanSound,
+        Sounds.HitHandSound,
+        Sounds.HitLegSound,
+        Sounds.FightersReadySound,
+        Sounds.KoSound,
+        Sounds.YouLoseSound,
+        Sounds.YouWinSound
     ];
 }

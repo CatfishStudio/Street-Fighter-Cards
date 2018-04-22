@@ -84,6 +84,9 @@ module GameData {
         public static arrowSound:Phaser.Sound;
         public static flipUpSound:Phaser.Sound;
         public static flipDownSound:Phaser.Sound;
+        public static voiceSound:Phaser.Sound;
+        public static playerSound:Phaser.Sound;
+        public static opponentSound:Phaser.Sound;
         public static music:Phaser.Sound;
         public static musicSelected:number = 2;
         public static musicList:any[][] = [

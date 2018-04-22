@@ -472,6 +472,14 @@ var Sounds = (function () {
     Sounds.ButtonSound = 'button';
     Sounds.CardFlipSound1 = 'flip1';
     Sounds.CardFlipSound2 = 'flip2';
+    Sounds.DamageManSound = 'sound_damage_man';
+    Sounds.DamageWomanSound = 'sound_damage_woman';
+    Sounds.HitHandSound = 'sound_hit_hand';
+    Sounds.HitLegSound = 'sound_hin_leg';
+    Sounds.FightersReadySound = 'sound_fighters_ready';
+    Sounds.KoSound = 'sound_ko';
+    Sounds.YouLoseSound = 'sound_you_lose';
+    Sounds.YouWinSound = 'sound_you_win';
     Sounds.preloadList = [
         Sounds.MenuMusic1,
         Sounds.MenuMusic2,
@@ -482,6 +490,14 @@ var Sounds = (function () {
         Sounds.ButtonSound,
         Sounds.CardFlipSound1,
         Sounds.CardFlipSound2,
+        Sounds.DamageManSound,
+        Sounds.DamageWomanSound,
+        Sounds.HitHandSound,
+        Sounds.HitLegSound,
+        Sounds.FightersReadySound,
+        Sounds.KoSound,
+        Sounds.YouLoseSound,
+        Sounds.YouWinSound
     ];
     return Sounds;
 }());
