@@ -26,12 +26,14 @@ module GameData {
     }
 
     export class Data {
-
+        // Данные которые должны храниться на сервере
         public static fighterIndex:number = -1;     // id выбранного игроком персонажа (в сохранение)
         public static progressIndex:number = -1;    // индекс прогресса в игре (в сохранение)
-        public static comixIndex:number = 0;        // индекс комикса
-        public static personages:IPersonage[];      // массив персонажей и их характеристик
+        public static comixIndex:number = 0;        // индекс комикса (в сохранение)
         public static tournamentListIds:number[];   // турнирная таблица (в сохранение)
+        // ------------------------------------------
+        
+        public static personages:IPersonage[];      // массив персонажей и их характеристик
 
         public static fighters:any[][] = [
             [0, 'Akuma', 'akuma_card.png', 'tournament/akuma.png', 'icons/akuma.png'],

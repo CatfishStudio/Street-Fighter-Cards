@@ -39,6 +39,8 @@ module StreetFighterCards {
             }
             this.createComix();
             this.playMusic();
+
+            SocialVK.vkSaveData();
         }
 
         public shutdown(): void {

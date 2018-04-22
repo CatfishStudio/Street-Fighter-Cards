@@ -84,6 +84,8 @@ module StreetFighterCards {
             if(GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20){
                 this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
                 this.buttonContinue.event.add(this.onButtonClick, this);
+            }else{
+                SocialVK.vkLoadData(this.onVkDataGet);
             }
 
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
@@ -94,6 +96,14 @@ module StreetFighterCards {
 
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35,  0, 100);
             this.buttonInvate.event.add(this.onButtonClick, this);
+        }
+
+        private onVkDataGet(response: any):void {
+            SocialVK.LoadData(response.toString());
+            if(GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20){
+                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                this.buttonContinue.event.add(this.onButtonClick, this);
+            }
         }
 
         private settingsCreate() {

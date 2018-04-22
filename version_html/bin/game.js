@@ -767,9 +767,10 @@ var GameData;
             GameData.Data.tournamentListIds.push(5); // boss
             Utilits.Data.debugLog("Tournament List:", GameData.Data.tournamentListIds);
         };
+        // Данные которые должны храниться на сервере
         Data.fighterIndex = -1; // id выбранного игроком персонажа (в сохранение)
         Data.progressIndex = -1; // индекс прогресса в игре (в сохранение)
-        Data.comixIndex = 0; // индекс комикса
+        Data.comixIndex = 0; // индекс комикса (в сохранение)
         Data.fighters = [
             [0, 'Akuma', 'akuma_card.png', 'tournament/akuma.png', 'icons/akuma.png'],
             [1, 'Alex', 'alex_card.png', 'tournament/alex.png', 'icons/alex.png'],
@@ -885,6 +886,52 @@ var SocialVK = (function () {
     };
     SocialVK.vkWallPostWin = function () {
         //VK.api("wall.post", {message: 'Примите поздравления! Вы победили всех соперников в игре Street Fighter Cards.\nДрузья присоединяйтесь к игре https://vk.com/app5883565', attachments: 'photo-62618339_456239022'}); 
+    };
+    /**
+     * Сохранение данных на сервер VK
+     */
+    SocialVK.vkSaveData = function () {
+        var jsonData = '{';
+        jsonData += '"fi": ' + GameData.Data.fighterIndex.toString() + ',';
+        jsonData += '"pi": ' + GameData.Data.progressIndex.toString() + ',';
+        jsonData += '"ci": ' + GameData.Data.comixIndex.toString() + ',';
+        jsonData += '"list": [' + GameData.Data.tournamentListIds.toString() + ']';
+        jsonData += '}';
+        //VK.api('storage.set', { key:'sfc_data', value: jsonData, global:0 }, SocialVK.onVkDataSet, SocialVK.onVkSetDataError);
+        Utilits.Data.debugLog('VK SAVE DATA:', jsonData);
+    };
+    SocialVK.onVkDataSet = function (response) {
+        Utilits.Data.debugLog('VK SET DATA:', response);
+    };
+    SocialVK.onVkSetDataError = function (response) {
+        console.error('VK SET DATA ERROR:', response);
+    };
+    /**
+     * Загрузка данных с сервера VK
+     */
+    SocialVK.vkLoadData = function (onVkDataGet) {
+        //VK.api('storage.get', { key:'sfc_data' }, onVkDataGet, SocialVK.onVkGetDataError);
+    };
+    SocialVK.onVkGetDataError = function (response) {
+        console.error('VK GET DATA ERROR:', response);
+    };
+    SocialVK.LoadData = function (jsonData) {
+        GameData.Data.comixIndex = 0;
+        GameData.Data.progressIndex = -1;
+        GameData.Data.fighterIndex = -1;
+        GameData.Data.tournamentListIds = [];
+        JSON.parse(jsonData, function (key, value) {
+            if (key === 'fi')
+                GameData.Data.fighterIndex = value;
+            if (key === 'pi')
+                GameData.Data.progressIndex = value;
+            if (key === 'ci')
+                GameData.Data.comixIndex = value;
+            if (key === 'list')
+                GameData.Data.tournamentListIds = value;
+            return value;
+        });
+        Utilits.Data.debugLog('LOAD DATA COMPLETE', jsonData);
     };
     return SocialVK;
 }());
@@ -2559,12 +2606,22 @@ var StreetFighterCards;
                 this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
                 this.buttonContinue.event.add(this.onButtonClick, this);
             }
+            else {
+                SocialVK.vkLoadData(this.onVkDataGet);
+            }
             this.buttonStart = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_PLAY, 'НАЧАТЬ ИГРУ', 35, 0, 0);
             this.buttonStart.event.add(this.onButtonClick, this);
             this.buttonSettings = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_SETTINGS, 'НАСТРОЙКИ', 40, 0, 50);
             this.buttonSettings.event.add(this.onButtonClick, this);
             this.buttonInvate = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_INVATE, 'ПРИГЛАСИТЬ', 35, 0, 100);
             this.buttonInvate.event.add(this.onButtonClick, this);
+        };
+        Menu.prototype.onVkDataGet = function (response) {
+            SocialVK.LoadData(response.toString());
+            if (GameData.Data.fighterIndex >= 0 && GameData.Data.progressIndex < 20) {
+                this.buttonContinue = new ButtonOrange(this.game, this.groupButtons, Constants.BUTTON_CONTINUE, 'ПРОДОЛЖИТЬ', 37, 0, -50);
+                this.buttonContinue.event.add(this.onButtonClick, this);
+            }
         };
         Menu.prototype.settingsCreate = function () {
             this.settings = new Settings(this.game, this.groupMenu);
@@ -2757,6 +2814,7 @@ var StreetFighterCards;
             }
             this.createComix();
             this.playMusic();
+            SocialVK.vkSaveData();
         };
         Tournament.prototype.shutdown = function () {
             this.icons.forEach(function (icon) {
