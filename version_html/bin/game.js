@@ -2940,6 +2940,16 @@ var StreetFighterCards;
         }
         Level.prototype.create = function () {
             this.battleEnd = false;
+            var playerName = GameData.Data.personages[GameData.Data.fighterIndex].name;
+            var opponentName = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].name;
+            if (playerName === 'Chun Li' || playerName === 'Elena' || playerName === 'Ibuki')
+                this.playerVoiceWoman = true;
+            else
+                this.playerVoiceWoman = false;
+            if (opponentName === 'Chun Li' || opponentName === 'Elena' || opponentName === 'Ibuki')
+                this.opponentVoiceWoman = true;
+            else
+                this.opponentVoiceWoman = false;
             this.group = new Phaser.Group(this.game, this.stage);
             this.boardGroup = new Phaser.Group(this.game, this.stage);
             this.borderGroup = new Phaser.Group(this.game, this.stage);
@@ -2951,7 +2961,7 @@ var StreetFighterCards;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = 10; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -3079,75 +3089,6 @@ var StreetFighterCards;
                     }
                 default:
                     break;
-            }
-        };
-        Level.prototype.playVoiceReady = function () {
-            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
-                GameData.Data.voiceSound = this.game.add.audio(Sounds.FightersReadySound);
-            }
-            GameData.Data.voiceSound.loop = false;
-            GameData.Data.voiceSound.key = Sounds.FightersReadySound;
-            GameData.Data.voiceSound.volume = 0.2;
-            GameData.Data.voiceSound.play();
-        };
-        Level.prototype.playVoiceKO = function () {
-            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
-                GameData.Data.voiceSound = this.game.add.audio(Sounds.KoSound);
-            }
-            GameData.Data.voiceSound.loop = false;
-            GameData.Data.voiceSound.key = Sounds.KoSound;
-            GameData.Data.voiceSound.volume = 0.2;
-            GameData.Data.voiceSound.play();
-        };
-        Level.prototype.playVoiceYouLose = function () {
-            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
-                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouLoseSound);
-            }
-            GameData.Data.voiceSound.loop = false;
-            GameData.Data.voiceSound.key = Sounds.YouLoseSound;
-            GameData.Data.voiceSound.volume = 0.2;
-            GameData.Data.voiceSound.play();
-        };
-        Level.prototype.playVoiceYouWin = function () {
-            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
-                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouWinSound);
-            }
-            GameData.Data.voiceSound.loop = false;
-            GameData.Data.voiceSound.key = Sounds.YouWinSound;
-            GameData.Data.voiceSound.volume = 0.2;
-            GameData.Data.voiceSound.play();
-        };
-        Level.prototype.playMusic = function () {
-            GameData.Data.musicSelected++;
-            if (GameData.Data.musicSelected > 4)
-                GameData.Data.musicSelected = 2;
-            GameData.Data.music.stop();
-            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
-            GameData.Data.music.loop = true;
-            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
-            if (Config.settingMusic) {
-                GameData.Data.music.play();
-            }
-        };
-        Level.prototype.playButtonSound = function () {
-            if (Config.settingSound) {
-                GameData.Data.buttonSound.loop = false;
-                GameData.Data.buttonSound.volume = 0.5;
-                GameData.Data.buttonSound.play();
-            }
-        };
-        Level.prototype.playFlipUpSound = function () {
-            if (Config.settingSound) {
-                GameData.Data.flipUpSound.loop = false;
-                GameData.Data.flipUpSound.volume = 0.5;
-                GameData.Data.flipUpSound.play();
-            }
-        };
-        Level.prototype.playFlipDownSound = function () {
-            if (Config.settingSound) {
-                GameData.Data.flipDownSound.loop = false;
-                GameData.Data.flipDownSound.volume = 0.5;
-                GameData.Data.flipDownSound.play();
             }
         };
         Level.prototype.createBackground = function () {
@@ -3556,7 +3497,9 @@ var StreetFighterCards;
                 this.implementHits();
             }
         };
-        // ВЫПОЛНЕНИЕ УДАРОВ
+        /**
+         * ВЫПОЛНЕНИЕ УДАРОВ
+         */
         Level.prototype.implementHits = function () {
             var _this = this;
             Utilits.Data.debugLog("IMPLEMENTATION: cards [slot/steep]:", [this.totalHits, this.steepHits]);
@@ -3645,6 +3588,7 @@ var StreetFighterCards;
                     }
                     this.playerAnimation.hitAnimation(playerCard.cardData);
                     this.correctPositionFighterAnimation();
+                    this.playSoundPlayerHit(playerCard.cardData);
                 }
                 else {
                     // #3: слот игрока пустой, стол оппонента не пустой
@@ -3658,6 +3602,7 @@ var StreetFighterCards;
                         }
                         this.opponentAnimation.hitAnimation(opponentCard.cardData); // оппонент выполняет атаку
                         this.correctPositionFighterAnimation();
+                        this.playSoundOpponentHit(opponentCard.cardData);
                     }
                     else {
                         // #4: оба слота не пустые
@@ -3670,6 +3615,8 @@ var StreetFighterCards;
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
                                 this.correctPositionFighterAnimation();
+                                this.playSoundPlayerHit(playerCard.cardData);
+                                this.playSoundOpponentHit(opponentCard.cardData);
                             }
                             else {
                                 // блок (игрок) - блок (оппонент)
@@ -3678,6 +3625,8 @@ var StreetFighterCards;
                                 this.playerAnimation.hitAnimation(playerCard.cardData); // выполняется карта игрока
                                 this.opponentAnimation.hitAnimation(opponentCard.cardData); // выполняется карта оппонента
                                 this.correctPositionFighterAnimation();
+                                this.playSoundPlayerHit(playerCard.cardData);
+                                this.playSoundOpponentHit(opponentCard.cardData);
                             }
                             this.damageCalculation(Constants.PLAYER, opponentCard, playerCard);
                             this.damageCalculation(Constants.OPPONENT, playerCard, opponentCard);
@@ -3703,17 +3652,21 @@ var StreetFighterCards;
                 this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
                 this.correctPositionFighterAnimation();
+                this.playSoundPlayerDamage();
             }
             else if (this.targetDamage === Constants.OPPONENT) {
                 this.targetDamage = null;
                 this.opponentAnimation.damageAnimation();
                 this.correctPositionFighterAnimation();
+                this.playSoundOpponentDamage();
             }
             else if (this.targetDamage === Constants.PLAYER_AND_OPPONENT) {
                 this.targetDamage = null;
                 this.playerAnimation.damageAnimation();
                 this.opponentAnimation.damageAnimation();
                 this.correctPositionFighterAnimation();
+                this.playSoundPlayerDamage();
+                this.playSoundOpponentDamage();
             }
             Utilits.Data.debugLog('ANIMATION steep hits:', this.steepHits);
             if (this.steepHits >= 2) {
@@ -3801,7 +3754,9 @@ var StreetFighterCards;
             this.opponentEnergy = this.energyCount;
             this.opponentProgressBar.setEnergy(this.opponentEnergy);
         };
-        // Завершение битвы
+        /**
+         * Завершение битвы
+         */
         Level.prototype.endBattle = function () {
             this.cardsDragAndDrop(false);
             var ko = new AnimationKO(this.game, 315, 100);
@@ -3818,7 +3773,9 @@ var StreetFighterCards;
                 Utilits.Data.debugLog("BATTLE", "END!");
             }.bind(this), 3000);
         };
-        // Обучение и подсказки
+        /**
+         * Обучение и подсказки
+         */
         Level.prototype.tutorHidden = function () {
             if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.hidden();
@@ -3827,6 +3784,140 @@ var StreetFighterCards;
         Level.prototype.tutorMessage = function (message) {
             if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.showTemporarily(message);
+            }
+        };
+        /**
+         * Звуки и музыка
+         */
+        Level.prototype.playMusic = function () {
+            GameData.Data.musicSelected++;
+            if (GameData.Data.musicSelected > 4)
+                GameData.Data.musicSelected = 2;
+            GameData.Data.music.stop();
+            GameData.Data.music.key = GameData.Data.musicList[GameData.Data.musicSelected][0];
+            GameData.Data.music.loop = true;
+            GameData.Data.music.volume = GameData.Data.musicList[GameData.Data.musicSelected][1];
+            if (Config.settingMusic) {
+                GameData.Data.music.play();
+            }
+        };
+        Level.prototype.playVoiceReady = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.FightersReadySound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.FightersReadySound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceKO = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.KoSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.KoSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceYouLose = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouLoseSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouLoseSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceYouWin = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouWinSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouWinSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playSoundPlayerDamage = function () {
+            if (GameData.Data.playerSound === undefined || GameData.Data.playerSound === null) {
+                if (this.playerVoiceWoman === false)
+                    GameData.Data.playerSound = this.game.add.audio(Sounds.DamageManSound);
+                else
+                    GameData.Data.playerSound = this.game.add.audio(Sounds.DamageWomanSound);
+            }
+            GameData.Data.playerSound.loop = false;
+            if (this.playerVoiceWoman === false)
+                GameData.Data.playerSound.key = Sounds.DamageManSound;
+            else
+                GameData.Data.playerSound.key = Sounds.DamageWomanSound;
+            GameData.Data.playerSound.volume = 0.2;
+            GameData.Data.playerSound.play();
+        };
+        Level.prototype.playSoundPlayerHit = function (cardData) {
+            if (GameData.Data.playerSound === undefined || GameData.Data.playerSound === null) {
+                GameData.Data.playerSound = this.game.add.audio(Sounds.HitHandSound);
+            }
+            if (cardData.type === Constants.CARD_TYPE_ATTACK) {
+                if (cardData.power > 20) {
+                    GameData.Data.playerSound.key = Sounds.HitLegSound;
+                }
+                else {
+                    GameData.Data.playerSound.key = Sounds.HitHandSound;
+                }
+                GameData.Data.playerSound.loop = false;
+                GameData.Data.playerSound.volume = 0.2;
+                GameData.Data.playerSound.play();
+            }
+        };
+        Level.prototype.playSoundOpponentDamage = function () {
+            if (GameData.Data.opponentSound === undefined || GameData.Data.opponentSound === null) {
+                if (this.opponentVoiceWoman === false)
+                    GameData.Data.opponentSound = this.game.add.audio(Sounds.DamageManSound);
+                else
+                    GameData.Data.opponentSound = this.game.add.audio(Sounds.DamageWomanSound);
+            }
+            GameData.Data.opponentSound.loop = false;
+            if (this.opponentVoiceWoman === false)
+                GameData.Data.opponentSound.key = Sounds.DamageManSound;
+            else
+                GameData.Data.opponentSound.key = Sounds.DamageWomanSound;
+            GameData.Data.opponentSound.volume = 0.2;
+            GameData.Data.opponentSound.play();
+        };
+        Level.prototype.playSoundOpponentHit = function (cardData) {
+            if (GameData.Data.opponentSound === undefined || GameData.Data.opponentSound === null) {
+                GameData.Data.opponentSound = this.game.add.audio(Sounds.HitHandSound);
+            }
+            if (cardData.type === Constants.CARD_TYPE_ATTACK) {
+                if (cardData.power > 20) {
+                    GameData.Data.opponentSound.key = Sounds.HitLegSound;
+                }
+                else {
+                    GameData.Data.opponentSound.key = Sounds.HitHandSound;
+                }
+                GameData.Data.opponentSound.loop = false;
+                GameData.Data.opponentSound.volume = 0.2;
+                GameData.Data.opponentSound.play();
+            }
+        };
+        Level.prototype.playButtonSound = function () {
+            if (Config.settingSound) {
+                GameData.Data.buttonSound.loop = false;
+                GameData.Data.buttonSound.volume = 0.5;
+                GameData.Data.buttonSound.play();
+            }
+        };
+        Level.prototype.playFlipUpSound = function () {
+            if (Config.settingSound) {
+                GameData.Data.flipUpSound.loop = false;
+                GameData.Data.flipUpSound.volume = 0.5;
+                GameData.Data.flipUpSound.play();
+            }
+        };
+        Level.prototype.playFlipDownSound = function () {
+            if (Config.settingSound) {
+                GameData.Data.flipDownSound.loop = false;
+                GameData.Data.flipDownSound.volume = 0.5;
+                GameData.Data.flipDownSound.play();
             }
         };
         Level.Name = "level";
