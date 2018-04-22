@@ -2942,12 +2942,12 @@ var StreetFighterCards;
             this.handGroup = new Phaser.Group(this.game, this.stage);
             this.opponentAi = new Ai();
             this.energyCount = 5;
-            this.playerLife = GameData.Data.personages[GameData.Data.fighterIndex].life;
+            this.playerLife = 5; //GameData.Data.personages[GameData.Data.fighterIndex].life;
             this.playerEnergy = this.energyCount;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = 10; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -3076,6 +3076,42 @@ var StreetFighterCards;
                 default:
                     break;
             }
+        };
+        Level.prototype.playVoiceReady = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.FightersReadySound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.FightersReadySound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceKO = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.KoSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.KoSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceYouLose = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouLoseSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouLoseSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        };
+        Level.prototype.playVoiceYouWin = function () {
+            if (GameData.Data.voiceSound === undefined || GameData.Data.voiceSound === null) {
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouWinSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouWinSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
         };
         Level.prototype.playMusic = function () {
             GameData.Data.musicSelected++;
@@ -3240,6 +3276,7 @@ var StreetFighterCards;
         Level.prototype.showAnimFight = function () {
             var fight = new AnimationFight(this.game, 200, 50);
             this.borderGroup.addChild(fight);
+            this.playVoiceReady();
         };
         // ДЕЙСТВИЕ: Взять карту
         Level.prototype.onDragStart = function (sprite, pointer, x, y) {
@@ -3767,6 +3804,10 @@ var StreetFighterCards;
             this.borderGroup.addChild(ko);
             if (this.playerLife > 0 && this.opponentLife <= 0) {
                 GameData.Data.progressIndex++;
+                this.playVoiceYouWin();
+            }
+            else {
+                this.playVoiceYouLose();
             }
             setTimeout(function () {
                 this.game.state.start(StreetFighterCards.Tournament.Name, true, false);

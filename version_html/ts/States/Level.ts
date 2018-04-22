@@ -227,6 +227,47 @@ module StreetFighterCards {
             }
         }
 
+        private playVoiceReady():void {
+            if(GameData.Data.voiceSound === undefined || GameData.Data.voiceSound=== null){
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.FightersReadySound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.FightersReadySound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        }
+
+        private playVoiceKO():void {
+            if(GameData.Data.voiceSound === undefined || GameData.Data.voiceSound=== null){
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.KoSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.KoSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        }
+
+        private playVoiceYouLose():void {
+            if(GameData.Data.voiceSound === undefined || GameData.Data.voiceSound=== null){
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouLoseSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouLoseSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        }
+
+        private playVoiceYouWin():void {
+            if(GameData.Data.voiceSound === undefined || GameData.Data.voiceSound=== null){
+                GameData.Data.voiceSound = this.game.add.audio(Sounds.YouWinSound);
+            }
+            GameData.Data.voiceSound.loop = false;
+            GameData.Data.voiceSound.key = Sounds.YouWinSound;
+            GameData.Data.voiceSound.volume = 0.2;
+            GameData.Data.voiceSound.play();
+        }
+
+
         private playMusic(): void {
             GameData.Data.musicSelected++;
             if (GameData.Data.musicSelected > 4) GameData.Data.musicSelected = 2;
@@ -410,6 +451,7 @@ module StreetFighterCards {
         private showAnimFight(): void {
             let fight: AnimationFight = new AnimationFight(this.game, 200, 50);
             this.borderGroup.addChild(fight);
+            this.playVoiceReady();
         }
 
         // ДЕЙСТВИЕ: Взять карту
@@ -960,6 +1002,9 @@ module StreetFighterCards {
 
             if (this.playerLife > 0 && this.opponentLife <= 0) {
                 GameData.Data.progressIndex++;
+                this.playVoiceYouWin();
+            }else{
+                this.playVoiceYouLose();
             }
 
             setTimeout(function () {
