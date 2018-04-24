@@ -3042,7 +3042,7 @@ var StreetFighterCards;
             this.playerDeck = [];
             this.playerHand = [];
             this.playerSlots = [null, null, null];
-            this.opponentLife = 5; //GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
+            this.opponentLife = GameData.Data.personages[GameData.Data.tournamentListIds[GameData.Data.progressIndex]].life;
             this.opponentEnergy = this.energyCount;
             this.opponentDeck = [];
             this.opponentHand = [];
@@ -3866,6 +3866,8 @@ var StreetFighterCards;
             }
         };
         Level.prototype.tutorMessage = function (message) {
+            if (Config.settingTutorial === false)
+                return;
             if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.showTemporarily(message);
             }

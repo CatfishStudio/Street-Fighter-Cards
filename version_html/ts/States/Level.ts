@@ -971,6 +971,7 @@ module StreetFighterCards {
         }
 
         private tutorMessage(message: string): void {
+            if (Config.settingTutorial === false) return;
             if (this.tutorial !== null && this.tutorial !== undefined) {
                 this.tutorial.showTemporarily(message);
             }
