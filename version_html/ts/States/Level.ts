@@ -371,8 +371,10 @@ module StreetFighterCards {
         private createTutorial(): void {
             if (Config.settingTutorial === true && GameData.Data.progressIndex === 0) {
                 this.tutorial = new Tutorial(this.game, GameData.Data.tutorList[2], Tutorial.RIGHT);
-                this.borderGroup.addChild(this.tutorial);
+            }else{
+                this.tutorial = new Tutorial(this.game, "", Tutorial.RIGHT, false);
             }
+            this.borderGroup.addChild(this.tutorial);
         }
 
         private createBorder(): void {

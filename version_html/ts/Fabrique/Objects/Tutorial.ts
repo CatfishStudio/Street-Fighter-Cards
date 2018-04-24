@@ -13,7 +13,7 @@ module Fabrique {
         private orientation: string;
         private timer: Phaser.Timer;
 
-        constructor(game: Phaser.Game, text: string, orientation: string) {
+        constructor(game: Phaser.Game, text: string, orientation: string, autoRun:boolean = true) {
             if (orientation === Tutorial.LEFT) {
                 super(game, 25, 600, Images.TutorialLeftImage);
                 
@@ -22,7 +22,16 @@ module Fabrique {
             }
             this.text = text;
             this.orientation = orientation;
-            this.init();
+            this.statusIsDisplayed = false;
+            if(autoRun){
+                this.init();
+            } else {
+                if (this.orientation === Tutorial.LEFT) {
+                    this.createLeftDialog();
+                } else {
+                    this.createRightDialog();
+                }
+            }
         }
 
         public shutdown(): void {
