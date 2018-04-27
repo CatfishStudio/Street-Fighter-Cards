@@ -159,7 +159,7 @@ module Fabrique {
                 border.endFill();
                 this.addChild(border);
 
-                let opponentText: Phaser.Text = this.game.add.text(60, 0, "CPU", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
+                let opponentText: Phaser.Text = this.game.add.text(60, 0, "ПК", { font: "10px Georgia", fill: "#FFFFFF", align: "left" });
                 this.addChild(opponentText);
             }
             
