@@ -61,6 +61,11 @@ module StreetFighterCards {
         }
 
         public initSounds():void{
+            // восстановление звука при запуске игры
+            this.game.input.onDown.addOnce(() => { 
+                this.game.sound.context.resume(); 
+            });
+
             if(GameData.Data.music === undefined || GameData.Data.music === null){
                 GameData.Data.music = this.game.add.audio(GameData.Data.musicList[0][0]);
                 GameData.Data.buttonSound = this.game.add.audio(Sounds.ButtonSound);
